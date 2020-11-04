@@ -12,8 +12,8 @@
 
 from setuptools import setup, find_packages  # noqa: H301
 
-NAME = "swagger-client"
-VERSION = "1.0.0"
+NAME = "fabric-orchestrator-client"
+VERSION = "0.1"
 # To install the library, run the following
 #
 # python setup.py install
@@ -21,7 +21,11 @@ VERSION = "1.0.0"
 # prerequisite: setuptools
 # http://pypi.python.org/pypi/setuptools
 
-REQUIRES = ["urllib3 >= 1.15", "six >= 1.10", "certifi", "python-dateutil"]
+with open("README.md", "r") as fh:
+    long_description = fh.read()
+
+with open("requirements.txt", "r") as fh:
+    requirements = fh.read()
 
 setup(
     name=NAME,
@@ -30,10 +34,13 @@ setup(
     author_email="kthare10@unc.edu",
     url="",
     keywords=["Swagger", "Fabric Orchestrator API"],
-    install_requires=REQUIRES,
+    install_requires=requirements,
     packages=find_packages(),
     include_package_data=True,
-    long_description="""\
-    This is Fabric Orchestrator API  # noqa: E501
-    """
+    long_description=long_description,
+    long_description_content_type="text/markdown",
+    classifiers=[
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent",
+    ]
 )
