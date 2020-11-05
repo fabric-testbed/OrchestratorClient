@@ -14,6 +14,10 @@ from __future__ import absolute_import
 
 import unittest
 
+import fabric.orchestrator.swagger_client
+from fabric.orchestrator.swagger_client.models.version import Version  # noqa: E501
+from fabric.orchestrator.swagger_client.rest import ApiException
+
 
 class TestVersion(unittest.TestCase):
     """Version unit test stubs"""
@@ -27,7 +31,7 @@ class TestVersion(unittest.TestCase):
     def testVersion(self):
         """Test Version"""
         # FIXME: construct object with mandatory attributes with example values
-        # model = swagger_client.models.version.Version()  # noqa: E501
+        # model = fabric.orchestrator.swagger_client.models.version.Version()  # noqa: E501
         pass
 
 

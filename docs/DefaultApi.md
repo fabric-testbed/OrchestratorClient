@@ -17,13 +17,18 @@ Version
 ```python
 from __future__ import print_function
 import time
-from fabric.orchestrator import swagger_client
+import fabric.orchestrator.swagger_client
 from fabric.orchestrator.swagger_client.rest import ApiException
 from pprint import pprint
 
+# Configure API key authorization: bearerAuth
+configuration = fabric.orchestrator.swagger_client.Configuration()
+configuration.api_key['Authorization'] = 'YOUR_API_KEY'
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# configuration.api_key_prefix['Authorization'] = 'Bearer'
 
 # create an instance of the API class
-api_instance = swagger_client.DefaultApi(swagger_client.ApiClient(configuration))
+api_instance = fabric.orchestrator.swagger_client.DefaultApi(fabric.orchestrator.swagger_client.ApiClient(configuration))
 
 try:
     # version

@@ -63,7 +63,7 @@ class Configuration(six.with_metaclass(TypeWithDefault, object)):
         self.password = ""
         # Logging Settings
         self.logger = {}
-        self.logger["package_logger"] = logging.getLogger("swagger_client")
+        self.logger["package_logger"] = logging.getLogger("fabric.orchestrator.swagger_client")
         self.logger["urllib3_logger"] = logging.getLogger("urllib3")
         # Log format
         self.logger_format = '%(asctime)s %(levelname)s %(message)s'
@@ -229,6 +229,13 @@ class Configuration(six.with_metaclass(TypeWithDefault, object)):
         :return: The Auth Settings information dict.
         """
         return {
+            'bearerAuth':
+                {
+                    'type': 'api_key',
+                    'in': 'header',
+                    'key': 'Authorization',
+                    'value': self.get_api_key_with_prefix('Authorization')
+                },
         }
 
     def to_debug_report(self):
