@@ -1,3 +1,5 @@
+[![Requirements Status](https://requires.io/github/fabric-testbed/OrchestratorClient/requirements.svg?branch=main)](https://requires.io/github/fabric-testbed/OrchestratorClient/requirements/?branch=main)
+
 # Fabric Orchestrator swagger-client
 This is Fabric Orchestrator API
 
