@@ -14,5 +14,5 @@
 from __future__ import absolute_import
 
 # import models into model package
-from fabric.orchestrator.swagger_client.models.success import Success
-from fabric.orchestrator.swagger_client.models.version import Version
+from fabric_cf.orchestrator.swagger_client.models.success import Success
+from fabric_cf.orchestrator.swagger_client.models.version import Version

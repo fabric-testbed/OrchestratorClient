@@ -53,7 +53,7 @@ pip install git+https://github.com/fabric-testbed/OrchestratorClient.git
 
 Then import the package:
 ```python
-import fabric.orchestrator.swagger_client 
+import fabric_cf.orchestrator.swagger_client 
 ```
 
 ### Setuptools
@@ -67,7 +67,7 @@ python setup.py install --user
 
 Then import the package:
 ```python
-import fabric.orchestrator.swagger_client
+import fabric_cf.orchestrator.swagger_client
 ```
 
 ## Getting Started
@@ -77,18 +77,18 @@ Please follow the [installation procedure](#installation--usage) and then run th
 ```python
 from __future__ import print_function
 import time
-import fabric.orchestrator.swagger_client
-from fabric.orchestrator.swagger_client.rest import ApiException
+from fabric_cf.orchestrator.swagger_client import DefaultApi, Configuration, ApiClient
+from fabric_cf.orchestrator.swagger_client.rest import ApiException
 from pprint import pprint
 
 # Configure API key authorization: bearerAuth
-configuration = fabric.orchestrator.swagger_client.Configuration()
+configuration = Configuration()
 configuration.api_key['Authorization'] = 'YOUR_API_KEY'
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['Authorization'] = 'Bearer'
 
 # create an instance of the API class
-api_instance = fabric.orchestrator.swagger_client.DefaultApi(fabric.orchestrator.swagger_client.ApiClient(configuration))
+api_instance = DefaultApi(ApiClient(configuration))
 
 try:
     # version

@@ -14,9 +14,9 @@ from __future__ import absolute_import
 
 import unittest
 
-import fabric.orchestrator.swagger_client
-from fabric.orchestrator.swagger_client.api.default_api import DefaultApi  # noqa: E501
-from fabric.orchestrator.swagger_client.rest import ApiException
+import fabric_cf.orchestrator.swagger_client
+from fabric_cf.orchestrator.swagger_client.api.default_api import DefaultApi  # noqa: E501
+from fabric_cf.orchestrator.swagger_client.rest import ApiException
 
 
 class TestDefaultApi(unittest.TestCase):

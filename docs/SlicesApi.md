@@ -1,4 +1,4 @@
-# fabric.orchestrator.swagger_client.SlicesApi
+# SlicesApi
 
 All URIs are relative to *http://127.0.0.1:8700/*
 
@@ -24,18 +24,18 @@ Request to create slice as described in the request. Request would be a graph ML
 ```python
 from __future__ import print_function
 import time
-import fabric.orchestrator.swagger_client
-from fabric.orchestrator.swagger_client.rest import ApiException
+from fabric_cf.orchestrator.swagger_client import SlicesApi, Configuration, ApiClient
+from fabric_cf.orchestrator.swagger_client.rest import ApiException
 from pprint import pprint
 
 # Configure API key authorization: bearerAuth
-configuration = fabric.orchestrator.swagger_client.Configuration()
+configuration = Configuration()
 configuration.api_key['Authorization'] = 'YOUR_API_KEY'
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['Authorization'] = 'Bearer'
 
 # create an instance of the API class
-api_instance = fabric.orchestrator.swagger_client.SlicesApi(fabric.orchestrator.swagger_client.ApiClient(configuration))
+api_instance = SlicesApi(ApiClient(configuration))
 body = 'body_example' # str | 
 slice_name = 'slice_name_example' # str | Slice Name
 
@@ -80,18 +80,18 @@ Request to delete slice. On success, resources associated with slice or sliver a
 ```python
 from __future__ import print_function
 import time
-import fabric.orchestrator.swagger_client
-from fabric.orchestrator.swagger_client.rest import ApiException
+from fabric_cf.orchestrator.swagger_client import SlicesApi, Configuration, ApiClient
+from fabric_cf.orchestrator.swagger_client.rest import ApiException
 from pprint import pprint
 
 # Configure API key authorization: bearerAuth
-configuration = fabric.orchestrator.swagger_client.Configuration()
+configuration = Configuration()
 configuration.api_key['Authorization'] = 'YOUR_API_KEY'
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['Authorization'] = 'Bearer'
 
 # create an instance of the API class
-api_instance = fabric.orchestrator.swagger_client.SlicesApi(fabric.orchestrator.swagger_client.ApiClient(configuration))
+api_instance = SlicesApi(ApiClient(configuration))
 slice_id = 'slice_id_example' # str | Slice identifier as UUID
 
 try:
@@ -134,18 +134,18 @@ Retrieve a listing of user slices
 ```python
 from __future__ import print_function
 import time
-import fabric.orchestrator.swagger_client
-from fabric.orchestrator.swagger_client.rest import ApiException
+from fabric_cf.orchestrator.swagger_client import SlicesApi, Configuration, ApiClient
+from fabric_cf.orchestrator.swagger_client.rest import ApiException
 from pprint import pprint
 
 # Configure API key authorization: bearerAuth
-configuration = fabric.orchestrator.swagger_client.Configuration()
+configuration = Configuration()
 configuration.api_key['Authorization'] = 'YOUR_API_KEY'
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['Authorization'] = 'Bearer'
 
 # create an instance of the API class
-api_instance = fabric.orchestrator.swagger_client.SlicesApi(fabric.orchestrator.swagger_client.ApiClient(configuration))
+api_instance = SlicesApi(ApiClient(configuration))
 
 try:
     # Retrieve a listing of user slices
@@ -184,18 +184,18 @@ Request to modify slice as described in the request. Request would be a Graph ML
 ```python
 from __future__ import print_function
 import time
-import fabric.orchestrator.swagger_client
-from fabric.orchestrator.swagger_client.rest import ApiException
+from fabric_cf.orchestrator.swagger_client import SlicesApi, Configuration, ApiClient
+from fabric_cf.orchestrator.swagger_client.rest import ApiException
 from pprint import pprint
 
 # Configure API key authorization: bearerAuth
-configuration = fabric.orchestrator.swagger_client.Configuration()
+configuration = Configuration()
 configuration.api_key['Authorization'] = 'YOUR_API_KEY'
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['Authorization'] = 'Bearer'
 
 # create an instance of the API class
-api_instance = fabric.orchestrator.swagger_client.SlicesApi(fabric.orchestrator.swagger_client.ApiClient(configuration))
+api_instance = SlicesApi(ApiClient(configuration))
 body = 'body_example' # str | 
 slice_id = 'slice_id_example' # str | Slice identifier as UUID
 
@@ -240,18 +240,18 @@ Request that the reserved resources be made provisioned, instantiating or otherw
 ```python
 from __future__ import print_function
 import time
-import fabric.orchestrator.swagger_client
-from fabric.orchestrator.swagger_client.rest import ApiException
+from fabric_cf.orchestrator.swagger_client import SlicesApi, Configuration, ApiClient
+from fabric_cf.orchestrator.swagger_client.rest import ApiException
 from pprint import pprint
 
 # Configure API key authorization: bearerAuth
-configuration = fabric.orchestrator.swagger_client.Configuration()
+configuration = Configuration()
 configuration.api_key['Authorization'] = 'YOUR_API_KEY'
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['Authorization'] = 'Bearer'
 
 # create an instance of the API class
-api_instance = fabric.orchestrator.swagger_client.SlicesApi(fabric.orchestrator.swagger_client.ApiClient(configuration))
+api_instance = SlicesApi(ApiClient(configuration))
 slice_id = 'slice_id_example' # str | Slice identifier as UUID
 
 try:
@@ -294,18 +294,18 @@ Request to extend slice be renewed with their expiration extended. If possible, 
 ```python
 from __future__ import print_function
 import time
-import fabric.orchestrator.swagger_client
-from fabric.orchestrator.swagger_client.rest import ApiException
+from fabric_cf.orchestrator.swagger_client import SlicesApi, Configuration, ApiClient
+from fabric_cf.orchestrator.swagger_client.rest import ApiException
 from pprint import pprint
 
 # Configure API key authorization: bearerAuth
-configuration = fabric.orchestrator.swagger_client.Configuration()
+configuration = Configuration()
 configuration.api_key['Authorization'] = 'YOUR_API_KEY'
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['Authorization'] = 'Bearer'
 
 # create an instance of the API class
-api_instance = fabric.orchestrator.swagger_client.SlicesApi(fabric.orchestrator.swagger_client.ApiClient(configuration))
+api_instance = SlicesApi(ApiClient(configuration))
 slice_id = 'slice_id_example' # str | Slice identifier as UUID
 new_lease_end_time = 'new_lease_end_time_example' # str | New Lease End Time for the Slice
 
@@ -350,18 +350,18 @@ Retrieve Slice properties
 ```python
 from __future__ import print_function
 import time
-import fabric.orchestrator.swagger_client
-from fabric.orchestrator.swagger_client.rest import ApiException
+from fabric_cf.orchestrator.swagger_client import SlicesApi, Configuration, ApiClient
+from fabric_cf.orchestrator.swagger_client.rest import ApiException
 from pprint import pprint
 
 # Configure API key authorization: bearerAuth
-configuration = fabric.orchestrator.swagger_client.Configuration()
+configuration = Configuration()
 configuration.api_key['Authorization'] = 'YOUR_API_KEY'
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['Authorization'] = 'Bearer'
 
 # create an instance of the API class
-api_instance = fabric.orchestrator.swagger_client.SlicesApi(fabric.orchestrator.swagger_client.ApiClient(configuration))
+api_instance = SlicesApi(ApiClient(configuration))
 slice_id = 'slice_id_example' # str | Slice identifier as UUID
 
 try:
@@ -404,18 +404,18 @@ Retrieve the status of a slice. Status would include dynamic reservation or inst
 ```python
 from __future__ import print_function
 import time
-import fabric.orchestrator.swagger_client
-from fabric.orchestrator.swagger_client.rest import ApiException
+from fabric_cf.orchestrator.swagger_client import SlicesApi, Configuration, ApiClient
+from fabric_cf.orchestrator.swagger_client.rest import ApiException
 from pprint import pprint
 
 # Configure API key authorization: bearerAuth
-configuration = fabric.orchestrator.swagger_client.Configuration()
+configuration = Configuration()
 configuration.api_key['Authorization'] = 'YOUR_API_KEY'
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['Authorization'] = 'Bearer'
 
 # create an instance of the API class
-api_instance = fabric.orchestrator.swagger_client.SlicesApi(fabric.orchestrator.swagger_client.ApiClient(configuration))
+api_instance = SlicesApi(ApiClient(configuration))
 slice_id = 'slice_id_example' # str | Slice identifier as UUID
 
 try:
