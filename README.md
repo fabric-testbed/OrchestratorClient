@@ -1,5 +1,7 @@
 [![Requirements Status](https://requires.io/github/fabric-testbed/OrchestratorClient/requirements.svg?branch=main)](https://requires.io/github/fabric-testbed/OrchestratorClient/requirements/?branch=main)
 
+[![PyPI](https://img.shields.io/pypi/v/fabric-orchestrator-client?style=plastic)](https://pypi.org/project/fabric-orchestrator-client/)
+
 # Fabric Orchestrator swagger-client
 This is Fabric Orchestrator API
 
