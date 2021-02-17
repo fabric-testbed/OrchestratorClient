@@ -111,7 +111,7 @@ class OrchestratorProxy:
         except Exception as e:
             return Status.FAILURE, e
 
-    def delete(self, token: str, slice_id: str) -> Tuple[Status, Union[Exception, dict]]:
+    def delete(self, *, token: str, slice_id: str) -> Tuple[Status, Union[Exception, dict]]:
         """
         Delete a slice
         @param token fabric token
@@ -135,7 +135,7 @@ class OrchestratorProxy:
         except Exception as e:
             return Status.FAILURE, e
 
-    def get_slices(self, token: str) -> Tuple[Status, Union[Exception, dict]]:
+    def slices(self, *, token: str) -> Tuple[Status, Union[Exception, dict]]:
         """
         Get slices
         @param token fabric token
@@ -155,7 +155,7 @@ class OrchestratorProxy:
         except Exception as e:
             return Status.FAILURE, e
 
-    def get_slice(self, token: str, slice_id: str = None) -> Tuple[Status, Union[Exception, dict]]:
+    def get_slice(self, *, token: str, slice_id: str = None) -> Tuple[Status, Union[Exception, dict]]:
         """
         Get slice
         @param token fabric token
@@ -180,7 +180,7 @@ class OrchestratorProxy:
         except Exception as e:
             return Status.FAILURE, e
 
-    def get_slice_status(self, token: str, slice_id: str) -> Tuple[Status, Union[Exception, dict]]:
+    def slice_status(self, *, token: str, slice_id: str) -> Tuple[Status, Union[Exception, dict]]:
         """
         Get slice status
         @param token fabric token
@@ -204,7 +204,7 @@ class OrchestratorProxy:
         except Exception as e:
             return Status.FAILURE, e
 
-    def get_slivers(self, token: str, slice_id: str, sliver_id: str = None) -> Tuple[Status, Union[Exception, dict]]:
+    def slivers(self, *, token: str, slice_id: str, sliver_id: str = None) -> Tuple[Status, Union[Exception, dict]]:
         """
         Get slivers
         @param token fabric token
@@ -233,7 +233,7 @@ class OrchestratorProxy:
         except Exception as e:
             return Status.FAILURE, e
 
-    def get_sliver_status(self, token: str, slice_id: str, sliver_id: str) -> Tuple[Status, Union[Exception, dict]]:
+    def sliver_status(self, *, token: str, slice_id: str, sliver_id: str) -> Tuple[Status, Union[Exception, dict]]:
         """
         Get slivers
         @param token fabric token
@@ -257,6 +257,27 @@ class OrchestratorProxy:
             self.slivers_api.api_client.configuration.api_key_prefix['Authorization'] = 'Bearer'
 
             response = self.slivers_api.slivers_status_sliver_id_get(sliver_id=sliver_id, slice_id=slice_id)
+
+            return Status.OK, response
+        except Exception as e:
+            return Status.FAILURE, e
+
+    def resources(self, *, token: str) -> Tuple[Status, Union[Exception, dict]]:
+        """
+        Get resources
+        @param token fabric token
+        @return Tuple containing Status and Exception/Json containing Resources
+        """
+
+        if token is None:
+            return Status.INVALID_ARGUMENTS, OrchestratorProxyException(f"Token {token} must be specified")
+
+        try:
+            # Set the tokens
+            self.resources_api.api_client.configuration.api_key['Authorization'] = token
+            self.resources_api.api_client.configuration.api_key_prefix['Authorization'] = 'Bearer'
+
+            response = self.resources_api.resources_get()
 
             return Status.OK, response
         except Exception as e:
