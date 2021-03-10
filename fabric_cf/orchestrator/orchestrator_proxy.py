@@ -65,7 +65,7 @@ class OrchestratorProxy:
         if orchestrator_host is not None:
             # create an instance of the API class
             configuration = swagger_client.configuration.Configuration()
-            configuration.host = f"https://{orchestrator_host}/"
+            configuration.host = f"http://{orchestrator_host}/"
             api_instance = swagger_client.ApiClient(configuration)
             self.slices_api = swagger_client.SlicesApi(api_client=api_instance)
             self.slivers_api = swagger_client.SliversApi(api_client=api_instance)
@@ -103,9 +103,8 @@ class OrchestratorProxy:
                 graph_string = topology.serialize()
                 response = self.slices_api.slices_create_post(slice_name=slice_name, body=graph_string)
 
-            if topology is not None:
-                graph_string = topology.serialize()
-                response = self.slices_api.slices_create_post(slice_name=slice_name, body=graph_string)
+            if slice_graph is not None:
+                response = self.slices_api.slices_create_post(slice_name=slice_name, body=slice_graph)
 
             return Status.OK, response
         except Exception as e:
