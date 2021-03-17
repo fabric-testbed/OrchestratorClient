@@ -110,7 +110,7 @@ class Reservation(JSONField):
         for k in self.__dict__:
             if d[k] is None or d[k] == 0:
                 d.pop(k)
-            if k == Constants.PROP_SLIVER:
+            elif k == Constants.PROP_SLIVER:
                 d[k] = str(d[k])
         if len(d) == 0:
             return ''
