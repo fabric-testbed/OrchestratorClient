@@ -27,7 +27,7 @@ import enum
 from typing import Tuple, Union, List
 
 from fabric_cf.orchestrator import swagger_client
-from fim.user.topology import ExperimentTopology, SubstrateTopology
+from fim.user.topology import ExperimentTopology, AdvertizedTopology
 
 from fabric_cf.orchestrator.elements.constants import Constants
 from fabric_cf.orchestrator.elements.reservation import ReservationFactory, Reservation
@@ -288,7 +288,7 @@ class OrchestratorProxy:
         except Exception as e:
             return Status.FAILURE, e
 
-    def resources(self, *, token: str, level: int = 1) -> Tuple[Status, Union[Exception, SubstrateTopology]]:
+    def resources(self, *, token: str, level: int = 1) -> Tuple[Status, Union[Exception, AdvertizedTopology]]:
         """
         Get resources
         @param token fabric token
@@ -305,7 +305,7 @@ class OrchestratorProxy:
 
             response = self.resources_api.resources_get(level=level)
             graph_string = response.value[Constants.PROP_BQM_MODEL]
-            substrate = SubstrateTopology()
+            substrate = AdvertizedTopology()
             substrate.load(graph_string=graph_string)
 
             return Status.OK, substrate
