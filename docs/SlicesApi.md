@@ -4,7 +4,7 @@ All URIs are relative to *http://127.0.0.1:8700/*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**slices_create_post**](SlicesApi.md#slices_create_post) | **POST** /slices/create | Create slice
+[**slices_create_post**](SlicesApi.md#slices_create_post) | **POST** /slices/create_slices | Create slice
 [**slices_delete_slice_id_delete**](SlicesApi.md#slices_delete_slice_id_delete) | **DELETE** /slices/delete/{sliceID} | Delete slice.
 [**slices_get**](SlicesApi.md#slices_get) | **GET** /slices | Retrieve a listing of user slices
 [**slices_modify_slice_id_put**](SlicesApi.md#slices_modify_slice_id_put) | **PUT** /slices/modify/{sliceID} | Modify slice
@@ -18,7 +18,7 @@ Method | HTTP request | Description
 
 Create slice
 
-Request to create slice as described in the request. Request would be a graph ML describing the requested resources. Resources may be requested to be created now or in future. On success, one or more slivers are allocated, containing resources satisfying the request, and assigned to the given slice. This API returns list and description of the resources reserved for the slice in the form of Graph ML. Orchestrator would also trigger provisioning of these resources asynchronously on the appropriate sites either now or in the future as requested. Experimenter can invoke get slice API to get the latest state of the requested resources.  
+Request to create_slices slice as described in the request. Request would be a graph ML describing the requested resources. Resources may be requested to be created now or in future. On success, one or more slivers are allocated, containing resources satisfying the request, and assigned to the given slice. This API returns list and description of the resources reserved for the slice in the form of Graph ML. Orchestrator would also trigger provisioning of these resources asynchronously on the appropriate sites either now or in the future as requested. Experimenter can invoke get slice API to get the latest state of the requested resources.  
 
 ### Example
 ```python
@@ -38,10 +38,11 @@ configuration.api_key['Authorization'] = 'YOUR_API_KEY'
 api_instance = SlicesApi(ApiClient(configuration))
 body = 'body_example' # str | 
 slice_name = 'slice_name_example' # str | Slice Name
+ssh_key = 'ssh_key_example' # str | User SSH Key
 
 try:
     # Create slice
-    api_response = api_instance.slices_create_post(body, slice_name)
+    api_response = api_instance.slices_create_post(body, slice_name, ssh_key)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling SlicesApi->slices_create_post: %s\n" % e)
@@ -53,6 +54,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **body** | [**str**](str.md)|  | 
  **slice_name** | **str**| Slice Name | 
+ **ssh_key** | **str**| User SSH Key | 
 
 ### Return type
 
@@ -398,7 +400,7 @@ Name | Type | Description  | Notes
 
 slice status
 
-Retrieve the status of a slice. Status would include dynamic reservation or instantiation information. This API is used to provide updates on the state of the resources after the completion of create, which began to asynchronously provision the resources. The response would contain relatively dynamic data, not descriptive data as returned in the Graph ML. 
+Retrieve the status of a slice. Status would include dynamic reservation or instantiation information. This API is used to provide updates on the state of the resources after the completion of create_slices, which began to asynchronously provision the resources. The response would contain relatively dynamic data, not descriptive data as returned in the Graph ML. 
 
 ### Example
 ```python

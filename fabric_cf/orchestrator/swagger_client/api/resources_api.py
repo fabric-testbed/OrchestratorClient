@@ -32,43 +32,45 @@ class ResourcesApi(object):
             api_client = ApiClient()
         self.api_client = api_client
 
-    def resources_get(self, **kwargs):  # noqa: E501
+    def resources_get(self, level, **kwargs):  # noqa: E501
         """Retrieve a listing and description of available resources  # noqa: E501
 
         Retrieve a listing and description of available resources  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
-        >>> thread = api.resources_get(async_req=True)
+        >>> thread = api.resources_get(level, async_req=True)
         >>> result = thread.get()
 
         :param async_req bool
+        :param int level: Level of details (required)
         :return: Success
                  If the method is called asynchronously,
                  returns the request thread.
         """
         kwargs['_return_http_data_only'] = True
         if kwargs.get('async_req'):
-            return self.resources_get_with_http_info(**kwargs)  # noqa: E501
+            return self.resources_get_with_http_info(level, **kwargs)  # noqa: E501
         else:
-            (data) = self.resources_get_with_http_info(**kwargs)  # noqa: E501
+            (data) = self.resources_get_with_http_info(level, **kwargs)  # noqa: E501
             return data
 
-    def resources_get_with_http_info(self, **kwargs):  # noqa: E501
+    def resources_get_with_http_info(self, level, **kwargs):  # noqa: E501
         """Retrieve a listing and description of available resources  # noqa: E501
 
         Retrieve a listing and description of available resources  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
-        >>> thread = api.resources_get_with_http_info(async_req=True)
+        >>> thread = api.resources_get_with_http_info(level, async_req=True)
         >>> result = thread.get()
 
         :param async_req bool
+        :param int level: Level of details (required)
         :return: Success
                  If the method is called asynchronously,
                  returns the request thread.
         """
 
-        all_params = []  # noqa: E501
+        all_params = ['level']  # noqa: E501
         all_params.append('async_req')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
@@ -83,12 +85,18 @@ class ResourcesApi(object):
                 )
             params[key] = val
         del params['kwargs']
+        # verify the required parameter 'level' is set
+        if ('level' not in params or
+                params['level'] is None):
+            raise ValueError("Missing the required parameter `level` when calling `resources_get`")  # noqa: E501
 
         collection_formats = {}
 
         path_params = {}
 
         query_params = []
+        if 'level' in params:
+            query_params.append(('level', params['level']))  # noqa: E501
 
         header_params = {}
 

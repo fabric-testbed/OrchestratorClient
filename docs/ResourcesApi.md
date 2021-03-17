@@ -7,7 +7,7 @@ Method | HTTP request | Description
 [**resources_get**](ResourcesApi.md#resources_get) | **GET** /resources | Retrieve a listing and description of available resources
 
 # **resources_get**
-> Success resources_get()
+> Success resources_get(level)
 
 Retrieve a listing and description of available resources
 
@@ -29,17 +29,21 @@ configuration.api_key['Authorization'] = 'YOUR_API_KEY'
 
 # create an instance of the API class
 api_instance = ResourcesApi(ApiClient(configuration))
+level = 1 # int | Level of details (default to 1)
 
 try:
     # Retrieve a listing and description of available resources
-    api_response = api_instance.resources_get()
+    api_response = api_instance.resources_get(level)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling ResourcesApi->resources_get: %s\n" % e)
 ```
 
 ### Parameters
-This endpoint does not need any parameter.
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **level** | **int**| Level of details | [default to 1]
 
 ### Return type
 

@@ -239,7 +239,7 @@ Name | Type | Description  | Notes
 
 slivers status
 
-Retrieve the status of a sliver. Status would include dynamic reservation or instantiation information. This API is used to provide updates on the state of the resources after the completion of create, which began to asynchronously provision the resources. The response would contain relatively dynamic data, not descriptive data as returned in the Graph ML. 
+Retrieve the status of a sliver. Status would include dynamic reservation or instantiation information. This API is used to provide updates on the state of the resources after the completion of create_slices, which began to asynchronously provision the resources. The response would contain relatively dynamic data, not descriptive data as returned in the Graph ML. 
 
 ### Example
 ```python

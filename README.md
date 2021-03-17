@@ -89,7 +89,7 @@ configuration.api_key['Authorization'] = 'YOUR_API_KEY'
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['Authorization'] = 'Bearer'
 
-# create an instance of the API class
+# create_slices an instance of the API class
 api_instance = DefaultApi(ApiClient(configuration))
 
 try:
@@ -108,7 +108,7 @@ Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *DefaultApi* | [**version_get**](docs/DefaultApi.md#version_get) | **GET** /version | version
 *ResourcesApi* | [**resources_get**](docs/ResourcesApi.md#resources_get) | **GET** /resources | Retrieve a listing and description of available resources
-*SlicesApi* | [**slices_create_post**](docs/SlicesApi.md#slices_create_post) | **POST** /slices/create | Create slice
+*SlicesApi* | [**slices_create_post**](docs/SlicesApi.md#slices_create_post) | **POST** /slices/create_slices | Create slice
 *SlicesApi* | [**slices_delete_slice_id_delete**](docs/SlicesApi.md#slices_delete_slice_id_delete) | **DELETE** /slices/delete/{sliceID} | Delete slice.
 *SlicesApi* | [**slices_get**](docs/SlicesApi.md#slices_get) | **GET** /slices | Retrieve a listing of user slices
 *SlicesApi* | [**slices_modify_slice_id_put**](docs/SlicesApi.md#slices_modify_slice_id_put) | **PUT** /slices/modify/{sliceID} | Modify slice
@@ -136,7 +136,77 @@ Class | Method | HTTP request | Description
 - **API key parameter name**: Authorization
 - **Location**: HTTP header
 
+## Documentation For Orchestrator Proxy
+Users are recommended to use Orchestrator Proxy class for any orchestrator operations. Examples are shown below.
 
+### Get Resources
+```
+orchestrator_host = "localhost:8700"
+proxy = OrchestratorProxy(orchestrator_host=orchestrator_host)
+resources = proxy.resources(token=token)
+```
+### Create Slice
+```
+ import fim.user as fu
+ t = fu.ExperimentTopology()
+ n1 = t.add_node(name='n1', site='RENC')
+ cap = fu.Capacities()
+ cap.set_fields(core=4, ram=64, disk=500)
+ n1.set_properties(capacities=cap, image_type='qcow2', image_ref='default_centos_8')
+ n1.add_component(ctype=fu.ComponentType.SmartNIC, model='ConnectX-6', name='nic1')
+
+ n2 = t.add_node(name='n2', site='RENC')
+ n2.set_properties(capacities=cap, image_type='qcow2', image_ref='default_centos_8')
+ n2.add_component(ctype=fu.ComponentType.GPU, model='Tesla T4', name='nic2')
+
+ slice_graph = t.serialize()
+ sss_key = "<user public key>"
+ orchestrator_host = "localhost:8700"
+ proxy = OrchestratorProxy(orchestrator_host=orchestrator_host)
+ status, reservation_list = proxy.create(token=token, slice_name=name, slice_graph=slice_graph, ssh_key=ssh_key)
+```
+### Get Slices
+```
+orchestrator_host = "localhost:8700"
+proxy = OrchestratorProxy(orchestrator_host=orchestrator_host)
+status, slice_list = proxy.slices(token=token)
+```
+### Get Slice
+```
+orchestrator_host = "localhost:8700"
+proxy = OrchestratorProxy(orchestrator_host=orchestrator_host)
+status, slice_topology = proxy.get_slice(token=token, slice_id=slice_id)
+```
+### Get Slivers
+```
+orchestrator_host = "localhost:8700"
+proxy = OrchestratorProxy(orchestrator_host=orchestrator_host)
+status, reservation_list = proxy.slivers(token=token, slice_id=slice_id)
+```
+### Get Sliver
+```
+orchestrator_host = "localhost:8700"
+proxy = OrchestratorProxy(orchestrator_host=orchestrator_host)
+status, reservation = proxy.slivers(token=token, slice_id=slice_id, sliver_id=sliver_id)
+```
+### Delete Slice
+```
+orchestrator_host = "localhost:8700"
+proxy = OrchestratorProxy(orchestrator_host=orchestrator_host)
+status, result = proxy.delete(token=token, slice_id=slice_id)
+```
+### Slice Status
+```
+orchestrator_host = "localhost:8700"
+proxy = OrchestratorProxy(orchestrator_host=orchestrator_host)
+status, slice_object = proxy.slice_status(token=token, slice_id=slice_id)
+```
+### Sliver Status
+```
+orchestrator_host = "localhost:8700"
+proxy = OrchestratorProxy(orchestrator_host=orchestrator_host)
+status, reservation = proxy.sliver_status(token=token, slice_id=slice_id, sliver_id=sliver_id)
+```
 ## Author
 
 kthare10@unc.edu

@@ -32,47 +32,49 @@ class SlicesApi(object):
             api_client = ApiClient()
         self.api_client = api_client
 
-    def slices_create_post(self, body, slice_name, **kwargs):  # noqa: E501
+    def slices_create_post(self, body, slice_name, ssh_key, **kwargs):  # noqa: E501
         """Create slice  # noqa: E501
 
         Request to create slice as described in the request. Request would be a graph ML describing the requested resources. Resources may be requested to be created now or in future. On success, one or more slivers are allocated, containing resources satisfying the request, and assigned to the given slice. This API returns list and description of the resources reserved for the slice in the form of Graph ML. Orchestrator would also trigger provisioning of these resources asynchronously on the appropriate sites either now or in the future as requested. Experimenter can invoke get slice API to get the latest state of the requested resources.    # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
-        >>> thread = api.slices_create_post(body, slice_name, async_req=True)
+        >>> thread = api.slices_create_post(body, slice_name, ssh_key, async_req=True)
         >>> result = thread.get()
 
         :param async_req bool
         :param str body: (required)
         :param str slice_name: Slice Name (required)
+        :param str ssh_key: User SSH Key (required)
         :return: Success
                  If the method is called asynchronously,
                  returns the request thread.
         """
         kwargs['_return_http_data_only'] = True
         if kwargs.get('async_req'):
-            return self.slices_create_post_with_http_info(body, slice_name, **kwargs)  # noqa: E501
+            return self.slices_create_post_with_http_info(body, slice_name, ssh_key, **kwargs)  # noqa: E501
         else:
-            (data) = self.slices_create_post_with_http_info(body, slice_name, **kwargs)  # noqa: E501
+            (data) = self.slices_create_post_with_http_info(body, slice_name, ssh_key, **kwargs)  # noqa: E501
             return data
 
-    def slices_create_post_with_http_info(self, body, slice_name, **kwargs):  # noqa: E501
+    def slices_create_post_with_http_info(self, body, slice_name, ssh_key, **kwargs):  # noqa: E501
         """Create slice  # noqa: E501
 
         Request to create slice as described in the request. Request would be a graph ML describing the requested resources. Resources may be requested to be created now or in future. On success, one or more slivers are allocated, containing resources satisfying the request, and assigned to the given slice. This API returns list and description of the resources reserved for the slice in the form of Graph ML. Orchestrator would also trigger provisioning of these resources asynchronously on the appropriate sites either now or in the future as requested. Experimenter can invoke get slice API to get the latest state of the requested resources.    # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
-        >>> thread = api.slices_create_post_with_http_info(body, slice_name, async_req=True)
+        >>> thread = api.slices_create_post_with_http_info(body, slice_name, ssh_key, async_req=True)
         >>> result = thread.get()
 
         :param async_req bool
         :param str body: (required)
         :param str slice_name: Slice Name (required)
+        :param str ssh_key: User SSH Key (required)
         :return: Success
                  If the method is called asynchronously,
                  returns the request thread.
         """
 
-        all_params = ['body', 'slice_name']  # noqa: E501
+        all_params = ['body', 'slice_name', 'ssh_key']  # noqa: E501
         all_params.append('async_req')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
@@ -95,6 +97,10 @@ class SlicesApi(object):
         if ('slice_name' not in params or
                 params['slice_name'] is None):
             raise ValueError("Missing the required parameter `slice_name` when calling `slices_create_post`")  # noqa: E501
+        # verify the required parameter 'ssh_key' is set
+        if ('ssh_key' not in params or
+                params['ssh_key'] is None):
+            raise ValueError("Missing the required parameter `ssh_key` when calling `slices_create_post`")  # noqa: E501
 
         collection_formats = {}
 
@@ -103,6 +109,8 @@ class SlicesApi(object):
         query_params = []
         if 'slice_name' in params:
             query_params.append(('sliceName', params['slice_name']))  # noqa: E501
+        if 'ssh_key' in params:
+            query_params.append(('sshKey', params['ssh_key']))  # noqa: E501
 
         header_params = {}
 
