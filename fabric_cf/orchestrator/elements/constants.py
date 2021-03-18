@@ -26,14 +26,12 @@
 
 
 class Constants:
-    PROP_RESERVATIONS = 'reservations'
-    PROP_SLICES = 'slices'
-    PROP_SLICE_MODEL = 'slice_model'
+    PROP_RESERVATIONS = "reservations"
+    PROP_SLICES = "slices"
+    PROP_SLICE_MODEL = "slice_model"
     PROP_BQM_MODEL = "bqm"
 
-    PROP_CAPACITIES = 'capacities'
-    PROP_CAPACITY_ALLOCATIONS = 'capacity_allocations'
-    PROP_LABELS = 'labels'
-    PROP_LABEL_ALLOCATIONS = 'label_allocations'
-    PROP_RESERVATION_INFO = 'reservation_info'
-    PROP_SLIVER = 'sliver'
+    PROP_CAPACITIES = "capacities"
+    PROP_LABELS = "labels"
+    PROP_SLIVER_NAME = "name"
+    PROP_MANAGEMENT_IP = "management_ip"

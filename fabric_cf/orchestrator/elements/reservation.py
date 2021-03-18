@@ -26,9 +26,7 @@
 import json
 from typing import List
 
-import yaml
-from fim.slivers.capacities_labels import JSONField, Capacities, Labels, ReservationInfo
-from fim.slivers.network_node import NodeSliver
+from fim.slivers.capacities_labels import JSONField, Capacities, Labels
 
 from fabric_cf.orchestrator.elements.constants import Constants
 
@@ -38,16 +36,55 @@ class Reservation(JSONField):
     Class represents the reservations received
     """
     def __init__(self):
+        self.name = None
+        self.site = None
+        self.resource_type = None
         self.graph_node_id = None
+        self.slice_id = None
+        self.reservation_id = None
+        self.management_ip = None
+        self.capacities = None
+        self.labels = None
         self.join_state = None
-        self.state = None
         self.pending_state = None
         self.reservation_state = None
-        self.slice_id = None
-        self.resource_type = None
-        self.reservation_id = None
-        self.sliver = None
         self.notices = None
+
+    def get_name(self) -> str:
+        return self.name
+
+    def get_site(self) -> str:
+        return self.site
+
+    def get_type(self) -> str:
+        return self.resource_type
+
+    def get_graph_node_id(self) -> str:
+        return self.graph_node_id
+
+    def get_slice_id(self) -> str:
+        return self.slice_id
+
+    def get_management_ip(self) -> str:
+        return self.management_ip
+
+    def get_capacities(self) -> Capacities:
+        return self.capacities
+
+    def get_labels(self) -> Labels:
+        return self.labels
+
+    def get_join_state(self) -> str:
+        return self.join_state
+
+    def get_state(self) -> str:
+        return self.reservation_state
+
+    def get_pending_state(self) -> str:
+        return self.pending_state
+
+    def get_notices(self) -> str:
+        return self.notices
 
     def set_fields(self, **kwargs):
         """
@@ -58,46 +95,19 @@ class Reservation(JSONField):
         :return: self to support call chaining
         """
         for k, v in kwargs.items():
-            assert v != ''
             try:
                 # will toss an exception if field is not defined
                 self.__getattribute__(k)
+                if k == Constants.PROP_CAPACITIES:
+                    c = Capacities()
+                    v = c.from_json(json_string=v)
+                elif k == Constants.PROP_LABELS:
+                    l = Labels()
+                    v = l.from_json(json_string=v)
                 self.__setattr__(k, v)
             except AttributeError:
                 raise RuntimeError(f"Unable to set field {k} of reservation, no such field available")
         return self
-
-    def load_sliver(self, *, sliver_json_str: str):
-        """
-        Load sliver
-        :param sliver_json_str sliver json
-        """
-        if sliver_json_str is not None:
-            sliver_json_str = sliver_json_str.replace("(", "[")
-            sliver_json_str = sliver_json_str.replace(")", "]")
-            sliver_json_str = sliver_json_str.replace("'", "\"")
-            sliver_json = yaml.load(sliver_json_str)
-            self.sliver = NodeSliver()
-
-            capacities_str = sliver_json.get(Constants.PROP_CAPACITIES, None)
-            if capacities_str is not None:
-                self.sliver.capacities = Capacities().from_json(json.dumps(capacities_str))
-
-            capacities_str = sliver_json.get(Constants.PROP_CAPACITY_ALLOCATIONS, None)
-            if capacities_str is not None:
-                self.sliver.capacities = Capacities().from_json(json.dumps(capacities_str))
-
-            labels_str = sliver_json.get(Constants.PROP_LABELS, None)
-            if labels_str is not None:
-                self.sliver.labels = Labels().from_json(json.dumps(labels_str))
-
-            labels_str = sliver_json.get(Constants.PROP_LABEL_ALLOCATIONS, None)
-            if labels_str is not None:
-                self.sliver.label_allocations = Labels().from_json(json.dumps(labels_str))
-
-            res_info_str = sliver_json.get(Constants.PROP_RESERVATION_INFO, None)
-            if res_info_str is not None:
-                self.sliver.reservation_info = ReservationInfo().from_json(json.dumps(res_info_str))
 
     def to_json(self) -> str:
         """
@@ -110,8 +120,8 @@ class Reservation(JSONField):
         for k in self.__dict__:
             if d[k] is None or d[k] == 0:
                 d.pop(k)
-            elif k == Constants.PROP_SLIVER:
-                d[k] = str(d[k])
+            elif k == Constants.PROP_CAPACITIES or k == Constants.PROP_LABELS:
+                d[k] = d[k].to_json()
         if len(d) == 0:
             return ''
         return json.dumps(d, skipkeys=True, sort_keys=True)
@@ -142,10 +152,6 @@ class ReservationFactory:
         :param reservation_dict reservation jso
         :return reservation
         """
-        sliver_json_str = reservation_dict.get(Constants.PROP_SLIVER, None)
-        if sliver_json_str is not None:
-            reservation_dict.pop(Constants.PROP_SLIVER)
         reservation_json = json.dumps(reservation_dict)
         res_obj = Reservation().from_json(json_string=reservation_json)
-        res_obj.load_sliver(sliver_json_str=sliver_json_str)
         return res_obj
