@@ -72,7 +72,7 @@ class OrchestratorProxy:
         if orchestrator_host is not None:
             # create_slices an instance of the API class
             configuration = swagger_client.configuration.Configuration()
-            configuration.verify_ssl = False
+            #configuration.verify_ssl = False
             configuration.host = f"https://{orchestrator_host}/"
             api_instance = swagger_client.ApiClient(configuration)
             self.slices_api = swagger_client.SlicesApi(api_client=api_instance)
