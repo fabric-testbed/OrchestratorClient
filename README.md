@@ -141,7 +141,7 @@ Users are recommended to use Orchestrator Proxy class for any orchestrator opera
 
 ### Get Resources
 ```
-orchestrator_host = "localhost:8700"
+orchestrator_host = "dev-3.fabric-testbed.net"
 proxy = OrchestratorProxy(orchestrator_host=orchestrator_host)
 resources = proxy.resources(token=token)
 ```
@@ -161,51 +161,60 @@ resources = proxy.resources(token=token)
 
  slice_graph = t.serialize()
  sss_key = "<user public key>"
- orchestrator_host = "localhost:8700"
+ orchestrator_host = "dev-3.fabric-testbed.net"
  proxy = OrchestratorProxy(orchestrator_host=orchestrator_host)
  status, reservation_list = proxy.create(token=token, slice_name=name, slice_graph=slice_graph, ssh_key=ssh_key)
 ```
 ### Get Slices
 ```
-orchestrator_host = "localhost:8700"
+orchestrator_host = "dev-3.fabric-testbed.net"
 proxy = OrchestratorProxy(orchestrator_host=orchestrator_host)
 status, slice_list = proxy.slices(token=token)
 ```
 ### Get Slice
 ```
-orchestrator_host = "localhost:8700"
+orchestrator_host = "dev-3.fabric-testbed.net"
 proxy = OrchestratorProxy(orchestrator_host=orchestrator_host)
 status, slice_topology = proxy.get_slice(token=token, slice_id=slice_id)
 ```
 ### Get Slivers
 ```
-orchestrator_host = "localhost:8700"
+orchestrator_host = "dev-3.fabric-testbed.net"
 proxy = OrchestratorProxy(orchestrator_host=orchestrator_host)
 status, reservation_list = proxy.slivers(token=token, slice_id=slice_id)
 ```
 ### Get Sliver
 ```
-orchestrator_host = "localhost:8700"
+orchestrator_host = "dev-3.fabric-testbed.net"
 proxy = OrchestratorProxy(orchestrator_host=orchestrator_host)
 status, reservation = proxy.slivers(token=token, slice_id=slice_id, sliver_id=sliver_id)
 ```
 ### Delete Slice
 ```
-orchestrator_host = "localhost:8700"
+orchestrator_host = "dev-3.fabric-testbed.net"
 proxy = OrchestratorProxy(orchestrator_host=orchestrator_host)
 status, result = proxy.delete(token=token, slice_id=slice_id)
 ```
 ### Slice Status
 ```
-orchestrator_host = "localhost:8700"
+orchestrator_host = "dev-3.fabric-testbed.net"
 proxy = OrchestratorProxy(orchestrator_host=orchestrator_host)
 status, slice_object = proxy.slice_status(token=token, slice_id=slice_id)
 ```
 ### Sliver Status
 ```
-orchestrator_host = "localhost:8700"
+orchestrator_host = "dev-3.fabric-testbed.net"
 proxy = OrchestratorProxy(orchestrator_host=orchestrator_host)
 status, reservation = proxy.sliver_status(token=token, slice_id=slice_id, sliver_id=sliver_id)
+```
+### Renew Slice
+```
+now = datetime.utcnow()
+new_time = now + timedelta(days=2)
+orchestrator_host = "dev-3.fabric-testbed.net"
+proxy = OrchestratorProxy(orchestrator_host=orchestrator_host)
+status, reservation = proxy.renew_slice(token=token, slice_id=slice_id,
+                                        new_lease_end_time=new_time.strftime('%Y-%m-%d %H:%M:%S'))
 ```
 ## Author
 

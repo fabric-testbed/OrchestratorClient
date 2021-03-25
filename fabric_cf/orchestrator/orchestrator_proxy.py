@@ -24,6 +24,7 @@
 #
 # Author: Komal Thareja (kthare10@renci.org)
 import enum
+from datetime import datetime
 from typing import Tuple, Union, List
 
 from fabric_cf.orchestrator import swagger_client
@@ -65,6 +66,7 @@ class OrchestratorProxy:
     """
     PROP_AUTHORIZATION = 'Authorization'
     PROP_BEARER = 'Bearer'
+    RENEW_TIME_FORMAT = "%Y-%m-%d %H:%M:%S"
 
     def __init__(self, orchestrator_host: str):
         self.host = orchestrator_host
@@ -310,5 +312,37 @@ class OrchestratorProxy:
             substrate.load(graph_string=graph_string)
 
             return Status.OK, substrate
+        except Exception as e:
+            return Status.FAILURE, e
+
+    def renew(self, *, token: str, slice_id: str, new_lease_end_time: str) -> Tuple[Status, Union[Exception, List, None]]:
+        """
+        Renew a slice
+        @param token fabric token
+        @param slice_id slice_id
+        @param new_lease_end_time new_lease_end_time
+        @return Tuple containing Status and List of Reservation Id failed to extend
+        """
+        if token is None or slice_id is None or new_lease_end_time is None:
+            return Status.INVALID_ARGUMENTS, OrchestratorProxyException(f"Token {token}, Slice Id: {slice_id}, "
+                                                                        f"New Lease End Time {new_lease_end_time} "
+                                                                        f"must be specified")
+
+        try:
+            new_end_time = datetime.strptime(new_lease_end_time, self.RENEW_TIME_FORMAT)
+        except Exception as e:
+            return Status.FAILURE, e
+
+        try:
+            # Set the tokens
+            self.__set_tokens(token=token)
+
+            response = self.slices_api.slices_renew_slice_id_post(slice_id=slice_id,
+                                                                  new_lease_end_time=new_lease_end_time)
+            failed_reservations = response.value.get(Constants.PROP_RESERVATIONS, None)
+            if failed_reservations is not None:
+                return Status.FAILURE, failed_reservations
+
+            return Status.OK, None
         except Exception as e:
             return Status.FAILURE, e

@@ -49,6 +49,7 @@ class Reservation(JSONField):
         self.pending_state = None
         self.reservation_state = None
         self.notices = None
+        self.lease_end = None
 
     def get_name(self) -> str:
         return self.name
