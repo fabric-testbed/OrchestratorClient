@@ -125,7 +125,7 @@ class Reservation(JSONField):
                 d[k] = d[k].to_json()
         if len(d) == 0:
             return ''
-        return json.dumps(d, skipkeys=True, sort_keys=True)
+        return json.dumps(d, skipkeys=True, sort_keys=True, indent=4)
 
 
 class ReservationFactory:
