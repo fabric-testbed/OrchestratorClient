@@ -45,6 +45,7 @@ class SlicesApi(object):
         :param str body: (required)
         :param str slice_name: Slice Name (required)
         :param str ssh_key: User SSH Key (required)
+        :param str lease_end_time: Lease End Time for the Slice
         :return: Success
                  If the method is called asynchronously,
                  returns the request thread.
@@ -69,12 +70,13 @@ class SlicesApi(object):
         :param str body: (required)
         :param str slice_name: Slice Name (required)
         :param str ssh_key: User SSH Key (required)
+        :param str lease_end_time: Lease End Time for the Slice
         :return: Success
                  If the method is called asynchronously,
                  returns the request thread.
         """
 
-        all_params = ['body', 'slice_name', 'ssh_key']  # noqa: E501
+        all_params = ['body', 'slice_name', 'ssh_key', 'lease_end_time']  # noqa: E501
         all_params.append('async_req')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
@@ -111,6 +113,8 @@ class SlicesApi(object):
             query_params.append(('sliceName', params['slice_name']))  # noqa: E501
         if 'ssh_key' in params:
             query_params.append(('sshKey', params['ssh_key']))  # noqa: E501
+        if 'lease_end_time' in params:
+            query_params.append(('leaseEndTime', params['lease_end_time']))  # noqa: E501
 
         header_params = {}
 

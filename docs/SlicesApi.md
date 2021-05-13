@@ -39,10 +39,11 @@ api_instance = SlicesApi(ApiClient(configuration))
 body = 'body_example' # str | 
 slice_name = 'slice_name_example' # str | Slice Name
 ssh_key = 'ssh_key_example' # str | User SSH Key
+lease_end_time = 'lease_end_time_example' # str | Lease End Time for the Slice (optional)
 
 try:
     # Create slice
-    api_response = api_instance.slices_create_post(body, slice_name, ssh_key)
+    api_response = api_instance.slices_create_post(body, slice_name, ssh_key, lease_end_time=lease_end_time)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling SlicesApi->slices_create_post: %s\n" % e)
@@ -55,6 +56,7 @@ Name | Type | Description  | Notes
  **body** | [**str**](str.md)|  | 
  **slice_name** | **str**| Slice Name | 
  **ssh_key** | **str**| User SSH Key | 
+ **lease_end_time** | **str**| Lease End Time for the Slice | [optional] 
 
 ### Return type
 

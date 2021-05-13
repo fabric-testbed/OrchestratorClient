@@ -13,7 +13,7 @@
 from setuptools import setup, find_packages  # noqa: H301
 
 NAME = "fabric-orchestrator-client"
-VERSION = "0.0.15"
+VERSION = "0.1"
 # To install the library, run the following
 #
 # python setup.py install
@@ -32,7 +32,7 @@ setup(
     version=VERSION,
     description="Fabric Orchestrator API",
     author_email="kthare10@unc.edu",
-    url="",
+    url="https://github.com/fabric-testbed/OrchestratorClient",
     keywords=["Swagger", "Fabric Orchestrator API"],
     install_requires=requirements,
     packages=find_packages(),

@@ -66,7 +66,8 @@ class OrchestratorProxy:
     """
     PROP_AUTHORIZATION = 'Authorization'
     PROP_BEARER = 'Bearer'
-    RENEW_TIME_FORMAT = "%Y-%m-%d %H:%M:%S"
+    TIME_FORMAT = "%Y-%m-%d %H:%M:%S"
+    HTTP_OK = 200
 
     def __init__(self, orchestrator_host: str):
         self.host = orchestrator_host
@@ -91,13 +92,16 @@ class OrchestratorProxy:
         self.slices_api.api_client.configuration.api_key_prefix[self.PROP_AUTHORIZATION] = self.PROP_BEARER
 
     def create(self, *, token: str, slice_name: str, ssh_key: str, topology: ExperimentTopology = None,
-               slice_graph: str = None) -> Tuple[Status, Union[Exception, List[Reservation]]]:
+               slice_graph: str = None,
+               lease_end_time: str = None) -> Tuple[Status, Union[Exception, List[Reservation]]]:
         """
         Create a slice
         @param token fabric token
         @param slice_name slice name
+        @param ssh_key SSH Key
         @param topology Experiment topology
         @param slice_graph Slice Graph string
+        @param lease_end_time Lease End Time
         @return Tuple containing Status and Exception/Json containing slivers created
         """
         if token is None:
@@ -109,8 +113,15 @@ class OrchestratorProxy:
 
         if (topology is None and slice_graph is None) or (topology is not None and slice_graph is not None):
             return Status.INVALID_ARGUMENTS, OrchestratorProxyException(f"Either topology {topology} or "
-                                                                              f"slice graph {slice_graph} must "
-                                                                              f"be specified")
+                                                                        f"slice graph {slice_graph} must "
+                                                                        f"be specified")
+
+        if lease_end_time is not None:
+            try:
+                datetime.strptime(lease_end_time, self.TIME_FORMAT)
+            except Exception as e:
+                return Status.INVALID_ARGUMENTS, OrchestratorProxyException(
+                    f"Lease End Time {lease_end_time} should be in format: {self.TIME_FORMAT}")
 
         try:
             # Set the tokens
@@ -119,15 +130,22 @@ class OrchestratorProxy:
             if topology is not None:
                 slice_graph = topology.serialize()
 
-            response = self.slices_api.slices_create_post(slice_name=slice_name, body=slice_graph, ssh_key=ssh_key)
+            response = None
+            if lease_end_time is not None:
+                response = self.slices_api.slices_create_post(slice_name=slice_name, body=slice_graph, ssh_key=ssh_key,
+                                                              lease_end_time=lease_end_time)
+            else:
+                response = self.slices_api.slices_create_post(slice_name=slice_name, body=slice_graph, ssh_key=ssh_key)
 
-            reservations = ReservationFactory.create_reservations(reservation_list=
-                                                                  response.value[Constants.PROP_RESERVATIONS])
+            reservations_dict = response.value.get(Constants.PROP_RESERVATIONS, None)
+            reservations = None
+            if reservations_dict is not None:
+                reservations = ReservationFactory.create_reservations(reservation_list=reservations_dict)
             return Status.OK, reservations
         except Exception as e:
             return Status.FAILURE, e
 
-    def delete(self, *, token: str, slice_id: str) -> Tuple[Status, Union[Exception, dict]]:
+    def delete(self, *, token: str, slice_id: str) -> Tuple[Status, Union[Exception, None]]:
         """
         Delete a slice
         @param token fabric token
@@ -145,9 +163,8 @@ class OrchestratorProxy:
             self.slices_api.api_client.configuration.api_key['Authorization'] = token
             self.slices_api.api_client.configuration.api_key_prefix['Authorization'] = 'Bearer'
 
-            response = self.slices_api.slices_delete_slice_id_delete(slice_id=slice_id)
-
-            return Status.OK, response
+            self.slices_api.slices_delete_slice_id_delete(slice_id=slice_id)
+            return Status.OK, None
         except Exception as e:
             return Status.FAILURE, e
 
@@ -165,9 +182,10 @@ class OrchestratorProxy:
             self.__set_tokens(token=token)
 
             response = self.slices_api.slices_get()
-
-            slices = SliceFactory.create_slices(slice_list=response.value[Constants.PROP_SLICES])
-
+            prop_slices = response.value.get(Constants.PROP_SLICES, None)
+            slices = None
+            if prop_slices is not None:
+                slices = SliceFactory.create_slices(slice_list=prop_slices)
             return Status.OK, slices
         except Exception as e:
             return Status.FAILURE, e
@@ -191,8 +209,9 @@ class OrchestratorProxy:
 
             response = self.slices_api.slices_slice_id_get(slice_id=slice_id)
             experiment_topology = ExperimentTopology()
-            experiment_topology.load(graph_string=response.value[Constants.PROP_SLICE_MODEL])
-
+            slice_model = response.value.get(Constants.PROP_SLICE_MODEL, None)
+            if slice_model is not None:
+                experiment_topology.load(graph_string=slice_model)
             return Status.OK, experiment_topology
         except Exception as e:
             return Status.FAILURE, e
@@ -215,13 +234,16 @@ class OrchestratorProxy:
             self.__set_tokens(token=token)
 
             response = self.slices_api.slices_status_slice_id_get(slice_id=slice_id)
-
-            slices = SliceFactory.create_slices(slice_list=response.value[Constants.PROP_SLICES])
+            prop_slices = response.value.get(Constants.PROP_SLICES, None)
             result = None
-            if slices is not None and len(slices) > 0:
-                result = next(iter(slices))
+            if prop_slices is not None:
+                slices = SliceFactory.create_slices(slice_list=response.value[Constants.PROP_SLICES])
+                result = None
+                if slices is not None and len(slices) > 0:
+                    result = next(iter(slices))
 
             return Status.OK, result
+
         except Exception as e:
             return Status.FAILURE, e
 
@@ -250,14 +272,17 @@ class OrchestratorProxy:
             else:
                 response = self.slivers_api.slivers_sliver_id_get(slice_id=slice_id, sliver_id=sliver_id)
 
-            reservations = ReservationFactory.create_reservations(reservation_list=
-                                                                  response.value[Constants.PROP_RESERVATIONS])
+            prop_reservations = response.value.get(Constants.PROP_RESERVATIONS, None)
+            reservations = None
+            if prop_reservations is not None:
+                reservations = ReservationFactory.create_reservations(reservation_list=prop_reservations)
 
             return Status.OK, reservations
         except Exception as e:
             return Status.FAILURE, e
 
-    def sliver_status(self, *, token: str, slice_id: str, sliver_id: str) -> Tuple[Status, Union[Exception, Reservation]]:
+    def sliver_status(self, *, token: str, slice_id: str,
+                      sliver_id: str) -> Tuple[Status, Union[Exception, Reservation]]:
         """
         Get slivers
         @param token fabric token
@@ -281,11 +306,13 @@ class OrchestratorProxy:
 
             response = self.slivers_api.slivers_status_sliver_id_get(sliver_id=sliver_id, slice_id=slice_id)
 
-            reservations = ReservationFactory.create_reservations(reservation_list=
-                                                                  response.value[Constants.PROP_RESERVATIONS])
+            prop_reservations = response.value.get(Constants.PROP_RESERVATIONS, None)
             result = None
-            if reservations is not None and len(reservations) > 0:
-                result = next(iter(reservations))
+            if prop_reservations is not None:
+                reservations = ReservationFactory.create_reservations(reservation_list=prop_reservations)
+
+                if reservations is not None and len(reservations) > 0:
+                    result = next(iter(reservations))
 
             return Status.OK, result
         except Exception as e:
@@ -307,15 +334,18 @@ class OrchestratorProxy:
             self.__set_tokens(token=token)
 
             response = self.resources_api.resources_get(level=level)
-            graph_string = response.value[Constants.PROP_BQM_MODEL]
-            substrate = AdvertizedTopology()
-            substrate.load(graph_string=graph_string)
+            graph_string = response.value.get(Constants.PROP_BQM_MODEL, None)
+            substrate = None
+            if graph_string is not None:
+                substrate = AdvertizedTopology()
+                substrate.load(graph_string=graph_string)
 
             return Status.OK, substrate
         except Exception as e:
             return Status.FAILURE, e
 
-    def renew(self, *, token: str, slice_id: str, new_lease_end_time: str) -> Tuple[Status, Union[Exception, List, None]]:
+    def renew(self, *, token: str, slice_id: str,
+              new_lease_end_time: str) -> Tuple[Status, Union[Exception, List, None]]:
         """
         Renew a slice
         @param token fabric token
@@ -329,9 +359,10 @@ class OrchestratorProxy:
                                                                         f"must be specified")
 
         try:
-            new_end_time = datetime.strptime(new_lease_end_time, self.RENEW_TIME_FORMAT)
+            datetime.strptime(new_lease_end_time, self.TIME_FORMAT)
         except Exception as e:
-            return Status.FAILURE, e
+            return Status.INVALID_ARGUMENTS, OrchestratorProxyException(f"Lease End Time {new_lease_end_time} should "
+                                                                        f"be in format: {self.TIME_FORMAT}")
 
         try:
             # Set the tokens
