@@ -44,6 +44,7 @@ except ApiException as e:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **level** | **int**| Level of details | [default to 1]
+ **graph_format** | **str**| Graph format | [default to GRAPHML]
 
 ### Return type
 
@@ -52,6 +53,8 @@ Name | Type | Description  | Notes
 ### Authorization
 
 [bearerAuth](../README.md#bearerAuth)
+
+No Authorization required for graph_format == JSON_NODELINK
 
 ### HTTP request headers
 

@@ -27,6 +27,8 @@ import enum
 from datetime import datetime
 from typing import Tuple, Union, List
 
+from fim.user import GraphFormat
+
 from fabric_cf.orchestrator import swagger_client
 from fim.user.topology import ExperimentTopology, AdvertizedTopology
 
@@ -168,10 +170,12 @@ class OrchestratorProxy:
         except Exception as e:
             return Status.FAILURE, e
 
-    def slices(self, *, token: str) -> Tuple[Status, Union[Exception, List[Slice]]]:
+    def slices(self, *, token: str,
+               state: str = Constants.PROP_STATE_ACTIVE) -> Tuple[Status, Union[Exception, List[Slice]]]:
         """
         Get slices
         @param token fabric token
+        @param state Slice state
         @return Tuple containing Status and Exception/Json containing slices
         """
         if token is None:
@@ -181,7 +185,7 @@ class OrchestratorProxy:
             # Set the tokens
             self.__set_tokens(token=token)
 
-            response = self.slices_api.slices_get()
+            response = self.slices_api.slices_get(state=state)
             prop_slices = response.value.get(Constants.PROP_SLICES, None)
             slices = None
             if prop_slices is not None:
@@ -318,11 +322,13 @@ class OrchestratorProxy:
         except Exception as e:
             return Status.FAILURE, e
 
-    def resources(self, *, token: str, level: int = 1) -> Tuple[Status, Union[Exception, AdvertizedTopology]]:
+    def resources(self, *, token: str, level: int = 1,
+                  graph_format: str = GraphFormat.GRAPHML.name) -> Tuple[Status, Union[Exception, AdvertizedTopology]]:
         """
         Get resources
         @param token fabric token
         @param level level
+        @param graph_format Graph Format
         @return Tuple containing Status and Exception/Json containing Resources
         """
 
@@ -333,7 +339,7 @@ class OrchestratorProxy:
             # Set the tokens
             self.__set_tokens(token=token)
 
-            response = self.resources_api.resources_get(level=level)
+            response = self.resources_api.resources_get(level=level, graph_format=graph_format)
             graph_string = response.value.get(Constants.PROP_BQM_MODEL, None)
             substrate = None
             if graph_string is not None:

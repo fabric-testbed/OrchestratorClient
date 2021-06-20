@@ -32,45 +32,47 @@ class ResourcesApi(object):
             api_client = ApiClient()
         self.api_client = api_client
 
-    def resources_get(self, level, **kwargs):  # noqa: E501
+    def resources_get(self, level, graph_format, **kwargs):  # noqa: E501
         """Retrieve a listing and description of available resources  # noqa: E501
 
         Retrieve a listing and description of available resources  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
-        >>> thread = api.resources_get(level, async_req=True)
+        >>> thread = api.resources_get(level, graph_format, async_req=True)
         >>> result = thread.get()
 
         :param async_req bool
         :param int level: Level of details (required)
+        :param str graph_format: Graph format (required)
         :return: Success
                  If the method is called asynchronously,
                  returns the request thread.
         """
         kwargs['_return_http_data_only'] = True
         if kwargs.get('async_req'):
-            return self.resources_get_with_http_info(level, **kwargs)  # noqa: E501
+            return self.resources_get_with_http_info(level, graph_format, **kwargs)  # noqa: E501
         else:
-            (data) = self.resources_get_with_http_info(level, **kwargs)  # noqa: E501
+            (data) = self.resources_get_with_http_info(level, graph_format, **kwargs)  # noqa: E501
             return data
 
-    def resources_get_with_http_info(self, level, **kwargs):  # noqa: E501
+    def resources_get_with_http_info(self, level, graph_format, **kwargs):  # noqa: E501
         """Retrieve a listing and description of available resources  # noqa: E501
 
         Retrieve a listing and description of available resources  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
-        >>> thread = api.resources_get_with_http_info(level, async_req=True)
+        >>> thread = api.resources_get_with_http_info(level, graph_format, async_req=True)
         >>> result = thread.get()
 
         :param async_req bool
         :param int level: Level of details (required)
+        :param str graph_format: Graph format (required)
         :return: Success
                  If the method is called asynchronously,
                  returns the request thread.
         """
 
-        all_params = ['level']  # noqa: E501
+        all_params = ['level', 'graph_format']  # noqa: E501
         all_params.append('async_req')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
@@ -89,6 +91,10 @@ class ResourcesApi(object):
         if ('level' not in params or
                 params['level'] is None):
             raise ValueError("Missing the required parameter `level` when calling `resources_get`")  # noqa: E501
+        # verify the required parameter 'graph_format' is set
+        if ('graph_format' not in params or
+                params['graph_format'] is None):
+            raise ValueError("Missing the required parameter `graph_format` when calling `resources_get`")  # noqa: E501
 
         collection_formats = {}
 
@@ -97,6 +103,8 @@ class ResourcesApi(object):
         query_params = []
         if 'level' in params:
             query_params.append(('level', params['level']))  # noqa: E501
+        if 'graph_format' in params:
+            query_params.append(('graphFormat', params['graph_format']))  # noqa: E501
 
         header_params = {}
 
@@ -109,7 +117,7 @@ class ResourcesApi(object):
             ['application/json'])  # noqa: E501
 
         # Authentication setting
-        auth_settings = ['bearerAuth']  # noqa: E501
+        auth_settings = []  # noqa: E501
 
         return self.api_client.call_api(
             '/resources', 'GET',
