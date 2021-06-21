@@ -322,13 +322,11 @@ class OrchestratorProxy:
         except Exception as e:
             return Status.FAILURE, e
 
-    def resources(self, *, token: str, level: int = 1,
-                  graph_format: str = GraphFormat.GRAPHML.name) -> Tuple[Status, Union[Exception, AdvertizedTopology]]:
+    def resources(self, *, token: str, level: int = 1) -> Tuple[Status, Union[Exception, AdvertizedTopology]]:
         """
         Get resources
         @param token fabric token
         @param level level
-        @param graph_format Graph Format
         @return Tuple containing Status and Exception/Json containing Resources
         """
 
@@ -339,7 +337,7 @@ class OrchestratorProxy:
             # Set the tokens
             self.__set_tokens(token=token)
 
-            response = self.resources_api.resources_get(level=level, graph_format=graph_format)
+            response = self.resources_api.resources_get(level=level)
             graph_string = response.value.get(Constants.PROP_BQM_MODEL, None)
             substrate = None
             if graph_string is not None:
@@ -347,6 +345,21 @@ class OrchestratorProxy:
                 substrate.load(graph_string=graph_string)
 
             return Status.OK, substrate
+        except Exception as e:
+            return Status.FAILURE, e
+
+    def portal_resources(self, *, graph_format: GraphFormat = GraphFormat.JSON_NODELINK) -> Tuple[Status, Union[Exception, AdvertizedTopology]]:
+        """
+        Get resources for portal
+        @param graph_format Graph Format
+        @return Tuple containing Status and Exception/Json containing Resources
+        """
+
+        try:
+            response = self.resources_api.portalresources_get(graph_format=graph_format.name)
+            graph_string = response.value.get(Constants.PROP_BQM_MODEL, None)
+
+            return Status.OK, graph_string
         except Exception as e:
             return Status.FAILURE, e
 
