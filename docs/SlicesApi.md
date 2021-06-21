@@ -153,14 +153,17 @@ api_instance = SlicesApi(ApiClient(configuration))
 
 try:
     # Retrieve a listing of user slices
-    api_response = api_instance.slices_get()
+    api_response = api_instance.slices_get(state="Active")
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling SlicesApi->slices_get: %s\n" % e)
 ```
 
 ### Parameters
-This endpoint does not need any parameter.
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **state** | **str**| Slice state | [default to Active]
 
 ### Return type
 

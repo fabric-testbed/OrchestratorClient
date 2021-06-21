@@ -27,6 +27,8 @@ import enum
 from datetime import datetime
 from typing import Tuple, Union, List
 
+from fim.user import GraphFormat
+
 from fabric_cf.orchestrator import swagger_client
 from fim.user.topology import ExperimentTopology, AdvertizedTopology
 
@@ -168,10 +170,12 @@ class OrchestratorProxy:
         except Exception as e:
             return Status.FAILURE, e
 
-    def slices(self, *, token: str) -> Tuple[Status, Union[Exception, List[Slice]]]:
+    def slices(self, *, token: str,
+               state: str = Constants.PROP_STATE_ACTIVE) -> Tuple[Status, Union[Exception, List[Slice]]]:
         """
         Get slices
         @param token fabric token
+        @param state Slice state
         @return Tuple containing Status and Exception/Json containing slices
         """
         if token is None:
@@ -181,7 +185,7 @@ class OrchestratorProxy:
             # Set the tokens
             self.__set_tokens(token=token)
 
-            response = self.slices_api.slices_get()
+            response = self.slices_api.slices_get(state=state)
             prop_slices = response.value.get(Constants.PROP_SLICES, None)
             slices = None
             if prop_slices is not None:
@@ -341,6 +345,21 @@ class OrchestratorProxy:
                 substrate.load(graph_string=graph_string)
 
             return Status.OK, substrate
+        except Exception as e:
+            return Status.FAILURE, e
+
+    def portal_resources(self, *, graph_format: GraphFormat = GraphFormat.JSON_NODELINK) -> Tuple[Status, Union[Exception, AdvertizedTopology]]:
+        """
+        Get resources for portal
+        @param graph_format Graph Format
+        @return Tuple containing Status and Exception/Json containing Resources
+        """
+
+        try:
+            response = self.resources_api.portalresources_get(graph_format=graph_format.name)
+            graph_string = response.value.get(Constants.PROP_BQM_MODEL, None)
+
+            return Status.OK, graph_string
         except Exception as e:
             return Status.FAILURE, e
 
