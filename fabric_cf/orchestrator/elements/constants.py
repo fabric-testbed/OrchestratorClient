@@ -38,3 +38,5 @@ class Constants:
     PROP_SLIVER_NAME = "name"
     PROP_MANAGEMENT_IP = "management_ip"
     PROP_CAPACITY_HINTS = "capacity_hints"
+
+    PROP_STATE_ACTIVE = "Active"

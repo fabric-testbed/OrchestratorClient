@@ -246,43 +246,45 @@ class SlicesApi(object):
             _request_timeout=params.get('_request_timeout'),
             collection_formats=collection_formats)
 
-    def slices_get(self, **kwargs):  # noqa: E501
+    def slices_get(self, state, **kwargs):  # noqa: E501
         """Retrieve a listing of user slices  # noqa: E501
 
         Retrieve a listing of user slices  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
-        >>> thread = api.slices_get(async_req=True)
+        >>> thread = api.slices_get(state, async_req=True)
         >>> result = thread.get()
 
         :param async_req bool
+        :param str state: Slice state (required)
         :return: Success
                  If the method is called asynchronously,
                  returns the request thread.
         """
         kwargs['_return_http_data_only'] = True
         if kwargs.get('async_req'):
-            return self.slices_get_with_http_info(**kwargs)  # noqa: E501
+            return self.slices_get_with_http_info(state, **kwargs)  # noqa: E501
         else:
-            (data) = self.slices_get_with_http_info(**kwargs)  # noqa: E501
+            (data) = self.slices_get_with_http_info(state, **kwargs)  # noqa: E501
             return data
 
-    def slices_get_with_http_info(self, **kwargs):  # noqa: E501
+    def slices_get_with_http_info(self, state, **kwargs):  # noqa: E501
         """Retrieve a listing of user slices  # noqa: E501
 
         Retrieve a listing of user slices  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
-        >>> thread = api.slices_get_with_http_info(async_req=True)
+        >>> thread = api.slices_get_with_http_info(state, async_req=True)
         >>> result = thread.get()
 
         :param async_req bool
+        :param str state: Slice state (required)
         :return: Success
                  If the method is called asynchronously,
                  returns the request thread.
         """
 
-        all_params = []  # noqa: E501
+        all_params = ['state']  # noqa: E501
         all_params.append('async_req')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
@@ -297,12 +299,18 @@ class SlicesApi(object):
                 )
             params[key] = val
         del params['kwargs']
+        # verify the required parameter 'state' is set
+        if ('state' not in params or
+                params['state'] is None):
+            raise ValueError("Missing the required parameter `state` when calling `slices_get`")  # noqa: E501
 
         collection_formats = {}
 
         path_params = {}
 
         query_params = []
+        if 'state' in params:
+            query_params.append(('state', params['state']))  # noqa: E501
 
         header_params = {}
 
