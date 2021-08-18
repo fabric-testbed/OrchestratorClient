@@ -44,6 +44,43 @@ class OrchestratorProxyException(Exception):
     pass
 
 
+class SliceState(enum.Enum):
+    Nascent = enum.auto()
+    Configuring = enum.auto()
+    StableError = enum.auto()
+    StableOK = enum.auto()
+    Closing = enum.auto()
+    Dead = enum.auto()
+
+    def __str__(self):
+        return self.name
+
+    def __repr__(self):
+        return self.name
+
+    @staticmethod
+    def state_from_str(state: str):
+        if state is None:
+            return state
+
+        for t in SliceState:
+            if state == str(t):
+                return t
+
+        return None
+
+    @staticmethod
+    def state_list_to_str_list(states: list):
+        if states is None:
+            return states
+
+        result = []
+        for t in states:
+            result.append(str(t))
+
+        return result
+
+
 @enum.unique
 class Status(enum.Enum):
     OK = 1
@@ -69,7 +106,6 @@ class OrchestratorProxy:
     PROP_AUTHORIZATION = 'Authorization'
     PROP_BEARER = 'Bearer'
     TIME_FORMAT = "%Y-%m-%d %H:%M:%S"
-    HTTP_OK = 200
 
     def __init__(self, orchestrator_host: str):
         self.host = orchestrator_host
@@ -170,12 +206,13 @@ class OrchestratorProxy:
         except Exception as e:
             return Status.FAILURE, e
 
-    def slices(self, *, token: str,
-               state: str = Constants.PROP_STATE_ACTIVE) -> Tuple[Status, Union[Exception, List[Slice]]]:
+    def slices(self, *, token: str, includes: List[SliceState] = None,
+               filters: List[SliceState] = None) -> Tuple[Status, Union[Exception, List[Slice]]]:
         """
         Get slices
         @param token fabric token
-        @param state Slice state
+        @param includes list of the slice state used to include the slices in the output
+        @param filters list of the slice state used to exclude the slices from the output
         @return Tuple containing Status and Exception/Json containing slices
         """
         if token is None:
@@ -185,7 +222,17 @@ class OrchestratorProxy:
             # Set the tokens
             self.__set_tokens(token=token)
 
-            response = self.slices_api.slices_get(state=state)
+            states = [SliceState.StableError, SliceState.StableOK, SliceState.Nascent,
+                      SliceState.Configuring, SliceState.Closing, SliceState.Dead]
+            if includes is not None:
+                states = includes
+
+            if filters is not None:
+                for x in filters:
+                    if x in states:
+                        states.remove(x)
+
+            response = self.slices_api.slices_get(states=SliceState.state_list_to_str_list(states))
             prop_slices = response.value.get(Constants.PROP_SLICES, None)
             slices = None
             if prop_slices is not None:

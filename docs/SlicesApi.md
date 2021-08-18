@@ -150,10 +150,11 @@ configuration.api_key['Authorization'] = 'YOUR_API_KEY'
 
 # create an instance of the API class
 api_instance = SlicesApi(ApiClient(configuration))
+states = ['states_example'] # list[str] | Slice states (optional)
 
 try:
     # Retrieve a listing of user slices
-    api_response = api_instance.slices_get(state="Active")
+    api_response = api_instance.slices_get(states=states)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling SlicesApi->slices_get: %s\n" % e)
@@ -163,7 +164,7 @@ except ApiException as e:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **state** | **str**| Slice state | [default to Active]
+ **states** | [**list[str]**](str.md)| Slice states | [optional] 
 
 ### Return type
 

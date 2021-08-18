@@ -41,7 +41,7 @@ Reference for more details [here](https://stackoverflow.com/questions/57920052/h
 
 ## Requirements.
 
-Python 2.7 and 3.4+
+Python 3.9+
 
 ## Installation & Usage
 ### pip install
