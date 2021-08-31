@@ -207,12 +207,12 @@ class OrchestratorProxy:
             return Status.FAILURE, e
 
     def slices(self, *, token: str, includes: List[SliceState] = None,
-               filters: List[SliceState] = None) -> Tuple[Status, Union[Exception, List[Slice]]]:
+               excludes: List[SliceState] = None) -> Tuple[Status, Union[Exception, List[Slice]]]:
         """
         Get slices
         @param token fabric token
         @param includes list of the slice state used to include the slices in the output
-        @param filters list of the slice state used to exclude the slices from the output
+        @param excludes list of the slice state used to exclude the slices from the output
         @return Tuple containing Status and Exception/Json containing slices
         """
         if token is None:
@@ -227,8 +227,8 @@ class OrchestratorProxy:
             if includes is not None:
                 states = includes
 
-            if filters is not None:
-                for x in filters:
+            if excludes is not None:
+                for x in excludes:
                     if x in states:
                         states.remove(x)
 
