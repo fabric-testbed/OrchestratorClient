@@ -241,11 +241,13 @@ class OrchestratorProxy:
         except Exception as e:
             return Status.FAILURE, e
 
-    def get_slice(self, *, token: str, slice_id: str = None) -> Tuple[Status, Union[Exception, ExperimentTopology]]:
+    def get_slice(self, *, token: str, slice_id: str = None,
+                  graph_format: GraphFormat = GraphFormat.GRAPHML) -> Tuple[Status, Union[Exception, ExperimentTopology]]:
         """
         Get slice
         @param token fabric token
         @param slice_id slice id
+        @param graph_format
         @return Tuple containing Status and Exception/Json containing slice
         """
         if token is None:
@@ -258,7 +260,7 @@ class OrchestratorProxy:
             # Set the tokens
             self.__set_tokens(token=token)
 
-            response = self.slices_api.slices_slice_id_get(slice_id=slice_id)
+            response = self.slices_api.slices_slice_id_get(slice_id=slice_id, graph_format=graph_format.name)
             experiment_topology = ExperimentTopology()
             slice_model = response.value.get(Constants.PROP_SLICE_MODEL, None)
             if slice_model is not None:

@@ -107,6 +107,7 @@ All URIs are relative to *http://127.0.0.1:8700/*
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *DefaultApi* | [**version_get**](docs/DefaultApi.md#version_get) | **GET** /version | version
+*ResourcesApi* | [**portalresources_get**](docs/ResourcesApi.md#portalresources_get) | **GET** /portalresources | Retrieve a listing and description of available resources for portal
 *ResourcesApi* | [**resources_get**](docs/ResourcesApi.md#resources_get) | **GET** /resources | Retrieve a listing and description of available resources
 *SlicesApi* | [**slices_create_post**](docs/SlicesApi.md#slices_create_post) | **POST** /slices/create_slices | Create slice
 *SlicesApi* | [**slices_delete_slice_id_delete**](docs/SlicesApi.md#slices_delete_slice_id_delete) | **DELETE** /slices/delete/{sliceID} | Delete slice.

@@ -643,45 +643,47 @@ class SlicesApi(object):
             _request_timeout=params.get('_request_timeout'),
             collection_formats=collection_formats)
 
-    def slices_slice_id_get(self, slice_id, **kwargs):  # noqa: E501
+    def slices_slice_id_get(self, slice_id, graph_format, **kwargs):  # noqa: E501
         """slice properties  # noqa: E501
 
         Retrieve Slice properties  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
-        >>> thread = api.slices_slice_id_get(slice_id, async_req=True)
+        >>> thread = api.slices_slice_id_get(slice_id, graph_format, async_req=True)
         >>> result = thread.get()
 
         :param async_req bool
         :param str slice_id: Slice identifier as UUID (required)
+        :param str graph_format: Graph format (required)
         :return: Success
                  If the method is called asynchronously,
                  returns the request thread.
         """
         kwargs['_return_http_data_only'] = True
         if kwargs.get('async_req'):
-            return self.slices_slice_id_get_with_http_info(slice_id, **kwargs)  # noqa: E501
+            return self.slices_slice_id_get_with_http_info(slice_id, graph_format, **kwargs)  # noqa: E501
         else:
-            (data) = self.slices_slice_id_get_with_http_info(slice_id, **kwargs)  # noqa: E501
+            (data) = self.slices_slice_id_get_with_http_info(slice_id, graph_format, **kwargs)  # noqa: E501
             return data
 
-    def slices_slice_id_get_with_http_info(self, slice_id, **kwargs):  # noqa: E501
+    def slices_slice_id_get_with_http_info(self, slice_id, graph_format, **kwargs):  # noqa: E501
         """slice properties  # noqa: E501
 
         Retrieve Slice properties  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
-        >>> thread = api.slices_slice_id_get_with_http_info(slice_id, async_req=True)
+        >>> thread = api.slices_slice_id_get_with_http_info(slice_id, graph_format, async_req=True)
         >>> result = thread.get()
 
         :param async_req bool
         :param str slice_id: Slice identifier as UUID (required)
+        :param str graph_format: Graph format (required)
         :return: Success
                  If the method is called asynchronously,
                  returns the request thread.
         """
 
-        all_params = ['slice_id']  # noqa: E501
+        all_params = ['slice_id', 'graph_format']  # noqa: E501
         all_params.append('async_req')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
@@ -700,6 +702,10 @@ class SlicesApi(object):
         if ('slice_id' not in params or
                 params['slice_id'] is None):
             raise ValueError("Missing the required parameter `slice_id` when calling `slices_slice_id_get`")  # noqa: E501
+        # verify the required parameter 'graph_format' is set
+        if ('graph_format' not in params or
+                params['graph_format'] is None):
+            raise ValueError("Missing the required parameter `graph_format` when calling `slices_slice_id_get`")  # noqa: E501
 
         collection_formats = {}
 
@@ -708,6 +714,8 @@ class SlicesApi(object):
             path_params['sliceID'] = params['slice_id']  # noqa: E501
 
         query_params = []
+        if 'graph_format' in params:
+            query_params.append(('graphFormat', params['graph_format']))  # noqa: E501
 
         header_params = {}
 
