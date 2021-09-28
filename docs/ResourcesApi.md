@@ -23,8 +23,8 @@ from fabric_cf.orchestrator.swagger_client.rest import ApiException
 from pprint import pprint
 
 # create an instance of the API class
-api_instance = ResourcesApi()
-graph_format = 'JSON_NODELINK' # str | Graph format (default to JSON_NODELINK)
+api_instance = swagger_client.ResourcesApi()
+graph_format = 'GRAPHML' # str | Graph format (default to GRAPHML)
 
 try:
     # Retrieve a listing and description of available resources for portal
@@ -38,7 +38,7 @@ except ApiException as e:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **graph_format** | **str**| Graph format | [default to JSON_NODELINK]
+ **graph_format** | **str**| Graph format | [default to GRAPHML]
 
 ### Return type
 
@@ -101,8 +101,6 @@ Name | Type | Description  | Notes
 ### Authorization
 
 [bearerAuth](../README.md#bearerAuth)
-
-No Authorization required for graph_format == JSON_NODELINK
 
 ### HTTP request headers
 

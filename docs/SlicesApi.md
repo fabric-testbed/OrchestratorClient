@@ -14,11 +14,11 @@ Method | HTTP request | Description
 [**slices_status_slice_id_get**](SlicesApi.md#slices_status_slice_id_get) | **GET** /slices/status/{sliceID} | slice status
 
 # **slices_create_post**
-> Success slices_create_post(body, slice_name)
+> Success slices_create_post(body, slice_name, ssh_key, lease_end_time=lease_end_time)
 
 Create slice
 
-Request to create_slices slice as described in the request. Request would be a graph ML describing the requested resources. Resources may be requested to be created now or in future. On success, one or more slivers are allocated, containing resources satisfying the request, and assigned to the given slice. This API returns list and description of the resources reserved for the slice in the form of Graph ML. Orchestrator would also trigger provisioning of these resources asynchronously on the appropriate sites either now or in the future as requested. Experimenter can invoke get slice API to get the latest state of the requested resources.  
+Request to create slice as described in the request. Request would be a graph ML describing the requested resources. Resources may be requested to be created now or in future. On success, one or more slivers are allocated, containing resources satisfying the request, and assigned to the given slice. This API returns list and description of the resources reserved for the slice in the form of Graph ML. Orchestrator would also trigger provisioning of these resources asynchronously on the appropriate sites either now or in the future as requested. Experimenter can invoke get slice API to get the latest state of the requested resources.  
 
 ### Example
 ```python
@@ -348,7 +348,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **slices_slice_id_get**
-> Success slices_slice_id_get(slice_id)
+> Success slices_slice_id_get(slice_id, graph_format)
 
 slice properties
 
@@ -371,6 +371,7 @@ configuration.api_key['Authorization'] = 'YOUR_API_KEY'
 # create an instance of the API class
 api_instance = SlicesApi(ApiClient(configuration))
 slice_id = 'slice_id_example' # str | Slice identifier as UUID
+graph_format = 'GRAPHML' # str | Graph format (default to GRAPHML)
 
 try:
     # slice properties
@@ -385,6 +386,7 @@ except ApiException as e:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **slice_id** | **str**| Slice identifier as UUID | 
+ **graph_format** | **str**| Graph format | [default to GRAPHML]
 
 ### Return type
 
