@@ -266,7 +266,9 @@ class OrchestratorProxy:
 
             if slice_model is not None:
                 if graph_format == GraphFormat.GRAPHML:
-                    return Status.OK, ExperimentTopology().load(graph_string=slice_model)
+                    exp = ExperimentTopology()
+                    exp.load(graph_string=slice_model)
+                    return Status.OK, exp
                 else:
                     return Status.OK, slice_model
             return Status.FAILURE, response
