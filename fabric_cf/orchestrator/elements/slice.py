@@ -40,7 +40,7 @@ class Slice(JSONField):
         self.slice_state = None
         self.lease_end = None
 
-    def set_fields(self, **kwargs):
+    def _set_fields(self, **kwargs):
         """
         Universal integer setter for all fields.
         Values should be non-negative integers. Throws a RuntimeError

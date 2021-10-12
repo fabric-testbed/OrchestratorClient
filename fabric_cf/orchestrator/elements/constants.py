@@ -31,12 +31,5 @@ class Constants:
     PROP_SLICE_MODEL = "slice_model"
     PROP_BQM_MODEL = "bqm"
 
-    PROP_CAPACITIES = "capacities"
-    PROP_LABELS = "labels"
-    PROP_ALLOCATED_CAPACITIES = "allocated_capacities"
-    PROP_ALLOCATED_LABELS = "allocated_labels"
-    PROP_SLIVER_NAME = "name"
-    PROP_MANAGEMENT_IP = "management_ip"
-    PROP_CAPACITY_HINTS = "capacity_hints"
-
-    PROP_STATE_ACTIVE = "Active"
+    PROP_SLIVER = "sliver"
+    PROP_SLIVER_TYPE = "sliver_type"
