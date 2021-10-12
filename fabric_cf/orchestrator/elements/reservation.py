@@ -26,7 +26,11 @@
 import json
 from typing import List
 
+from fim.slivers.base_sliver import BaseSliver
 from fim.slivers.capacities_labels import JSONField, Capacities, Labels, CapacityHints
+from fim.slivers.json import JSONSliver
+from fim.slivers.network_node import NodeSliver
+from fim.slivers.network_service import NetworkServiceSliver
 
 from fabric_cf.orchestrator.elements.constants import Constants
 
@@ -37,55 +41,28 @@ class Reservation(JSONField):
     """
     def __init__(self):
         self.name = None
-        self.site = None
-        self.resource_type = None
         self.graph_node_id = None
         self.slice_id = None
         self.reservation_id = None
-        self.management_ip = None
-        self.capacity_hints = None
-        self.capacities = None
-        self.allocated_capacities = None
-        self.labels = None
-        self.allocated_labels = None
         self.join_state = None
         self.pending_state = None
         self.reservation_state = None
         self.notices = None
         self.lease_end = None
+        self.sliver_type = None
+        self.sliver = None
+
+    def get_sliver_type(self) -> str:
+        return self.sliver_type
 
     def get_name(self) -> str:
         return self.name
-
-    def get_site(self) -> str:
-        return self.site
-
-    def get_type(self) -> str:
-        return self.resource_type
 
     def get_graph_node_id(self) -> str:
         return self.graph_node_id
 
     def get_slice_id(self) -> str:
         return self.slice_id
-
-    def get_management_ip(self) -> str:
-        return self.management_ip
-
-    def get_capacities(self) -> Capacities:
-        return self.capacities
-
-    def get_allocated_capacities(self) -> Capacities:
-        return self.allocated_capacities
-
-    def get_capacity_hints(self) -> CapacityHints:
-        return self.capacity_hints
-
-    def get_labels(self) -> Labels:
-        return self.labels
-
-    def get_allocated_labels(self) -> Labels:
-        return self.labels
 
     def get_join_state(self) -> str:
         return self.join_state
@@ -99,7 +76,10 @@ class Reservation(JSONField):
     def get_notices(self) -> str:
         return self.notices
 
-    def set_fields(self, **kwargs):
+    def get_sliver(self) -> BaseSliver:
+        return self.sliver
+
+    def _set_fields(self, **kwargs):
         """
         Universal integer setter for all fields.
         Values should be non-negative integers. Throws a RuntimeError
@@ -111,18 +91,18 @@ class Reservation(JSONField):
             try:
                 # will toss an exception if field is not defined
                 self.__getattribute__(k)
-                if k == Constants.PROP_CAPACITIES or k == Constants.PROP_ALLOCATED_CAPACITIES:
-                    c = Capacities()
-                    v = c.from_json(json_string=v)
-                elif k == Constants.PROP_LABELS or k == Constants.PROP_ALLOCATED_LABELS:
-                    l = Labels()
-                    v = l.from_json(json_string=v)
-                elif k == Constants.PROP_CAPACITY_HINTS:
-                    ch = CapacityHints()
-                    v = ch.from_json(json_string=v)
+                if k == Constants.PROP_SLIVER:
+                    continue
                 self.__setattr__(k, v)
             except AttributeError:
                 raise RuntimeError(f"Unable to set field {k} of reservation, no such field available")
+
+        sliver_json = kwargs.get(Constants.PROP_SLIVER, None)
+        if sliver_json is not None:
+            if self.sliver_type == NodeSliver.__name__:
+                self.sliver = JSONSliver.node_sliver_from_json(s=sliver_json)
+            elif self.sliver_type == NetworkServiceSliver.__name__:
+                self.sliver = JSONSliver.network_service_sliver_from_json(s=sliver_json)
         return self
 
     def to_json(self) -> str:
@@ -136,10 +116,8 @@ class Reservation(JSONField):
         for k in self.__dict__:
             if d[k] is None:
                 d.pop(k)
-            elif k == Constants.PROP_CAPACITIES or k == Constants.PROP_LABELS or \
-                    k == Constants.PROP_ALLOCATED_CAPACITIES or k == Constants.PROP_ALLOCATED_LABELS or \
-                    k == Constants.PROP_CAPACITY_HINTS:
-                d[k] = d[k].to_json()
+            elif k == Constants.PROP_SLIVER:
+                d[k] = JSONSliver.sliver_to_json(sliver=d[k])
         if len(d) == 0:
             return ''
         return json.dumps(d, skipkeys=True, sort_keys=True, indent=4)
