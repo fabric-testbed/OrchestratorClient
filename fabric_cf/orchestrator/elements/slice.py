@@ -38,6 +38,7 @@ class Slice(JSONField):
         self.slice_id = None
         self.slice_name = None
         self.slice_state = None
+        self.lease_start = None
         self.lease_end = None
 
     def _set_fields(self, **kwargs):
