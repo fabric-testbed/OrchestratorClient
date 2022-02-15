@@ -262,15 +262,16 @@ class OrchestratorProxy:
             self.__set_tokens(token=token)
 
             response = self.slices_api.slices_slice_id_get(slice_id=slice_id, graph_format=graph_format.name)
-            slice_model = response.value.get(Constants.PROP_SLICE_MODEL, None)
-
-            if slice_model is not None:
-                if graph_format == GraphFormat.GRAPHML:
-                    exp = ExperimentTopology()
-                    exp.load(graph_string=slice_model)
-                    return Status.OK, exp
-                else:
-                    return Status.OK, slice_model
+            prop_slices = response.value.get(Constants.PROP_SLICES, None)
+            if prop_slices is not None and len(prop_slices) > 0:
+                slice_model = prop_slices[0].get(Constants.PROP_SLICE_MODEL, None)
+                if slice_model is not None:
+                    if graph_format == GraphFormat.GRAPHML:
+                        exp = ExperimentTopology()
+                        exp.load(graph_string=slice_model)
+                        return Status.OK, exp
+                    else:
+                        return Status.OK, slice_model
             return Status.FAILURE, response
         except Exception as e:
             return Status.FAILURE, e
