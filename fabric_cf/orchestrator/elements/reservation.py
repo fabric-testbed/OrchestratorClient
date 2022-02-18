@@ -48,6 +48,7 @@ class Reservation(JSONField):
         self.pending_state = None
         self.reservation_state = None
         self.notices = None
+        self.lease_start = None
         self.lease_end = None
         self.sliver_type = None
         self.sliver = None
