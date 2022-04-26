@@ -105,7 +105,7 @@ class OrchestratorProxy:
     """
     PROP_AUTHORIZATION = 'Authorization'
     PROP_BEARER = 'Bearer'
-    TIME_FORMAT = "%Y-%m-%d %H:%M:%S"
+    TIME_FORMAT = "%Y-%m-%d %H:%M:%S %z"
 
     def __init__(self, orchestrator_host: str):
         self.host = orchestrator_host
