@@ -210,12 +210,12 @@ status, reservation = proxy.sliver_status(token=token, slice_id=slice_id, sliver
 ```
 ### Renew Slice
 ```
-now = datetime.utcnow()
+now = datetime.now(timezone.utc)
 new_time = now + timedelta(days=2)
 orchestrator_host = "dev-3.fabric-testbed.net"
 proxy = OrchestratorProxy(orchestrator_host=orchestrator_host)
 status, reservation = proxy.renew_slice(token=token, slice_id=slice_id,
-                                        new_lease_end_time=new_time.strftime('%Y-%m-%d %H:%M:%S'))
+                                        new_lease_end_time=new_time.strftime('%Y-%m-%d %H:%M:%S %z'))
 ```
 ## Author
 
