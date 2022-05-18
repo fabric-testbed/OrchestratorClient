@@ -106,27 +106,43 @@ All URIs are relative to *http://127.0.0.1:8700/*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
-*DefaultApi* | [**version_get**](docs/DefaultApi.md#version_get) | **GET** /version | version
 *ResourcesApi* | [**portalresources_get**](docs/ResourcesApi.md#portalresources_get) | **GET** /portalresources | Retrieve a listing and description of available resources for portal
 *ResourcesApi* | [**resources_get**](docs/ResourcesApi.md#resources_get) | **GET** /resources | Retrieve a listing and description of available resources
-*SlicesApi* | [**slices_create_post**](docs/SlicesApi.md#slices_create_post) | **POST** /slices/create_slices | Create slice
-*SlicesApi* | [**slices_delete_slice_id_delete**](docs/SlicesApi.md#slices_delete_slice_id_delete) | **DELETE** /slices/delete/{sliceID} | Delete slice.
+*SlicesApi* | [**slices_create_post**](docs/SlicesApi.md#slices_create_post) | **POST** /slices/create | Create slice
+*SlicesApi* | [**slices_delete_slice_id_delete**](docs/SlicesApi.md#slices_delete_slice_id_delete) | **DELETE** /slices/delete/{slice_id} | Delete slice.
 *SlicesApi* | [**slices_get**](docs/SlicesApi.md#slices_get) | **GET** /slices | Retrieve a listing of user slices
-*SlicesApi* | [**slices_modify_slice_id_put**](docs/SlicesApi.md#slices_modify_slice_id_put) | **PUT** /slices/modify/{sliceID} | Modify slice
-*SlicesApi* | [**slices_redeem_slice_id_post**](docs/SlicesApi.md#slices_redeem_slice_id_post) | **POST** /slices/redeem/{sliceID} | Redeem resources reserved via Create API
-*SlicesApi* | [**slices_renew_slice_id_post**](docs/SlicesApi.md#slices_renew_slice_id_post) | **POST** /slices/renew/{sliceID} | Renew slice
-*SlicesApi* | [**slices_slice_id_get**](docs/SlicesApi.md#slices_slice_id_get) | **GET** /slices/{sliceID} | slice properties
-*SlicesApi* | [**slices_status_slice_id_get**](docs/SlicesApi.md#slices_status_slice_id_get) | **GET** /slices/status/{sliceID} | slice status
+*SlicesApi* | [**slices_renew_slice_id_post**](docs/SlicesApi.md#slices_renew_slice_id_post) | **POST** /slices/renew/{slice_id} | Renew slice
+*SlicesApi* | [**slices_slice_id_get**](docs/SlicesApi.md#slices_slice_id_get) | **GET** /slices/{slice_id} | slice properties
 *SliversApi* | [**slivers_get**](docs/SliversApi.md#slivers_get) | **GET** /slivers | Retrieve a listing of user slivers
-*SliversApi* | [**slivers_modify_sliver_id_put**](docs/SliversApi.md#slivers_modify_sliver_id_put) | **PUT** /slivers/modify/{sliverID} | Modify sliver
-*SliversApi* | [**slivers_poa_sliver_id_post**](docs/SliversApi.md#slivers_poa_sliver_id_post) | **POST** /slivers/poa/{sliverID} | Perform Operational Action
-*SliversApi* | [**slivers_sliver_id_get**](docs/SliversApi.md#slivers_sliver_id_get) | **GET** /slivers/{sliverID} | slivers properties
-*SliversApi* | [**slivers_status_sliver_id_get**](docs/SliversApi.md#slivers_status_sliver_id_get) | **GET** /slivers/status/{sliverID} | slivers status
+*SliversApi* | [**slivers_sliver_id_get**](docs/SliversApi.md#slivers_sliver_id_get) | **GET** /slivers/{sliver_id} | slivers properties
+*VersionApi* | [**version_get**](docs/VersionApi.md#version_get) | **GET** /version | Version
 
 ## Documentation For Models
 
- - [Success](docs/Success.md)
+ - [Resource](docs/Resource.md)
+ - [Resources](docs/Resources.md)
+ - [Slice](docs/Slice.md)
+ - [SliceDetails](docs/SliceDetails.md)
+ - [Slices](docs/Slices.md)
+ - [Sliver](docs/Sliver.md)
+ - [Slivers](docs/Slivers.md)
+ - [Status200OkNoContent](docs/Status200OkNoContent.md)
+ - [Status200OkNoContentData](docs/Status200OkNoContentData.md)
+ - [Status200OkPaginated](docs/Status200OkPaginated.md)
+ - [Status200OkPaginatedLinks](docs/Status200OkPaginatedLinks.md)
+ - [Status200OkSingle](docs/Status200OkSingle.md)
+ - [Status400BadRequest](docs/Status400BadRequest.md)
+ - [Status400BadRequestErrors](docs/Status400BadRequestErrors.md)
+ - [Status401Unauthorized](docs/Status401Unauthorized.md)
+ - [Status401UnauthorizedErrors](docs/Status401UnauthorizedErrors.md)
+ - [Status403Forbidden](docs/Status403Forbidden.md)
+ - [Status403ForbiddenErrors](docs/Status403ForbiddenErrors.md)
+ - [Status404NotFound](docs/Status404NotFound.md)
+ - [Status404NotFoundErrors](docs/Status404NotFoundErrors.md)
+ - [Status500InternalServerError](docs/Status500InternalServerError.md)
+ - [Status500InternalServerErrorErrors](docs/Status500InternalServerErrorErrors.md)
  - [Version](docs/Version.md)
+ - [VersionData](docs/VersionData.md)
 
 ## Documentation For Authorization
 
