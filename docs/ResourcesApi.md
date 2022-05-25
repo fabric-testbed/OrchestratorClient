@@ -8,7 +8,7 @@ Method | HTTP request | Description
 [**resources_get**](ResourcesApi.md#resources_get) | **GET** /resources | Retrieve a listing and description of available resources
 
 # **portalresources_get**
-> Success portalresources_get(graph_format)
+> Resources portalresources_get(graph_format)
 
 Retrieve a listing and description of available resources for portal
 
@@ -24,7 +24,7 @@ from pprint import pprint
 
 # create an instance of the API class
 api_instance = swagger_client.ResourcesApi()
-graph_format = 'GRAPHML' # str | Graph format (default to GRAPHML)
+graph_format = 'GRAPHML' # str | graph format (default to GRAPHML)
 
 try:
     # Retrieve a listing and description of available resources for portal
@@ -38,11 +38,11 @@ except ApiException as e:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **graph_format** | **str**| Graph format | [default to GRAPHML]
+ **graph_format** | **str**| graph format | [default to GRAPHML]
 
 ### Return type
 
-[**Success**](Success.md)
+[**Resources**](Resources.md)
 
 ### Authorization
 
@@ -56,7 +56,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **resources_get**
-> Success resources_get(level)
+> Resources resources_get(level)
 
 Retrieve a listing and description of available resources
 
@@ -96,7 +96,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**Success**](Success.md)
+[**Resources**](Resources.md)
 
 ### Authorization
 

@@ -14,12 +14,12 @@ from __future__ import absolute_import
 
 import unittest
 
-from fabric_cf.orchestrator.swagger_client.models.version import Version  # noqa: E501
+from fabric_cf.orchestrator.swagger_client.models.status400_bad_request import Status400BadRequest  # noqa: E501
 from fabric_cf.orchestrator.swagger_client.rest import ApiException
 
 
-class TestVersion(unittest.TestCase):
-    """Version unit test stubs"""
+class TestStatus400BadRequest(unittest.TestCase):
+    """Status400BadRequest unit test stubs"""
 
     def setUp(self):
         pass
@@ -27,10 +27,10 @@ class TestVersion(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def testVersion(self):
-        """Test Version"""
+    def testStatus400BadRequest(self):
+        """Test Status400BadRequest"""
         # FIXME: construct object with mandatory attributes with example values
-        # model = fabric_cf.orchestrator.swagger_client.models.version.Version()  # noqa: E501
+        # model = fabric_cf.orchestrator.swagger_client.models.status400_bad_request.Status400BadRequest()  # noqa: E501
         pass
 
 
