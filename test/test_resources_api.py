@@ -14,7 +14,6 @@ from __future__ import absolute_import
 
 import unittest
 
-import fabric_cf.orchestrator.swagger_client
 from fabric_cf.orchestrator.swagger_client.api.resources_api import ResourcesApi  # noqa: E501
 from fabric_cf.orchestrator.swagger_client.rest import ApiException
 

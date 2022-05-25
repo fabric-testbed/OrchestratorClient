@@ -14,23 +14,24 @@ from __future__ import absolute_import
 
 import unittest
 
-from fabric_cf.orchestrator.swagger_client.models.version import Version  # noqa: E501
+from fabric_cf.orchestrator.swagger_client.api.version_api import VersionApi  # noqa: E501
 from fabric_cf.orchestrator.swagger_client.rest import ApiException
 
 
-class TestVersion(unittest.TestCase):
-    """Version unit test stubs"""
+class TestVersionApi(unittest.TestCase):
+    """VersionApi unit test stubs"""
 
     def setUp(self):
-        pass
+        self.api = VersionApi()  # noqa: E501
 
     def tearDown(self):
         pass
 
-    def testVersion(self):
-        """Test Version"""
-        # FIXME: construct object with mandatory attributes with example values
-        # model = fabric_cf.orchestrator.swagger_client.models.version.Version()  # noqa: E501
+    def test_version_get(self):
+        """Test case for version_get
+
+        Version  # noqa: E501
+        """
         pass
 
 
