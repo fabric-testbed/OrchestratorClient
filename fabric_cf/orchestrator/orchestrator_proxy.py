@@ -200,7 +200,7 @@ class OrchestratorProxy:
             return Status.FAILURE, e
 
     def slices(self, *, token: str, includes: List[SliceState] = None, excludes: List[SliceState] = None,
-               name: str = None, limit: int = 20, offset: int = 0) -> Tuple[Status, Union[Exception, List[Slice]]]:
+               name: str = None, limit: int = 20, offset: int = 0, slice_id: str = None) -> Tuple[Status, Union[Exception, List[Slice]]]:
         """
         Get slices
         @param token fabric token
@@ -209,6 +209,7 @@ class OrchestratorProxy:
         @param name name of the slice
         @param limit maximum number of slices to return
         @param offset offset of the first slice to return
+        @param slice_id Slice Id
         @return Tuple containing Status and Exception/Json containing slices
         """
         if token is None:
@@ -228,7 +229,9 @@ class OrchestratorProxy:
                     if x in states:
                         states.remove(x)
 
-            if name is not None:
+            if slice_id is not None:
+                slices = self.slices_api.slices_slice_id_get(slice_id=slice_id, graph_format=str(GraphFormat.GRAPHML))
+            elif name is not None:
                 slices = self.slices_api.slices_get(states=SliceState.state_list_to_str_list(states), name=name,
                                                     limit=limit, offset=offset)
             else:
@@ -259,7 +262,7 @@ class OrchestratorProxy:
             # Set the tokens
             self.__set_tokens(token=token)
 
-            slice_details = self.slices_api.slices_slice_id_get(slice_id=slice_id, graph_format=graph_format.name)
+            slice_details = self.slices_api.slices_slice_id_get(slice_id=slice_id, graph_format=str(graph_format))
 
             model = slice_details.data[0].model if slice_details.data is not None else None
             topology = None
