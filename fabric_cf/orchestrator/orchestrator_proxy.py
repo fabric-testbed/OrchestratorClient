@@ -230,7 +230,7 @@ class OrchestratorProxy:
                         states.remove(x)
 
             if slice_id is not None:
-                slices = self.slices_api.slices_slice_id_get(slice_id=slice_id, graph_format=str(GraphFormat.GRAPHML))
+                slices = self.slices_api.slices_slice_id_get(slice_id=slice_id, graph_format=GraphFormat.GRAPHML.name)
             elif name is not None:
                 slices = self.slices_api.slices_get(states=SliceState.state_list_to_str_list(states), name=name,
                                                     limit=limit, offset=offset)
@@ -262,7 +262,7 @@ class OrchestratorProxy:
             # Set the tokens
             self.__set_tokens(token=token)
 
-            slice_details = self.slices_api.slices_slice_id_get(slice_id=slice_id, graph_format=str(graph_format))
+            slice_details = self.slices_api.slices_slice_id_get(slice_id=slice_id, graph_format=graph_format.name)
 
             model = slice_details.data[0].model if slice_details.data is not None else None
             topology = None
