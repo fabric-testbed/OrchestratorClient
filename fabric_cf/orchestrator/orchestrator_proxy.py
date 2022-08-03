@@ -32,9 +32,7 @@ from fim.user import GraphFormat
 from fabric_cf.orchestrator import swagger_client
 from fim.user.topology import ExperimentTopology, AdvertizedTopology
 
-from fabric_cf.orchestrator.elements.constants import Constants
-from fabric_cf.orchestrator.elements.reservation import ReservationFactory, Reservation
-from fabric_cf.orchestrator.elements.slice import SliceFactory, Slice
+from fabric_cf.orchestrator.swagger_client import Sliver, Slice
 
 
 class OrchestratorProxyException(Exception):
@@ -130,8 +128,7 @@ class OrchestratorProxy:
         self.slices_api.api_client.configuration.api_key_prefix[self.PROP_AUTHORIZATION] = self.PROP_BEARER
 
     def create(self, *, token: str, slice_name: str, ssh_key: str, topology: ExperimentTopology = None,
-               slice_graph: str = None,
-               lease_end_time: str = None) -> Tuple[Status, Union[Exception, List[Reservation]]]:
+               slice_graph: str = None, lease_end_time: str = None) -> Tuple[Status, Union[Exception, List[Sliver]]]:
         """
         Create a slice
         @param token fabric token
@@ -170,16 +167,12 @@ class OrchestratorProxy:
 
             response = None
             if lease_end_time is not None:
-                response = self.slices_api.slices_create_post(slice_name=slice_name, body=slice_graph, ssh_key=ssh_key,
-                                                              lease_end_time=lease_end_time)
+                slivers = self.slices_api.slices_create_post(name=slice_name, body=slice_graph, ssh_key=ssh_key,
+                                                             lease_end_time=lease_end_time)
             else:
-                response = self.slices_api.slices_create_post(slice_name=slice_name, body=slice_graph, ssh_key=ssh_key)
+                slivers = self.slices_api.slices_create_post(name=slice_name, body=slice_graph, ssh_key=ssh_key)
 
-            reservations_dict = response.value.get(Constants.PROP_RESERVATIONS, None)
-            reservations = None
-            if reservations_dict is not None:
-                reservations = ReservationFactory.create_reservations(reservation_list=reservations_dict)
-            return Status.OK, reservations
+            return Status.OK, slivers.data if slivers.data is not None else []
         except Exception as e:
             return Status.FAILURE, e
 
@@ -206,13 +199,17 @@ class OrchestratorProxy:
         except Exception as e:
             return Status.FAILURE, e
 
-    def slices(self, *, token: str, includes: List[SliceState] = None,
-               excludes: List[SliceState] = None) -> Tuple[Status, Union[Exception, List[Slice]]]:
+    def slices(self, *, token: str, includes: List[SliceState] = None, excludes: List[SliceState] = None,
+               name: str = None, limit: int = 20, offset: int = 0, slice_id: str = None) -> Tuple[Status, Union[Exception, List[Slice]]]:
         """
         Get slices
         @param token fabric token
         @param includes list of the slice state used to include the slices in the output
         @param excludes list of the slice state used to exclude the slices from the output
+        @param name name of the slice
+        @param limit maximum number of slices to return
+        @param offset offset of the first slice to return
+        @param slice_id Slice Id
         @return Tuple containing Status and Exception/Json containing slices
         """
         if token is None:
@@ -232,12 +229,16 @@ class OrchestratorProxy:
                     if x in states:
                         states.remove(x)
 
-            response = self.slices_api.slices_get(states=SliceState.state_list_to_str_list(states))
-            prop_slices = response.value.get(Constants.PROP_SLICES, None)
-            slices = None
-            if prop_slices is not None:
-                slices = SliceFactory.create_slices(slice_list=prop_slices)
-            return Status.OK, slices
+            if slice_id is not None:
+                slices = self.slices_api.slices_slice_id_get(slice_id=slice_id, graph_format=GraphFormat.GRAPHML.name)
+            elif name is not None:
+                slices = self.slices_api.slices_get(states=SliceState.state_list_to_str_list(states), name=name,
+                                                    limit=limit, offset=offset)
+            else:
+                slices = self.slices_api.slices_get(states=SliceState.state_list_to_str_list(states), limit=limit,
+                                                    offset=offset)
+
+            return Status.OK, slices.data if slices.data is not None else []
         except Exception as e:
             return Status.FAILURE, e
 
@@ -261,54 +262,20 @@ class OrchestratorProxy:
             # Set the tokens
             self.__set_tokens(token=token)
 
-            response = self.slices_api.slices_slice_id_get(slice_id=slice_id, graph_format=graph_format.name)
-            prop_slices = response.value.get(Constants.PROP_SLICES, None)
-            if prop_slices is not None and len(prop_slices) > 0:
-                slice_model = prop_slices[0].get(Constants.PROP_SLICE_MODEL, None)
-                if slice_model is not None:
-                    if graph_format == GraphFormat.GRAPHML:
-                        exp = ExperimentTopology()
-                        exp.load(graph_string=slice_model)
-                        return Status.OK, exp
-                    else:
-                        return Status.OK, slice_model
-            return Status.FAILURE, response
-        except Exception as e:
-            return Status.FAILURE, e
+            slice_details = self.slices_api.slices_slice_id_get(slice_id=slice_id, graph_format=graph_format.name)
 
-    def slice_status(self, *, token: str, slice_id: str) -> Tuple[Status, Union[Exception, Slice]]:
-        """
-        Get slice status
-        @param token fabric token
-        @param slice_id slice id
-        @return Tuple containing Status and Exception/Json containing slice status
-        """
-        if token is None:
-            return Status.INVALID_ARGUMENTS, OrchestratorProxyException(f"Token {token} must be specified")
+            model = slice_details.data[0].model if slice_details.data is not None else None
+            topology = None
+            if model is not None:
+                topology = ExperimentTopology()
+                topology.load(graph_string=model)
 
-        if slice_id is None:
-            return Status.INVALID_ARGUMENTS, OrchestratorProxyException(f"Slice Id {slice_id} must be specified")
-
-        try:
-            # Set the tokens
-            self.__set_tokens(token=token)
-
-            response = self.slices_api.slices_status_slice_id_get(slice_id=slice_id)
-            prop_slices = response.value.get(Constants.PROP_SLICES, None)
-            result = None
-            if prop_slices is not None:
-                slices = SliceFactory.create_slices(slice_list=response.value[Constants.PROP_SLICES])
-                result = None
-                if slices is not None and len(slices) > 0:
-                    result = next(iter(slices))
-
-            return Status.OK, result
-
+            return Status.OK, topology
         except Exception as e:
             return Status.FAILURE, e
 
     def slivers(self, *, token: str, slice_id: str,
-                sliver_id: str = None) -> Tuple[Status, Union[Exception, List[Reservation]]]:
+                sliver_id: str = None) -> Tuple[Status, Union[Exception, List[Sliver]]]:
         """
         Get slivers
         @param token fabric token
@@ -326,63 +293,22 @@ class OrchestratorProxy:
             # Set the tokens
             self.__set_tokens(token=token)
 
-            response = None
             if sliver_id is None:
-                response = self.slivers_api.slivers_get(slice_id=slice_id)
+                slivers = self.slivers_api.slivers_get(slice_id=slice_id)
             else:
-                response = self.slivers_api.slivers_sliver_id_get(slice_id=slice_id, sliver_id=sliver_id)
+                slivers = self.slivers_api.slivers_sliver_id_get(slice_id=slice_id, sliver_id=sliver_id)
 
-            prop_reservations = response.value.get(Constants.PROP_RESERVATIONS, None)
-            reservations = None
-            if prop_reservations is not None:
-                reservations = ReservationFactory.create_reservations(reservation_list=prop_reservations)
-
-            return Status.OK, reservations
+            return Status.OK, slivers.data if slivers.data is not None else []
         except Exception as e:
             return Status.FAILURE, e
 
-    def sliver_status(self, *, token: str, slice_id: str,
-                      sliver_id: str) -> Tuple[Status, Union[Exception, Reservation]]:
+    def resources(self, *, token: str, level: int = 1,
+                  force_refresh: bool = False) -> Tuple[Status, Union[Exception, AdvertizedTopology]]:
         """
-        Get slivers
-        @param token fabric token
-        @param slice_id slice id
-        @param sliver_id slice sliver_id
-        @return Tuple containing Status and Exception/Json containing Sliver status
-        """
-
-        if token is None:
-            return Status.INVALID_ARGUMENTS, OrchestratorProxyException(f"Token {token} must be specified")
-
-        if slice_id is None:
-            return Status.INVALID_ARGUMENTS, OrchestratorProxyException(f"Slice Id {slice_id} must be specified")
-
-        if sliver_id is None:
-            return Status.INVALID_ARGUMENTS, OrchestratorProxyException(f"Sliver Id {sliver_id} must be specified")
-
-        try:
-            # Set the tokens
-            self.__set_tokens(token=token)
-
-            response = self.slivers_api.slivers_status_sliver_id_get(sliver_id=sliver_id, slice_id=slice_id)
-
-            prop_reservations = response.value.get(Constants.PROP_RESERVATIONS, None)
-            result = None
-            if prop_reservations is not None:
-                reservations = ReservationFactory.create_reservations(reservation_list=prop_reservations)
-
-                if reservations is not None and len(reservations) > 0:
-                    result = next(iter(reservations))
-
-            return Status.OK, result
-        except Exception as e:
-            return Status.FAILURE, e
-
-    def resources(self, *, token: str, level: int = 1) -> Tuple[Status, Union[Exception, AdvertizedTopology]]:
-        """
-        Get resources
+        Get resources; by default cached resource information is returned. Cache is refreshed every 5 minutes.
         @param token fabric token
         @param level level
+        @param force_refresh force current available resources
         @return Tuple containing Status and Exception/Json containing Resources
         """
 
@@ -393,8 +319,8 @@ class OrchestratorProxy:
             # Set the tokens
             self.__set_tokens(token=token)
 
-            response = self.resources_api.resources_get(level=level)
-            graph_string = response.value.get(Constants.PROP_BQM_MODEL, None)
+            resources = self.resources_api.resources_get(level=level, force_refresh=force_refresh)
+            graph_string = resources.data[0].model
             substrate = None
             if graph_string is not None:
                 substrate = AdvertizedTopology()
@@ -412,10 +338,15 @@ class OrchestratorProxy:
         """
 
         try:
-            response = self.resources_api.portalresources_get(graph_format=graph_format.name)
-            graph_string = response.value.get(Constants.PROP_BQM_MODEL, None)
+            resources = self.resources_api.portalresources_get(graph_format=graph_format.name)
 
-            return Status.OK, graph_string
+            graph_string = resources.data[0].model
+            substrate = None
+            if graph_string is not None:
+                substrate = AdvertizedTopology()
+                substrate.load(graph_string=graph_string)
+
+            return Status.OK, substrate
         except Exception as e:
             return Status.FAILURE, e
 
@@ -443,11 +374,7 @@ class OrchestratorProxy:
             # Set the tokens
             self.__set_tokens(token=token)
 
-            response = self.slices_api.slices_renew_slice_id_post(slice_id=slice_id,
-                                                                  new_lease_end_time=new_lease_end_time)
-            failed_reservations = response.value.get(Constants.PROP_RESERVATIONS, None)
-            if failed_reservations is not None:
-                return Status.FAILURE, failed_reservations
+            self.slices_api.slices_renew_slice_id_post(slice_id=slice_id, lease_end_time=new_lease_end_time)
 
             return Status.OK, None
         except Exception as e:

@@ -5,10 +5,10 @@ All URIs are relative to *http://127.0.0.1:8700/*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**portalresources_get**](ResourcesApi.md#portalresources_get) | **GET** /portalresources | Retrieve a listing and description of available resources for portal
-[**resources_get**](ResourcesApi.md#resources_get) | **GET** /resources | Retrieve a listing and description of available resources
+[**resources_get**](ResourcesApi.md#resources_get) | **GET** /resources | Retrieve a listing and description of available resources. By default, a cached available resource information is returned. User can force to request the current available resources.
 
 # **portalresources_get**
-> Success portalresources_get(graph_format)
+> Resources portalresources_get(graph_format)
 
 Retrieve a listing and description of available resources for portal
 
@@ -24,7 +24,7 @@ from pprint import pprint
 
 # create an instance of the API class
 api_instance = swagger_client.ResourcesApi()
-graph_format = 'GRAPHML' # str | Graph format (default to GRAPHML)
+graph_format = 'GRAPHML' # str | graph format (default to GRAPHML)
 
 try:
     # Retrieve a listing and description of available resources for portal
@@ -38,11 +38,11 @@ except ApiException as e:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **graph_format** | **str**| Graph format | [default to GRAPHML]
+ **graph_format** | **str**| graph format | [default to GRAPHML]
 
 ### Return type
 
-[**Success**](Success.md)
+[**Resources**](Resources.md)
 
 ### Authorization
 
@@ -56,11 +56,11 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **resources_get**
-> Success resources_get(level)
+> Resources resources_get(level, force_refresh)
 
-Retrieve a listing and description of available resources
+Retrieve a listing and description of available resources. By default, a cached available resource information is returned. User can force to request the current available resources.
 
-Retrieve a listing and description of available resources
+Retrieve a listing and description of available resources. By default, a cached available resource information is returned. User can force to request the current available resources.
 
 ### Example
 ```python
@@ -79,10 +79,11 @@ configuration.api_key['Authorization'] = 'YOUR_API_KEY'
 # create an instance of the API class
 api_instance = ResourcesApi(ApiClient(configuration))
 level = 1 # int | Level of details (default to 1)
+force_refresh = false # bool | Force to retrieve current available resource information. (default to false)
 
 try:
-    # Retrieve a listing and description of available resources
-    api_response = api_instance.resources_get(level)
+    # Retrieve a listing and description of available resources. By default, a cached available resource information is returned. User can force to request the current available resources.
+    api_response = api_instance.resources_get(level, force_refresh)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling ResourcesApi->resources_get: %s\n" % e)
@@ -93,10 +94,11 @@ except ApiException as e:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **level** | **int**| Level of details | [default to 1]
+ **force_refresh** | **bool**| Force to retrieve current available resource information. | [default to false]
 
 ### Return type
 
-[**Success**](Success.md)
+[**Resources**](Resources.md)
 
 ### Authorization
 

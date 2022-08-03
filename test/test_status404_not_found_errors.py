@@ -14,12 +14,12 @@ from __future__ import absolute_import
 
 import unittest
 
-from fabric_cf.orchestrator.swagger_client.models.version import Version  # noqa: E501
+from fabric_cf.orchestrator.swagger_client.models.status404_not_found_errors import Status404NotFoundErrors  # noqa: E501
 from fabric_cf.orchestrator.swagger_client.rest import ApiException
 
 
-class TestVersion(unittest.TestCase):
-    """Version unit test stubs"""
+class TestStatus404NotFoundErrors(unittest.TestCase):
+    """Status404NotFoundErrors unit test stubs"""
 
     def setUp(self):
         pass
@@ -27,10 +27,10 @@ class TestVersion(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def testVersion(self):
-        """Test Version"""
+    def testStatus404NotFoundErrors(self):
+        """Test Status404NotFoundErrors"""
         # FIXME: construct object with mandatory attributes with example values
-        # model = fabric_cf.orchestrator.swagger_client.models.version.Version()  # noqa: E501
+        # model = fabric_cf.orchestrator.swagger_client.models.status404_not_found_errors.Status404NotFoundErrors()  # noqa: E501
         pass
 
 

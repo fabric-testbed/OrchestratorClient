@@ -14,12 +14,12 @@ from __future__ import absolute_import
 
 import unittest
 
-from fabric_cf.orchestrator.swagger_client.models.version import Version  # noqa: E501
+from fabric_cf.orchestrator.swagger_client.models.status401_unauthorized import Status401Unauthorized  # noqa: E501
 from fabric_cf.orchestrator.swagger_client.rest import ApiException
 
 
-class TestVersion(unittest.TestCase):
-    """Version unit test stubs"""
+class TestStatus401Unauthorized(unittest.TestCase):
+    """Status401Unauthorized unit test stubs"""
 
     def setUp(self):
         pass
@@ -27,10 +27,10 @@ class TestVersion(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def testVersion(self):
-        """Test Version"""
+    def testStatus401Unauthorized(self):
+        """Test Status401Unauthorized"""
         # FIXME: construct object with mandatory attributes with example values
-        # model = fabric_cf.orchestrator.swagger_client.models.version.Version()  # noqa: E501
+        # model = fabric_cf.orchestrator.swagger_client.models.status401_unauthorized.Status401Unauthorized()  # noqa: E501
         pass
 
 
