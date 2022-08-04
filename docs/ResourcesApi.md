@@ -23,7 +23,7 @@ from fabric_cf.orchestrator.swagger_client.rest import ApiException
 from pprint import pprint
 
 # create an instance of the API class
-api_instance = swagger_client.ResourcesApi()
+api_instance = ResourcesApi()
 graph_format = 'GRAPHML' # str | graph format (default to GRAPHML)
 
 try:
@@ -79,7 +79,7 @@ configuration.api_key['Authorization'] = 'YOUR_API_KEY'
 # create an instance of the API class
 api_instance = ResourcesApi(ApiClient(configuration))
 level = 1 # int | Level of details (default to 1)
-force_refresh = false # bool | Force to retrieve current available resource information. (default to false)
+force_refresh = False # bool | Force to retrieve current available resource information. (default to false)
 
 try:
     # Retrieve a listing and description of available resources. By default, a cached available resource information is returned. User can force to request the current available resources.

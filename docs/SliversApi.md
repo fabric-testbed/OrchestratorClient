@@ -29,7 +29,7 @@ configuration.api_key['Authorization'] = 'YOUR_API_KEY'
 # configuration.api_key_prefix['Authorization'] = 'Bearer'
 
 # create an instance of the API class
-api_instance = swagger_client.SliversApi(swagger_client.ApiClient(configuration))
+api_instance = SliversApi(ApiClient(configuration))
 slice_id = 'slice_id_example' # str | Slice identifier as UUID
 
 try:
@@ -83,7 +83,7 @@ configuration.api_key['Authorization'] = 'YOUR_API_KEY'
 # configuration.api_key_prefix['Authorization'] = 'Bearer'
 
 # create an instance of the API class
-api_instance = swagger_client.SliversApi(swagger_client.ApiClient(configuration))
+api_instance = SliversApi(ApiClient(configuration))
 slice_id = 'slice_id_example' # str | Slice identified by universally unique identifier
 sliver_id = 'sliver_id_example' # str | Sliver identified by universally unique identifier
 

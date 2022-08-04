@@ -37,7 +37,7 @@ class TestResourcesApi(unittest.TestCase):
     def test_resources_get(self):
         """Test case for resources_get
 
-        Retrieve a listing and description of available resources  # noqa: E501
+        Retrieve a listing and description of available resources. By default, a cached available resource information is returned. User can force to request the current available resources.  # noqa: E501
         """
         pass
 

@@ -79,7 +79,8 @@ Please follow the [installation procedure](#installation--usage) and then run th
 ```python
 from __future__ import print_function
 import time
-from fabric_cf.orchestrator.swagger_client import DefaultApi, Configuration, ApiClient
+from fabric_cf.orchestrator.swagger_client.api.version_api import VersionApi
+from fabric_cf.orchestrator.swagger_client import Configuration, ApiClient
 from fabric_cf.orchestrator.swagger_client.rest import ApiException
 from pprint import pprint
 
@@ -90,14 +91,14 @@ configuration.api_key['Authorization'] = 'YOUR_API_KEY'
 # configuration.api_key_prefix['Authorization'] = 'Bearer'
 
 # create_slices an instance of the API class
-api_instance = DefaultApi(ApiClient(configuration))
+api_instance = VersionApi(ApiClient(configuration))
 
 try:
     # version
     api_response = api_instance.version_get()
     pprint(api_response)
 except ApiException as e:
-    print("Exception when calling DefaultApi->version_get: %s\n" % e)
+    print("Exception when calling VersionApi->version_get: %s\n" % e)
 ```
 
 ## Documentation for API Endpoints
@@ -109,6 +110,7 @@ Class | Method | HTTP request | Description
 *ResourcesApi* | [**portalresources_get**](docs/ResourcesApi.md#portalresources_get) | **GET** /portalresources | Retrieve a listing and description of available resources for portal
 *ResourcesApi* | [**resources_get**](docs/ResourcesApi.md#resources_get) | **GET** /resources | Retrieve a listing and description of available resources
 *SlicesApi* | [**slices_create_post**](docs/SlicesApi.md#slices_create_post) | **POST** /slices/create | Create slice
+*SlicesApi* | [**slices_modify_slice_id_put**](SlicesApi.md#slices_modify_slice_id_put) | **PUT** /slices/modify/{slice_id} | Modify an existing slice
 *SlicesApi* | [**slices_delete_slice_id_delete**](docs/SlicesApi.md#slices_delete_slice_id_delete) | **DELETE** /slices/delete/{slice_id} | Delete slice.
 *SlicesApi* | [**slices_get**](docs/SlicesApi.md#slices_get) | **GET** /slices | Retrieve a listing of user slices
 *SlicesApi* | [**slices_renew_slice_id_post**](docs/SlicesApi.md#slices_renew_slice_id_post) | **POST** /slices/renew/{slice_id} | Renew slice
@@ -211,18 +213,6 @@ status, reservation = proxy.slivers(token=token, slice_id=slice_id, sliver_id=sl
 orchestrator_host = "dev-3.fabric-testbed.net"
 proxy = OrchestratorProxy(orchestrator_host=orchestrator_host)
 status, result = proxy.delete(token=token, slice_id=slice_id)
-```
-### Slice Status
-```
-orchestrator_host = "dev-3.fabric-testbed.net"
-proxy = OrchestratorProxy(orchestrator_host=orchestrator_host)
-status, slice_object = proxy.slice_status(token=token, slice_id=slice_id)
-```
-### Sliver Status
-```
-orchestrator_host = "dev-3.fabric-testbed.net"
-proxy = OrchestratorProxy(orchestrator_host=orchestrator_host)
-status, reservation = proxy.sliver_status(token=token, slice_id=slice_id, sliver_id=sliver_id)
 ```
 ### Renew Slice
 ```

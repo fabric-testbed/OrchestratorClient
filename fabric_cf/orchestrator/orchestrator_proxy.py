@@ -176,6 +176,41 @@ class OrchestratorProxy:
         except Exception as e:
             return Status.FAILURE, e
 
+    def modify(self, *, token: str, slice_id: str, topology: ExperimentTopology = None,
+               slice_graph: str = None) -> Tuple[Status, Union[Exception, List[Sliver]]]:
+        """
+        Create a slice
+        @param token fabric token
+        @param slice_id slice id
+        @param topology Experiment topology
+        @param slice_graph Slice Graph string
+        @return Tuple containing Status and Exception/Json containing slivers created
+        """
+        if token is None:
+            return Status.INVALID_ARGUMENTS, OrchestratorProxyException(f"Token {token} must be specified")
+
+        if slice_id is None:
+            return Status.INVALID_ARGUMENTS, \
+                   OrchestratorProxyException(f"Slice Id {slice_id} must be specified")
+
+        if (topology is None and slice_graph is None) or (topology is not None and slice_graph is not None):
+            return Status.INVALID_ARGUMENTS, OrchestratorProxyException(f"Either topology {topology} or "
+                                                                        f"slice graph {slice_graph} must "
+                                                                        f"be specified")
+
+        try:
+            # Set the tokens
+            self.__set_tokens(token=token)
+
+            if topology is not None:
+                slice_graph = topology.serialize()
+
+            slivers = self.slices_api.slices_modify_slice_id_put(slice_id=slice_id, body=slice_graph)
+
+            return Status.OK, slivers.data if slivers.data is not None else []
+        except Exception as e:
+            return Status.FAILURE, e
+
     def delete(self, *, token: str, slice_id: str) -> Tuple[Status, Union[Exception, None]]:
         """
         Delete a slice
