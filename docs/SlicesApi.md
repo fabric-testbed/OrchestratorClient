@@ -7,6 +7,7 @@ Method | HTTP request | Description
 [**slices_create_post**](SlicesApi.md#slices_create_post) | **POST** /slices/create | Create slice
 [**slices_delete_slice_id_delete**](SlicesApi.md#slices_delete_slice_id_delete) | **DELETE** /slices/delete/{slice_id} | Delete slice.
 [**slices_get**](SlicesApi.md#slices_get) | **GET** /slices | Retrieve a listing of user slices
+[**slices_modify_slice_id_accept_post**](SlicesApi.md#slices_modify_slice_id_accept_post) | **POST** /slices/modify/{slice_id}/accept | Accept the last modify an existing slice
 [**slices_modify_slice_id_put**](SlicesApi.md#slices_modify_slice_id_put) | **PUT** /slices/modify/{slice_id} | Modify an existing slice
 [**slices_renew_slice_id_post**](SlicesApi.md#slices_renew_slice_id_post) | **POST** /slices/renew/{slice_id} | Renew slice
 [**slices_slice_id_get**](SlicesApi.md#slices_slice_id_get) | **GET** /slices/{slice_id} | slice properties
@@ -173,6 +174,61 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**Slices**](Slices.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **slices_modify_slice_id_accept_post**
+> SliceDetails slices_modify_slice_id_accept_post(slice_id)
+
+Accept the last modify an existing slice
+
+Accept the last modify and prune any failed resources from the Slice. Also return the accepted slice model back to the user.  
+
+### Example
+```python
+from __future__ import print_function
+import time
+from fabric_cf.orchestrator.swagger_client import SlicesApi, Configuration, ApiClient
+from fabric_cf.orchestrator.swagger_client.rest import ApiException
+from pprint import pprint
+
+# Configure API key authorization: bearerAuth
+configuration = Configuration()
+configuration.api_key['Authorization'] = 'YOUR_API_KEY'
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# configuration.api_key_prefix['Authorization'] = 'Bearer'
+
+
+# create an instance of the API class
+api_instance = SlicesApi(ApiClient(configuration))
+slice_id = 'slice_id_example' # str | Slice identified by universally unique identifier
+
+try:
+    # Accept the last modify an existing slice
+    api_response = api_instance.slices_modify_slice_id_accept_post(slice_id)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling SlicesApi->slices_modify_slice_id_accept_post: %s\n" % e)
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **slice_id** | **str**| Slice identified by universally unique identifier | 
+
+### Return type
+
+[**SliceDetails**](SliceDetails.md)
 
 ### Authorization
 

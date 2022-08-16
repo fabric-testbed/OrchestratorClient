@@ -24,6 +24,7 @@
 #
 # Author: Komal Thareja (kthare10@renci.org)
 import enum
+import traceback
 from datetime import datetime
 from typing import Tuple, Union, List
 
@@ -49,6 +50,9 @@ class SliceState(enum.Enum):
     StableOK = enum.auto()
     Closing = enum.auto()
     Dead = enum.auto()
+    Modifying = enum.auto()
+    ModifyError = enum.auto()
+    ModifyOK = enum.auto()
 
     def __str__(self):
         return self.name
@@ -179,7 +183,7 @@ class OrchestratorProxy:
     def modify(self, *, token: str, slice_id: str, topology: ExperimentTopology = None,
                slice_graph: str = None) -> Tuple[Status, Union[Exception, List[Sliver]]]:
         """
-        Create a slice
+        Modify a slice
         @param token fabric token
         @param slice_id slice id
         @param topology Experiment topology
@@ -209,6 +213,37 @@ class OrchestratorProxy:
 
             return Status.OK, slivers.data if slivers.data is not None else []
         except Exception as e:
+            return Status.FAILURE, e
+
+    def modify_accept(self, *, token: str, slice_id: str) -> Tuple[Status, Union[Exception, ExperimentTopology]]:
+        """
+        Accept the modify
+        @param token fabric token
+        @param slice_id slice id
+        @return Tuple containing Status and Updated Slice Graph
+        """
+        if token is None:
+            return Status.INVALID_ARGUMENTS, OrchestratorProxyException(f"Token {token} must be specified")
+
+        if slice_id is None:
+            return Status.INVALID_ARGUMENTS, \
+                   OrchestratorProxyException(f"Slice Id {slice_id} must be specified")
+
+        try:
+            # Set the tokens
+            self.__set_tokens(token=token)
+
+            slice_details = self.slices_api.slices_modify_slice_id_accept_post(slice_id=slice_id)
+
+            model = slice_details.data[0].model if slice_details.data is not None else None
+            topology = None
+            if model is not None:
+                topology = ExperimentTopology()
+                topology.load(graph_string=model)
+
+            return Status.OK, topology
+        except Exception as e:
+            traceback.print_exc()
             return Status.FAILURE, e
 
     def delete(self, *, token: str, slice_id: str) -> Tuple[Status, Union[Exception, None]]:
@@ -255,7 +290,8 @@ class OrchestratorProxy:
             self.__set_tokens(token=token)
 
             states = [SliceState.StableError, SliceState.StableOK, SliceState.Nascent,
-                      SliceState.Configuring, SliceState.Closing, SliceState.Dead]
+                      SliceState.Configuring, SliceState.Closing, SliceState.Dead,
+                      SliceState.ModifyError, SliceState.ModifyOK, SliceState.Modifying]
             if includes is not None:
                 states = includes
 
