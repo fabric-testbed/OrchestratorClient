@@ -48,7 +48,6 @@ class TestSlicesApi(unittest.TestCase):
         """
         pass
 
-<<<<<<< HEAD
     def test_slices_modify_slice_id_put(self):
         """Test case for slices_modify_slice_id_put
 
@@ -56,8 +55,6 @@ class TestSlicesApi(unittest.TestCase):
         """
         pass
 
-=======
->>>>>>> a99acea78648e749db8881a5988f744ec3e5ba18
     def test_slices_renew_slice_id_post(self):
         """Test case for slices_renew_slice_id_post
 

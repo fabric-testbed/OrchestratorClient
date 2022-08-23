@@ -355,11 +355,8 @@ class Sliver(object):
                     if hasattr(item[1], "to_dict") else item,
                     value.items()
                 ))
-<<<<<<< HEAD
             elif isinstance(value, NodeSliver) or isinstance(value, NetworkServiceSliver):
                 result[attr] = JSONSliver.sliver_to_json(sliver=value)
-=======
->>>>>>> a99acea78648e749db8881a5988f744ec3e5ba18
             else:
                 result[attr] = value
         if issubclass(Sliver, dict):

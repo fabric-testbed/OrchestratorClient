@@ -56,11 +56,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **resources_get**
-<<<<<<< HEAD
 > Resources resources_get(level, force_refresh)
-=======
-> Resources resources_get(level)
->>>>>>> a99acea78648e749db8881a5988f744ec3e5ba18
 
 Retrieve a listing and description of available resources. By default, a cached available resource information is returned. User can force to request the current available resources.
 
