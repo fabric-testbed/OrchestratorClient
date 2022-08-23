@@ -7,13 +7,20 @@ Method | HTTP request | Description
 [**slices_create_post**](SlicesApi.md#slices_create_post) | **POST** /slices/create | Create slice
 [**slices_delete_slice_id_delete**](SlicesApi.md#slices_delete_slice_id_delete) | **DELETE** /slices/delete/{slice_id} | Delete slice.
 [**slices_get**](SlicesApi.md#slices_get) | **GET** /slices | Retrieve a listing of user slices
+<<<<<<< HEAD
 [**slices_modify_slice_id_accept_post**](SlicesApi.md#slices_modify_slice_id_accept_post) | **POST** /slices/modify/{slice_id}/accept | Accept the last modify an existing slice
 [**slices_modify_slice_id_put**](SlicesApi.md#slices_modify_slice_id_put) | **PUT** /slices/modify/{slice_id} | Modify an existing slice
+=======
+>>>>>>> a99acea78648e749db8881a5988f744ec3e5ba18
 [**slices_renew_slice_id_post**](SlicesApi.md#slices_renew_slice_id_post) | **POST** /slices/renew/{slice_id} | Renew slice
 [**slices_slice_id_get**](SlicesApi.md#slices_slice_id_get) | **GET** /slices/{slice_id} | slice properties
 
 # **slices_create_post**
+<<<<<<< HEAD
 > Slivers slices_create_post(body, name, ssh_key, lease_end_time=lease_end_time)
+=======
+> Slivers slices_create_post(body, name, ssh_key, lease_end_time)
+>>>>>>> a99acea78648e749db8881a5988f744ec3e5ba18
 
 Create slice
 
@@ -170,6 +177,7 @@ Name | Type | Description  | Notes
  **states** | [**list[str]**](str.md)| Search for Slices in the specified states | [optional] 
  **limit** | **int**| maximum number of results to return per page (1 or more) | [optional] [default to 5]
  **offset** | **int**| number of items to skip before starting to collect the result set | [optional] [default to 0]
+<<<<<<< HEAD
 
 ### Return type
 
@@ -285,6 +293,12 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**Slivers**](Slivers.md)
+=======
+
+### Return type
+
+[**Slices**](Slices.md)
+>>>>>>> a99acea78648e749db8881a5988f744ec3e5ba18
 
 ### Authorization
 
