@@ -24,6 +24,7 @@
 #
 # Author: Komal Thareja (kthare10@renci.org)
 import enum
+import traceback
 from datetime import datetime
 from typing import Tuple, Union, List
 
@@ -49,6 +50,9 @@ class SliceState(enum.Enum):
     StableOK = enum.auto()
     Closing = enum.auto()
     Dead = enum.auto()
+    Modifying = enum.auto()
+    ModifyError = enum.auto()
+    ModifyOK = enum.auto()
 
     def __str__(self):
         return self.name
@@ -176,6 +180,72 @@ class OrchestratorProxy:
         except Exception as e:
             return Status.FAILURE, e
 
+    def modify(self, *, token: str, slice_id: str, topology: ExperimentTopology = None,
+               slice_graph: str = None) -> Tuple[Status, Union[Exception, List[Sliver]]]:
+        """
+        Modify a slice
+        @param token fabric token
+        @param slice_id slice id
+        @param topology Experiment topology
+        @param slice_graph Slice Graph string
+        @return Tuple containing Status and Exception/Json containing slivers created
+        """
+        if token is None:
+            return Status.INVALID_ARGUMENTS, OrchestratorProxyException(f"Token {token} must be specified")
+
+        if slice_id is None:
+            return Status.INVALID_ARGUMENTS, \
+                   OrchestratorProxyException(f"Slice Id {slice_id} must be specified")
+
+        if (topology is None and slice_graph is None) or (topology is not None and slice_graph is not None):
+            return Status.INVALID_ARGUMENTS, OrchestratorProxyException(f"Either topology {topology} or "
+                                                                        f"slice graph {slice_graph} must "
+                                                                        f"be specified")
+
+        try:
+            # Set the tokens
+            self.__set_tokens(token=token)
+
+            if topology is not None:
+                slice_graph = topology.serialize()
+
+            slivers = self.slices_api.slices_modify_slice_id_put(slice_id=slice_id, body=slice_graph)
+
+            return Status.OK, slivers.data if slivers.data is not None else []
+        except Exception as e:
+            return Status.FAILURE, e
+
+    def modify_accept(self, *, token: str, slice_id: str) -> Tuple[Status, Union[Exception, ExperimentTopology]]:
+        """
+        Accept the modify
+        @param token fabric token
+        @param slice_id slice id
+        @return Tuple containing Status and Updated Slice Graph
+        """
+        if token is None:
+            return Status.INVALID_ARGUMENTS, OrchestratorProxyException(f"Token {token} must be specified")
+
+        if slice_id is None:
+            return Status.INVALID_ARGUMENTS, \
+                   OrchestratorProxyException(f"Slice Id {slice_id} must be specified")
+
+        try:
+            # Set the tokens
+            self.__set_tokens(token=token)
+
+            slice_details = self.slices_api.slices_modify_slice_id_accept_post(slice_id=slice_id)
+
+            model = slice_details.data[0].model if slice_details.data is not None else None
+            topology = None
+            if model is not None:
+                topology = ExperimentTopology()
+                topology.load(graph_string=model)
+
+            return Status.OK, topology
+        except Exception as e:
+            traceback.print_exc()
+            return Status.FAILURE, e
+
     def delete(self, *, token: str, slice_id: str) -> Tuple[Status, Union[Exception, None]]:
         """
         Delete a slice
@@ -220,7 +290,8 @@ class OrchestratorProxy:
             self.__set_tokens(token=token)
 
             states = [SliceState.StableError, SliceState.StableOK, SliceState.Nascent,
-                      SliceState.Configuring, SliceState.Closing, SliceState.Dead]
+                      SliceState.Configuring, SliceState.Closing, SliceState.Dead,
+                      SliceState.ModifyError, SliceState.ModifyOK, SliceState.Modifying]
             if includes is not None:
                 states = includes
 
@@ -302,11 +373,13 @@ class OrchestratorProxy:
         except Exception as e:
             return Status.FAILURE, e
 
-    def resources(self, *, token: str, level: int = 1) -> Tuple[Status, Union[Exception, AdvertizedTopology]]:
+    def resources(self, *, token: str, level: int = 1,
+                  force_refresh: bool = False) -> Tuple[Status, Union[Exception, AdvertizedTopology]]:
         """
-        Get resources
+        Get resources; by default cached resource information is returned. Cache is refreshed every 5 minutes.
         @param token fabric token
         @param level level
+        @param force_refresh force current available resources
         @return Tuple containing Status and Exception/Json containing Resources
         """
 
@@ -317,7 +390,7 @@ class OrchestratorProxy:
             # Set the tokens
             self.__set_tokens(token=token)
 
-            resources = self.resources_api.resources_get(level=level)
+            resources = self.resources_api.resources_get(level=level, force_refresh=force_refresh)
             graph_string = resources.data[0].model
             substrate = None
             if graph_string is not None:

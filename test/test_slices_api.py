@@ -48,6 +48,13 @@ class TestSlicesApi(unittest.TestCase):
         """
         pass
 
+    def test_slices_modify_slice_id_put(self):
+        """Test case for slices_modify_slice_id_put
+
+        Modify an existing slice  # noqa: E501
+        """
+        pass
+
     def test_slices_renew_slice_id_post(self):
         """Test case for slices_renew_slice_id_post
 

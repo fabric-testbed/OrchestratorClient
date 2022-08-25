@@ -7,11 +7,13 @@ Method | HTTP request | Description
 [**slices_create_post**](SlicesApi.md#slices_create_post) | **POST** /slices/create | Create slice
 [**slices_delete_slice_id_delete**](SlicesApi.md#slices_delete_slice_id_delete) | **DELETE** /slices/delete/{slice_id} | Delete slice.
 [**slices_get**](SlicesApi.md#slices_get) | **GET** /slices | Retrieve a listing of user slices
+[**slices_modify_slice_id_accept_post**](SlicesApi.md#slices_modify_slice_id_accept_post) | **POST** /slices/modify/{slice_id}/accept | Accept the last modify an existing slice
+[**slices_modify_slice_id_put**](SlicesApi.md#slices_modify_slice_id_put) | **PUT** /slices/modify/{slice_id} | Modify an existing slice
 [**slices_renew_slice_id_post**](SlicesApi.md#slices_renew_slice_id_post) | **POST** /slices/renew/{slice_id} | Renew slice
 [**slices_slice_id_get**](SlicesApi.md#slices_slice_id_get) | **GET** /slices/{slice_id} | slice properties
 
 # **slices_create_post**
-> Slivers slices_create_post(body, name, ssh_key, lease_end_time)
+> Slivers slices_create_post(body, name, ssh_key, lease_end_time=lease_end_time)
 
 Create slice
 
@@ -36,11 +38,11 @@ api_instance = SlicesApi(ApiClient(configuration))
 body = 'body_example' # str | 
 name = 'name_example' # str | Slice Name
 ssh_key = 'ssh_key_example' # str | User SSH Key
-lease_end_time = 'lease_end_time_example' # str | New Lease End Time for the Slice
+lease_end_time = 'lease_end_time_example' # str | New Lease End Time for the Slice (optional)
 
 try:
     # Create slice
-    api_response = api_instance.slices_create_post(body, name, ssh_key, lease_end_time)
+    api_response = api_instance.slices_create_post(body, name, ssh_key, lease_end_time=lease_end_time)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling SlicesApi->slices_create_post: %s\n" % e)
@@ -92,7 +94,7 @@ configuration.api_key['Authorization'] = 'YOUR_API_KEY'
 # configuration.api_key_prefix['Authorization'] = 'Bearer'
 
 # create an instance of the API class
-api_instance = swagger_client.SlicesApi(swagger_client.ApiClient(configuration))
+api_instance = SlicesApi(ApiClient(configuration))
 slice_id = 'slice_id_example' # str | Slice identified by universally unique identifier
 
 try:
@@ -146,7 +148,7 @@ configuration.api_key['Authorization'] = 'YOUR_API_KEY'
 # configuration.api_key_prefix['Authorization'] = 'Bearer'
 
 # create an instance of the API class
-api_instance = swagger_client.SlicesApi(swagger_client.ApiClient(configuration))
+api_instance = SlicesApi(ApiClient(configuration))
 name = 'name_example' # str | Search for Slices with the name (optional)
 states = ['states_example'] # list[str] | Search for Slices in the specified states (optional)
 limit = 5 # int | maximum number of results to return per page (1 or more) (optional) (default to 5)
@@ -184,6 +186,117 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **slices_modify_slice_id_accept_post**
+> SliceDetails slices_modify_slice_id_accept_post(slice_id)
+
+Accept the last modify an existing slice
+
+Accept the last modify and prune any failed resources from the Slice. Also return the accepted slice model back to the user.  
+
+### Example
+```python
+from __future__ import print_function
+import time
+from fabric_cf.orchestrator.swagger_client import SlicesApi, Configuration, ApiClient
+from fabric_cf.orchestrator.swagger_client.rest import ApiException
+from pprint import pprint
+
+# Configure API key authorization: bearerAuth
+configuration = Configuration()
+configuration.api_key['Authorization'] = 'YOUR_API_KEY'
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# configuration.api_key_prefix['Authorization'] = 'Bearer'
+
+
+# create an instance of the API class
+api_instance = SlicesApi(ApiClient(configuration))
+slice_id = 'slice_id_example' # str | Slice identified by universally unique identifier
+
+try:
+    # Accept the last modify an existing slice
+    api_response = api_instance.slices_modify_slice_id_accept_post(slice_id)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling SlicesApi->slices_modify_slice_id_accept_post: %s\n" % e)
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **slice_id** | **str**| Slice identified by universally unique identifier | 
+
+### Return type
+
+[**SliceDetails**](SliceDetails.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **slices_modify_slice_id_put**
+> Slivers slices_modify_slice_id_put(body, slice_id)
+
+Modify an existing slice
+
+Request to modify an existing slice as described in the request. Request would be a graph ML describing the experiment topolgy expected after a modify. The supported modify actions include adding or removing nodes, components, network services or interfaces of the slice. On success, one or more slivers are allocated, containing resources satisfying the request, and assigned to the given slice. This API returns list and description of the resources reserved for the slice in the form of Graph ML. Orchestrator would also trigger provisioning of these resources asynchronously on the appropriate sites either now or in the future as requested. Experimenter can invoke get slice API to get the latest state of the requested resources.  
+
+### Example
+```python
+from __future__ import print_function
+import time
+from fabric_cf.orchestrator.swagger_client import SlicesApi, Configuration, ApiClient
+from fabric_cf.orchestrator.swagger_client.rest import ApiException
+from pprint import pprint
+
+# Configure API key authorization: bearerAuth
+configuration = Configuration()
+configuration.api_key['Authorization'] = 'YOUR_API_KEY'
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# configuration.api_key_prefix['Authorization'] = 'Bearer'
+
+# create an instance of the API class
+api_instance = SlicesApi(ApiClient(configuration))
+body = 'body_example' # str | 
+slice_id = 'slice_id_example' # str | Slice identified by universally unique identifier
+
+try:
+    # Modify an existing slice
+    api_response = api_instance.slices_modify_slice_id_put(body, slice_id)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling SlicesApi->slices_modify_slice_id_put: %s\n" % e)
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **body** | [**str**](str.md)|  | 
+ **slice_id** | **str**| Slice identified by universally unique identifier | 
+
+### Return type
+
+[**Slivers**](Slivers.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: text/plain
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **slices_renew_slice_id_post**
 > Status200OkNoContent slices_renew_slice_id_post(slice_id, lease_end_time)
 
@@ -206,7 +319,7 @@ configuration.api_key['Authorization'] = 'YOUR_API_KEY'
 # configuration.api_key_prefix['Authorization'] = 'Bearer'
 
 # create an instance of the API class
-api_instance = swagger_client.SlicesApi(swagger_client.ApiClient(configuration))
+api_instance = SlicesApi(ApiClient(configuration))
 slice_id = 'slice_id_example' # str | Slice identified by universally unique identifier
 lease_end_time = 'lease_end_time_example' # str | New Lease End Time for the Slice
 
@@ -262,7 +375,7 @@ configuration.api_key['Authorization'] = 'YOUR_API_KEY'
 # configuration.api_key_prefix['Authorization'] = 'Bearer'
 
 # create an instance of the API class
-api_instance = swagger_client.SlicesApi(swagger_client.ApiClient(configuration))
+api_instance = SlicesApi(ApiClient(configuration))
 slice_id = 'slice_id_example' # str | Slice identified by universally unique identifier
 graph_format = 'GRAPHML' # str | graph format (default to GRAPHML)
 
