@@ -33,6 +33,7 @@ class Slice(object):
         'lease_end_time': 'str',
         'state': 'str',
         'project_id': 'str',
+        'project_name': 'str',
         'graph_id': 'str',
         'name': 'str',
         'slice_id': 'str'
@@ -44,18 +45,20 @@ class Slice(object):
         'lease_end_time': 'lease_end_time',
         'state': 'state',
         'project_id': 'project_id',
+        'project_name': 'project_name',
         'graph_id': 'graph_id',
         'name': 'name',
         'slice_id': 'slice_id'
     }
 
-    def __init__(self, model=None, lease_start_time=None, lease_end_time=None, state=None, project_id=None, graph_id=None, name=None, slice_id=None):  # noqa: E501
+    def __init__(self, model=None, lease_start_time=None, lease_end_time=None, state=None, project_id=None, project_name=None, graph_id=None, name=None, slice_id=None):  # noqa: E501
         """Slice - a model defined in Swagger"""  # noqa: E501
         self._model = None
         self._lease_start_time = None
         self._lease_end_time = None
         self._state = None
         self._project_id = None
+        self._project_name = None
         self._graph_id = None
         self._name = None
         self._slice_id = None
@@ -70,6 +73,8 @@ class Slice(object):
             self.state = state
         if project_id is not None:
             self.project_id = project_id
+        if project_name is not None:
+            self.project_name = project_name
         self.graph_id = graph_id
         self.name = name
         self.slice_id = slice_id
@@ -178,6 +183,27 @@ class Slice(object):
         """
 
         self._project_id = project_id
+
+    @property
+    def project_name(self):
+        """Gets the project_name of this Slice.  # noqa: E501
+
+
+        :return: The project_name of this Slice.  # noqa: E501
+        :rtype: str
+        """
+        return self._project_name
+
+    @project_name.setter
+    def project_name(self, project_name):
+        """Sets the project_name of this Slice.
+
+
+        :param project_name: The project_name of this Slice.  # noqa: E501
+        :type: str
+        """
+
+        self._project_name = project_name
 
     @property
     def graph_id(self):
