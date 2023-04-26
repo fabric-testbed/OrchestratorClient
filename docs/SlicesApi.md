@@ -5,6 +5,7 @@ All URIs are relative to *http://127.0.0.1:8700/*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**slices_create_post**](SlicesApi.md#slices_create_post) | **POST** /slices/create | Create slice
+[**slices_delete_email_delete**](SlicesApi.md#slices_delete_email_delete) | **DELETE** /slices/delete/{email} | Delete all slices of a user identified by an email within a project.
 [**slices_delete_slice_id_delete**](SlicesApi.md#slices_delete_slice_id_delete) | **DELETE** /slices/delete/{slice_id} | Delete slice.
 [**slices_get**](SlicesApi.md#slices_get) | **GET** /slices | Retrieve a listing of user slices
 [**slices_modify_slice_id_accept_post**](SlicesApi.md#slices_modify_slice_id_accept_post) | **POST** /slices/modify/{slice_id}/accept | Accept the last modify an existing slice
@@ -68,6 +69,60 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
  - **Content-Type**: text/plain
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **slices_delete_email_delete**
+> Status200OkNoContent slices_delete_email_delete(email)
+
+Delete all slices of a user identified by an email within a project.
+
+Request to delete all slices of a user identified by an email within a project.  
+
+### Example
+```python
+from __future__ import print_function
+import time
+from fabric_cf.orchestrator.swagger_client import SlicesApi, Configuration, ApiClient
+from fabric_cf.orchestrator.swagger_client.rest import ApiException
+from pprint import pprint
+
+# Configure API key authorization: bearerAuth
+configuration = Configuration()
+configuration.api_key['Authorization'] = 'YOUR_API_KEY'
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# configuration.api_key_prefix['Authorization'] = 'Bearer'
+
+# create an instance of the API class
+api_instance = SlicesApi(ApiClient(configuration))
+email = 'email_example' # str | User's email address
+
+try:
+    # Delete all slices of a user identified by an email within a project.
+    api_response = api_instance.slices_delete_email_delete(email)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling SlicesApi->slices_delete_email_delete: %s\n" % e)
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **email** | **str**| User&#x27;s email address | 
+
+### Return type
+
+[**Status200OkNoContent**](Status200OkNoContent.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
  - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
