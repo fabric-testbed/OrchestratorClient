@@ -5,7 +5,7 @@ All URIs are relative to *http://127.0.0.1:8700/*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**slices_create_post**](SlicesApi.md#slices_create_post) | **POST** /slices/create | Create slice
-[**slices_delete_email_delete**](SlicesApi.md#slices_delete_email_delete) | **DELETE** /slices/delete/{email} | Delete all slices of a user identified by an email within a project.
+[**slices_delete_delete**](SlicesApi.md#slices_delete_delete) | **DELETE** /slices/delete | Delete all slices for a User within a project.
 [**slices_delete_slice_id_delete**](SlicesApi.md#slices_delete_slice_id_delete) | **DELETE** /slices/delete/{slice_id} | Delete slice.
 [**slices_get**](SlicesApi.md#slices_get) | **GET** /slices | Retrieve a listing of user slices
 [**slices_modify_slice_id_accept_post**](SlicesApi.md#slices_modify_slice_id_accept_post) | **POST** /slices/modify/{slice_id}/accept | Accept the last modify an existing slice
@@ -73,12 +73,12 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **slices_delete_email_delete**
-> Status200OkNoContent slices_delete_email_delete(email)
+# **slices_delete_delete**
+> Status200OkNoContent slices_delete_delete()
 
-Delete all slices of a user identified by an email within a project.
+Delete all slices for a User within a project.
 
-Request to delete all slices of a user identified by an email within a project.  
+Delete all slices for a User within a project. User identity email and project id is available in the bearer token. 
 
 ### Example
 ```python
@@ -99,18 +99,15 @@ api_instance = SlicesApi(ApiClient(configuration))
 email = 'email_example' # str | User's email address
 
 try:
-    # Delete all slices of a user identified by an email within a project.
-    api_response = api_instance.slices_delete_email_delete(email)
+    # Delete all slices for a User within a project.
+    api_response = api_instance.slices_delete_delete()
     pprint(api_response)
 except ApiException as e:
-    print("Exception when calling SlicesApi->slices_delete_email_delete: %s\n" % e)
+    print("Exception when calling SlicesApi->slices_delete_delete: %s\n" % e)
 ```
 
 ### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **email** | **str**| User&#x27;s email address | 
+This endpoint does not need any parameter.
 
 ### Return type
 

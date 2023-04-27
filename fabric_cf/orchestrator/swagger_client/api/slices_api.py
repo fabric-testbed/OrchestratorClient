@@ -144,45 +144,43 @@ class SlicesApi(object):
             _request_timeout=params.get('_request_timeout'),
             collection_formats=collection_formats)
 
-    def slices_delete_email_delete(self, email, **kwargs):  # noqa: E501
-        """Delete all slices of a user identified by an email within a project.  # noqa: E501
+    def slices_delete_delete(self, **kwargs):  # noqa: E501
+        """Delete all slices for a User within a project.  # noqa: E501
 
-        Request to delete all slices of a user identified by an email within a project.    # noqa: E501
+        Delete all slices for a User within a project. User identity email and project id is available in the bearer token.   # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
-        >>> thread = api.slices_delete_email_delete(email, async_req=True)
+        >>> thread = api.slices_delete_delete(async_req=True)
         >>> result = thread.get()
 
         :param async_req bool
-        :param str email: User's email address (required)
         :return: Status200OkNoContent
                  If the method is called asynchronously,
                  returns the request thread.
         """
         kwargs['_return_http_data_only'] = True
         if kwargs.get('async_req'):
-            return self.slices_delete_email_delete_with_http_info(email, **kwargs)  # noqa: E501
+            return self.slices_delete_delete_with_http_info(**kwargs)  # noqa: E501
         else:
-            (data) = self.slices_delete_email_delete_with_http_info(email, **kwargs)  # noqa: E501
+            (data) = self.slices_delete_delete_with_http_info(**kwargs)  # noqa: E501
             return data
 
-    def slices_delete_email_delete_with_http_info(self, email, **kwargs):  # noqa: E501
-        """Delete all slices of a user identified by an email within a project.  # noqa: E501
+    def slices_delete_delete_with_http_info(self, **kwargs):  # noqa: E501
+        """Delete all slices for a User within a project.  # noqa: E501
 
-        Request to delete all slices of a user identified by an email within a project.    # noqa: E501
+        Delete all slices for a User within a project. User identity email and project id is available in the bearer token.   # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
-        >>> thread = api.slices_delete_email_delete_with_http_info(email, async_req=True)
+        >>> thread = api.slices_delete_delete_with_http_info(async_req=True)
         >>> result = thread.get()
 
         :param async_req bool
-        :param str email: User's email address (required)
         :return: Status200OkNoContent
                  If the method is called asynchronously,
                  returns the request thread.
         """
 
-        all_params = ['email']  # noqa: E501
+        all_params = []  # noqa: E501
         all_params.append('async_req')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
@@ -193,20 +191,14 @@ class SlicesApi(object):
             if key not in all_params:
                 raise TypeError(
                     "Got an unexpected keyword argument '%s'"
-                    " to method slices_delete_email_delete" % key
+                    " to method slices_delete_delete" % key
                 )
             params[key] = val
         del params['kwargs']
-        # verify the required parameter 'email' is set
-        if ('email' not in params or
-                params['email'] is None):
-            raise ValueError("Missing the required parameter `email` when calling `slices_delete_email_delete`")  # noqa: E501
 
         collection_formats = {}
 
         path_params = {}
-        if 'email' in params:
-            path_params['email'] = params['email']  # noqa: E501
 
         query_params = []
 
@@ -224,7 +216,7 @@ class SlicesApi(object):
         auth_settings = ['bearerAuth']  # noqa: E501
 
         return self.api_client.call_api(
-            '/slices/delete/{email}', 'DELETE',
+            '/slices/delete', 'DELETE',
             path_params,
             query_params,
             header_params,
@@ -241,6 +233,7 @@ class SlicesApi(object):
 
     def slices_delete_slice_id_delete(self, slice_id, **kwargs):  # noqa: E501
         """Delete slice.  # noqa: E501
+
         Request to delete slice. On success, resources associated with slice or sliver are stopped if necessary, de-provisioned and un-allocated at the respective sites.   # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True

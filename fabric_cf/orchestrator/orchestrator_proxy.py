@@ -246,12 +246,11 @@ class OrchestratorProxy:
             traceback.print_exc()
             return Status.FAILURE, e
 
-    def delete(self, *, token: str, slice_id: str = None, email: str = None) -> Tuple[Status, Union[Exception, None]]:
+    def delete(self, *, token: str, slice_id: str = None) -> Tuple[Status, Union[Exception, None]]:
         """
         Delete a slice
         @param token fabric token
         @param slice_id slice id
-        @param email email
         @return Tuple containing Status and Exception/Json containing deletion status
         """
         if token is None:
@@ -264,11 +263,9 @@ class OrchestratorProxy:
 
             if slice_id is not None:
                 self.slices_api.slices_delete_slice_id_delete(slice_id=slice_id)
-            elif email is not None:
-                self.slices_api.slices_delete_email_delete(email=email)
             else:
-                return Status.INVALID_ARGUMENTS, OrchestratorProxyException(f"Either Slice Id {slice_id} "
-                                                                            f"or Email {email} must be specified")
+                self.slices_api.slices_delete_delete()
+
             return Status.OK, None
         except Exception as e:
             return Status.FAILURE, e

@@ -34,10 +34,10 @@ class TestSlicesApi(unittest.TestCase):
         """
         pass
 
-    def test_slices_delete_email_delete(self):
-        """Test case for slices_delete_email_delete
+    def test_slices_delete_delete(self):
+        """Test case for slices_delete_delete
 
-        Delete all slices of a user identified by an email within a project.  # noqa: E501
+        Delete all slices for a User within a project.  # noqa: E501
         """
         pass
 
