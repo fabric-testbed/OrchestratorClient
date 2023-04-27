@@ -246,7 +246,7 @@ class OrchestratorProxy:
             traceback.print_exc()
             return Status.FAILURE, e
 
-    def delete(self, *, token: str, slice_id: str) -> Tuple[Status, Union[Exception, None]]:
+    def delete(self, *, token: str, slice_id: str = None) -> Tuple[Status, Union[Exception, None]]:
         """
         Delete a slice
         @param token fabric token
@@ -256,15 +256,16 @@ class OrchestratorProxy:
         if token is None:
             return Status.INVALID_ARGUMENTS, OrchestratorProxyException(f"Token {token} must be specified")
 
-        if slice_id is None:
-            return Status.INVALID_ARGUMENTS, OrchestratorProxyException(f"Slice Id {slice_id} must be specified")
-
         try:
             # Set the tokens
             self.slices_api.api_client.configuration.api_key['Authorization'] = token
             self.slices_api.api_client.configuration.api_key_prefix['Authorization'] = 'Bearer'
 
-            self.slices_api.slices_delete_slice_id_delete(slice_id=slice_id)
+            if slice_id is not None:
+                self.slices_api.slices_delete_slice_id_delete(slice_id=slice_id)
+            else:
+                self.slices_api.slices_delete_delete()
+
             return Status.OK, None
         except Exception as e:
             return Status.FAILURE, e

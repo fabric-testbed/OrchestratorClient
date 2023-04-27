@@ -106,11 +106,13 @@ All URIs are relative to *http://127.0.0.1:8700/*
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *ResourcesApi* | [**portalresources_get**](docs/ResourcesApi.md#portalresources_get) | **GET** /portalresources | Retrieve a listing and description of available resources for portal
-*ResourcesApi* | [**resources_get**](docs/ResourcesApi.md#resources_get) | **GET** /resources | Retrieve a listing and description of available resources
+*ResourcesApi* | [**resources_get**](docs/ResourcesApi.md#resources_get) | **GET** /resources | Retrieve a listing and description of available resources. By default, a cached available resource information is returned. User can force to request the current available resources.
 *SlicesApi* | [**slices_create_post**](docs/SlicesApi.md#slices_create_post) | **POST** /slices/create | Create slice
-*SlicesApi* | [**slices_modify_slice_id_put**](SlicesApi.md#slices_modify_slice_id_put) | **PUT** /slices/modify/{slice_id} | Modify an existing slice
+*SlicesApi* | [**slices_delete_delete**](docs/SlicesApi.md#slices_delete_delete) | **DELETE** /slices/delete | Delete all slices for a User within a project.
 *SlicesApi* | [**slices_delete_slice_id_delete**](docs/SlicesApi.md#slices_delete_slice_id_delete) | **DELETE** /slices/delete/{slice_id} | Delete slice.
 *SlicesApi* | [**slices_get**](docs/SlicesApi.md#slices_get) | **GET** /slices | Retrieve a listing of user slices
+*SlicesApi* | [**slices_modify_slice_id_accept_post**](docs/SlicesApi.md#slices_modify_slice_id_accept_post) | **POST** /slices/modify/{slice_id}/accept | Accept the last modify an existing slice
+*SlicesApi* | [**slices_modify_slice_id_put**](docs/SlicesApi.md#slices_modify_slice_id_put) | **PUT** /slices/modify/{slice_id} | Modify an existing slice
 *SlicesApi* | [**slices_renew_slice_id_post**](docs/SlicesApi.md#slices_renew_slice_id_post) | **POST** /slices/renew/{slice_id} | Renew slice
 *SlicesApi* | [**slices_slice_id_get**](docs/SlicesApi.md#slices_slice_id_get) | **GET** /slices/{slice_id} | slice properties
 *SliversApi* | [**slivers_get**](docs/SliversApi.md#slivers_get) | **GET** /slivers | Retrieve a listing of user slivers
@@ -129,7 +131,6 @@ Class | Method | HTTP request | Description
  - [Status200OkNoContent](docs/Status200OkNoContent.md)
  - [Status200OkNoContentData](docs/Status200OkNoContentData.md)
  - [Status200OkPaginated](docs/Status200OkPaginated.md)
- - [Status200OkPaginatedLinks](docs/Status200OkPaginatedLinks.md)
  - [Status200OkSingle](docs/Status200OkSingle.md)
  - [Status400BadRequest](docs/Status400BadRequest.md)
  - [Status400BadRequestErrors](docs/Status400BadRequestErrors.md)
@@ -206,11 +207,17 @@ orchestrator_host = "dev-3.fabric-testbed.net"
 proxy = OrchestratorProxy(orchestrator_host=orchestrator_host)
 status, reservation = proxy.slivers(token=token, slice_id=slice_id, sliver_id=sliver_id)
 ```
-### Delete Slice
+### Delete Slice by slice_id
 ```
 orchestrator_host = "dev-3.fabric-testbed.net"
 proxy = OrchestratorProxy(orchestrator_host=orchestrator_host)
 status, result = proxy.delete(token=token, slice_id=slice_id)
+```
+### Delete Slices by email
+```
+orchestrator_host = "dev-3.fabric-testbed.net"
+proxy = OrchestratorProxy(orchestrator_host=orchestrator_host)
+status, result = proxy.delete(token=token, email=email)
 ```
 ### Renew Slice
 ```
