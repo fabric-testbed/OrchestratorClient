@@ -19,6 +19,7 @@ from fabric_cf.orchestrator.swagger_client.models.resources import Resources
 from fabric_cf.orchestrator.swagger_client.models.slice import Slice
 from fabric_cf.orchestrator.swagger_client.models.slice_details import SliceDetails
 from fabric_cf.orchestrator.swagger_client.models.slices import Slices
+from fabric_cf.orchestrator.swagger_client.models.slices_post import SlicesPost
 from fabric_cf.orchestrator.swagger_client.models.sliver import Sliver
 from fabric_cf.orchestrator.swagger_client.models.slivers import Slivers
 from fabric_cf.orchestrator.swagger_client.models.status200_ok_no_content import Status200OkNoContent
