@@ -31,7 +31,7 @@ configuration.api_key['Authorization'] = 'YOUR_API_KEY'
 # create an instance of the API class
 api_instance = SliversApi(ApiClient(configuration))
 slice_id = 'slice_id_example' # str | Slice identifier as UUID
-as_self = true # bool | GET object as Self (optional) (default to true)
+as_self = True # bool | GET object as Self (optional) (default to true)
 
 try:
     # Retrieve a listing of user slivers
@@ -89,7 +89,7 @@ api_instance = SliversApi(ApiClient(configuration))
 
 slice_id = 'slice_id_example' # str | Slice identified by universally unique identifier
 sliver_id = 'sliver_id_example' # str | Sliver identified by universally unique identifier
-as_self = true # bool | GET object as Self (optional) (default to true)
+as_self = True # bool | GET object as Self (optional) (default to true)
 
 try:
     # slivers properties

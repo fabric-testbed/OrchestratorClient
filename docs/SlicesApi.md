@@ -26,6 +26,7 @@ from __future__ import print_function
 import time
 from fabric_cf.orchestrator.swagger_client import SlicesApi, Configuration, ApiClient
 from fabric_cf.orchestrator.swagger_client.rest import ApiException
+from fabric_cf.orchestrator.swagger_client.models import SlicesPost
 from pprint import pprint
 
 # Configure API key authorization: bearerAuth
@@ -35,8 +36,8 @@ configuration.api_key['Authorization'] = 'YOUR_API_KEY'
 # configuration.api_key_prefix['Authorization'] = 'Bearer'
 
 # create an instance of the API class
-api_instance = swagger_client.SlicesApi(swagger_client.ApiClient(configuration))
-body = swagger_client.SlicesPost() # SlicesPost | Create new Slice
+api_instance = SlicesApi(ApiClient(configuration))
+body = SlicesPost() # SlicesPost | Create new Slice
 name = 'name_example' # str | Slice Name
 lease_end_time = 'lease_end_time_example' # str | Lease End Time for the Slice (optional)
 
