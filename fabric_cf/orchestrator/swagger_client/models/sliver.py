@@ -142,7 +142,7 @@ class Sliver(object):
 
 
         :return: The sliver of this Sliver.  # noqa: E501
-        :rtype: dict
+        :rtype: object
         """
         return self._sliver
 

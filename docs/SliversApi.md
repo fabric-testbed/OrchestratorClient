@@ -31,10 +31,11 @@ configuration.api_key['Authorization'] = 'YOUR_API_KEY'
 # create an instance of the API class
 api_instance = SliversApi(ApiClient(configuration))
 slice_id = 'slice_id_example' # str | Slice identifier as UUID
+as_self = True # bool | GET object as Self (optional) (default to true)
 
 try:
     # Retrieve a listing of user slivers
-    api_response = api_instance.slivers_get(slice_id)
+    api_response = api_instance.slivers_get(slice_id, as_self=as_self)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling SliversApi->slivers_get: %s\n" % e)
@@ -45,6 +46,7 @@ except ApiException as e:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **slice_id** | **str**| Slice identifier as UUID | 
+ **as_self** | **bool**| GET object as Self | [optional] [default to true]
 
 ### Return type
 
@@ -62,7 +64,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **slivers_sliver_id_get**
-> Slivers slivers_sliver_id_get(slice_id, sliver_id)
+> Slivers slivers_sliver_id_get(slice_id, sliver_id, as_self=as_self)
 
 slivers properties
 
@@ -87,10 +89,11 @@ api_instance = SliversApi(ApiClient(configuration))
 
 slice_id = 'slice_id_example' # str | Slice identified by universally unique identifier
 sliver_id = 'sliver_id_example' # str | Sliver identified by universally unique identifier
+as_self = True # bool | GET object as Self (optional) (default to true)
 
 try:
     # slivers properties
-    api_response = api_instance.slivers_sliver_id_get(slice_id, sliver_id)
+    api_response = api_instance.slivers_sliver_id_get(slice_id, sliver_id, as_self=as_self)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling SliversApi->slivers_sliver_id_get: %s\n" % e)
@@ -102,6 +105,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **slice_id** | **str**| Slice identified by universally unique identifier | 
  **sliver_id** | **str**| Sliver identified by universally unique identifier | 
+ **as_self** | **bool**| GET object as Self | [optional] [default to true]
 
 ### Return type
 

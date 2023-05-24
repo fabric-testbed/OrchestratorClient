@@ -33,7 +33,7 @@ from fim.user import GraphFormat
 from fabric_cf.orchestrator import swagger_client
 from fim.user.topology import ExperimentTopology, AdvertizedTopology
 
-from fabric_cf.orchestrator.swagger_client import Sliver, Slice
+from fabric_cf.orchestrator.swagger_client import Sliver, Slice, SlicesPost
 
 
 class OrchestratorProxyException(Exception):
@@ -131,13 +131,14 @@ class OrchestratorProxy:
         self.slices_api.api_client.configuration.api_key[self.PROP_AUTHORIZATION] = token
         self.slices_api.api_client.configuration.api_key_prefix[self.PROP_AUTHORIZATION] = self.PROP_BEARER
 
-    def create(self, *, token: str, slice_name: str, ssh_key: str, topology: ExperimentTopology = None,
-               slice_graph: str = None, lease_end_time: str = None) -> Tuple[Status, Union[Exception, List[Sliver]]]:
+    def create(self, *, token: str, slice_name: str, ssh_key: Union[str, List[str]],
+               topology: ExperimentTopology = None, slice_graph: str = None,
+               lease_end_time: str = None) -> Tuple[Status, Union[Exception, List[Sliver]]]:
         """
         Create a slice
         @param token fabric token
         @param slice_name slice name
-        @param ssh_key SSH Key
+        @param ssh_key SSH Key(s)
         @param topology Experiment topology
         @param slice_graph Slice Graph string
         @param lease_end_time Lease End Time
@@ -169,12 +170,15 @@ class OrchestratorProxy:
             if topology is not None:
                 slice_graph = topology.serialize()
 
-            response = None
-            if lease_end_time is not None:
-                slivers = self.slices_api.slices_create_post(name=slice_name, body=slice_graph, ssh_key=ssh_key,
-                                                             lease_end_time=lease_end_time)
+            if isinstance(ssh_key, str):
+                ssh_keys = [ssh_key]
             else:
-                slivers = self.slices_api.slices_create_post(name=slice_name, body=slice_graph, ssh_key=ssh_key)
+                ssh_keys = ssh_key
+            body = SlicesPost(graph_model=slice_graph, ssh_keys=ssh_keys)
+            if lease_end_time is not None:
+                slivers = self.slices_api.slices_create_post(name=slice_name, body=body, lease_end_time=lease_end_time)
+            else:
+                slivers = self.slices_api.slices_create_post(name=slice_name, body=body)
 
             return Status.OK, slivers.data if slivers.data is not None else []
         except Exception as e:
@@ -271,7 +275,8 @@ class OrchestratorProxy:
             return Status.FAILURE, e
 
     def slices(self, *, token: str, includes: List[SliceState] = None, excludes: List[SliceState] = None,
-               name: str = None, limit: int = 20, offset: int = 0, slice_id: str = None) -> Tuple[Status, Union[Exception, List[Slice]]]:
+               name: str = None, limit: int = 20, offset: int = 0, slice_id: str = None,
+               as_self:bool = True) -> Tuple[Status, Union[Exception, List[Slice]]]:
         """
         Get slices
         @param token fabric token
@@ -281,6 +286,7 @@ class OrchestratorProxy:
         @param limit maximum number of slices to return
         @param offset offset of the first slice to return
         @param slice_id Slice Id
+        @param as_self
         @return Tuple containing Status and Exception/Json containing slices
         """
         if token is None:
@@ -302,26 +308,28 @@ class OrchestratorProxy:
                         states.remove(x)
 
             if slice_id is not None:
-                slices = self.slices_api.slices_slice_id_get(slice_id=slice_id, graph_format=GraphFormat.GRAPHML.name)
+                slices = self.slices_api.slices_slice_id_get(slice_id=slice_id, graph_format=GraphFormat.GRAPHML.name,
+                                                             as_self=as_self)
             elif name is not None:
                 slices = self.slices_api.slices_get(states=SliceState.state_list_to_str_list(states), name=name,
-                                                    limit=limit, offset=offset)
+                                                    limit=limit, offset=offset, as_self=as_self)
             else:
                 slices = self.slices_api.slices_get(states=SliceState.state_list_to_str_list(states), limit=limit,
-                                                    offset=offset)
+                                                    offset=offset, as_self=as_self)
 
             return Status.OK, slices.data if slices.data is not None else []
         except Exception as e:
             return Status.FAILURE, e
 
     def get_slice(self, *, token: str, slice_id: str = None,
-                  graph_format: GraphFormat = GraphFormat.GRAPHML) -> Tuple[Status,
-                                                                            Union[Exception, ExperimentTopology, dict]]:
+                  graph_format: GraphFormat = GraphFormat.GRAPHML,
+                  as_self: bool = True) -> Tuple[Status, Union[Exception, ExperimentTopology, dict]]:
         """
         Get slice
         @param token fabric token
         @param slice_id slice id
         @param graph_format
+        @param as_self
         @return Tuple containing Status and Exception/Json containing slice
         """
         if token is None:
@@ -334,7 +342,8 @@ class OrchestratorProxy:
             # Set the tokens
             self.__set_tokens(token=token)
 
-            slice_details = self.slices_api.slices_slice_id_get(slice_id=slice_id, graph_format=graph_format.name)
+            slice_details = self.slices_api.slices_slice_id_get(slice_id=slice_id, graph_format=graph_format.name,
+                                                                as_self=as_self)
 
             model = slice_details.data[0].model if slice_details.data is not None else None
             topology = None
@@ -347,12 +356,14 @@ class OrchestratorProxy:
             return Status.FAILURE, e
 
     def slivers(self, *, token: str, slice_id: str,
-                sliver_id: str = None) -> Tuple[Status, Union[Exception, List[Sliver]]]:
+                sliver_id: str = None,
+                as_self: bool = True) -> Tuple[Status, Union[Exception, List[Sliver]]]:
         """
         Get slivers
         @param token fabric token
         @param slice_id slice id
         @param sliver_id slice sliver_id
+        @param as_self
         @return Tuple containing Status and Exception/Json containing Sliver(s)
         """
         if token is None:
@@ -366,9 +377,10 @@ class OrchestratorProxy:
             self.__set_tokens(token=token)
 
             if sliver_id is None:
-                slivers = self.slivers_api.slivers_get(slice_id=slice_id)
+                slivers = self.slivers_api.slivers_get(slice_id=slice_id, as_self=as_self)
             else:
-                slivers = self.slivers_api.slivers_sliver_id_get(slice_id=slice_id, sliver_id=sliver_id)
+                slivers = self.slivers_api.slivers_sliver_id_get(slice_id=slice_id, sliver_id=sliver_id,
+                                                                 as_self=as_self)
 
             return Status.OK, slivers.data if slivers.data is not None else []
         except Exception as e:

@@ -29,47 +29,49 @@ class SlicesApi(object):
             api_client = ApiClient()
         self.api_client = api_client
 
-    def slices_create_post(self, body, name, ssh_key, **kwargs):  # noqa: E501
+    def slices_create_post(self, body, name, **kwargs):  # noqa: E501
         """Create slice  # noqa: E501
+
         Request to create slice as described in the request. Request would be a graph ML describing the requested resources. Resources may be requested to be created now or in future. On success, one or more slivers are allocated, containing resources satisfying the request, and assigned to the given slice. This API returns list and description of the resources reserved for the slice in the form of Graph ML. Orchestrator would also trigger provisioning of these resources asynchronously on the appropriate sites either now or in the future as requested. Experimenter can invoke get slice API to get the latest state of the requested resources.    # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
-        >>> thread = api.slices_create_post(body, name, ssh_key, async_req=True)
+        >>> thread = api.slices_create_post(body, name, async_req=True)
         >>> result = thread.get()
+
         :param async_req bool
-        :param str body: (required)
+        :param SlicesPost body: Create new Slice (required)
         :param str name: Slice Name (required)
-        :param str ssh_key: User SSH Key (required)
-        :param str lease_end_time: New Lease End Time for the Slice
+        :param str lease_end_time: Lease End Time for the Slice
         :return: Slivers
                  If the method is called asynchronously,
                  returns the request thread.
         """
         kwargs['_return_http_data_only'] = True
         if kwargs.get('async_req'):
-            return self.slices_create_post_with_http_info(body, name, ssh_key, **kwargs)  # noqa: E501
+            return self.slices_create_post_with_http_info(body, name, **kwargs)  # noqa: E501
         else:
-            (data) = self.slices_create_post_with_http_info(body, name, ssh_key, **kwargs)  # noqa: E501
+            (data) = self.slices_create_post_with_http_info(body, name, **kwargs)  # noqa: E501
             return data
 
-    def slices_create_post_with_http_info(self, body, name, ssh_key, **kwargs):  # noqa: E501
+    def slices_create_post_with_http_info(self, body, name, **kwargs):  # noqa: E501
         """Create slice  # noqa: E501
+
         Request to create slice as described in the request. Request would be a graph ML describing the requested resources. Resources may be requested to be created now or in future. On success, one or more slivers are allocated, containing resources satisfying the request, and assigned to the given slice. This API returns list and description of the resources reserved for the slice in the form of Graph ML. Orchestrator would also trigger provisioning of these resources asynchronously on the appropriate sites either now or in the future as requested. Experimenter can invoke get slice API to get the latest state of the requested resources.    # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
-        >>> thread = api.slices_create_post_with_http_info(body, name, ssh_key, async_req=True)
+        >>> thread = api.slices_create_post_with_http_info(body, name, async_req=True)
         >>> result = thread.get()
+
         :param async_req bool
-        :param str body: (required)
+        :param SlicesPost body: Create new Slice (required)
         :param str name: Slice Name (required)
-        :param str ssh_key: User SSH Key (required)
-        :param str lease_end_time: New Lease End Time for the Slice
+        :param str lease_end_time: Lease End Time for the Slice
         :return: Slivers
                  If the method is called asynchronously,
                  returns the request thread.
         """
 
-        all_params = ['body', 'name', 'ssh_key', 'lease_end_time']  # noqa: E501
+        all_params = ['body', 'name', 'lease_end_time']  # noqa: E501
         all_params.append('async_req')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
@@ -92,10 +94,6 @@ class SlicesApi(object):
         if ('name' not in params or
                 params['name'] is None):
             raise ValueError("Missing the required parameter `name` when calling `slices_create_post`")  # noqa: E501
-        # verify the required parameter 'ssh_key' is set
-        if ('ssh_key' not in params or
-                params['ssh_key'] is None):
-            raise ValueError("Missing the required parameter `ssh_key` when calling `slices_create_post`")  # noqa: E501
 
         collection_formats = {}
 
@@ -104,8 +102,6 @@ class SlicesApi(object):
         query_params = []
         if 'name' in params:
             query_params.append(('name', params['name']))  # noqa: E501
-        if 'ssh_key' in params:
-            query_params.append(('ssh_key', params['ssh_key']))  # noqa: E501
         if 'lease_end_time' in params:
             query_params.append(('lease_end_time', params['lease_end_time']))  # noqa: E501
 
@@ -123,7 +119,7 @@ class SlicesApi(object):
 
         # HTTP header `Content-Type`
         header_params['Content-Type'] = self.api_client.select_header_content_type(  # noqa: E501
-            ['text/plain'])  # noqa: E501
+            ['application/json'])  # noqa: E501
 
         # Authentication setting
         auth_settings = ['bearerAuth']  # noqa: E501
@@ -239,6 +235,7 @@ class SlicesApi(object):
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.slices_delete_slice_id_delete(slice_id, async_req=True)
         >>> result = thread.get()
+
         :param async_req bool
         :param str slice_id: Slice identified by universally unique identifier (required)
         :return: Status200OkNoContent
@@ -254,11 +251,13 @@ class SlicesApi(object):
 
     def slices_delete_slice_id_delete_with_http_info(self, slice_id, **kwargs):  # noqa: E501
         """Delete slice.  # noqa: E501
+
         Request to delete slice. On success, resources associated with slice or sliver are stopped if necessary, de-provisioned and un-allocated at the respective sites.   # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.slices_delete_slice_id_delete_with_http_info(slice_id, async_req=True)
         >>> result = thread.get()
+
         :param async_req bool
         :param str slice_id: Slice identified by universally unique identifier (required)
         :return: Status200OkNoContent
@@ -325,13 +324,16 @@ class SlicesApi(object):
 
     def slices_get(self, **kwargs):  # noqa: E501
         """Retrieve a listing of user slices  # noqa: E501
-        Retrieve a listing of user slices  # noqa: E501
+
+        Retrieve a listing of user slices. It returns list of all slices belonging to all members in a project when 'as_self' is False otherwise returns only the all user's slices in a project.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.slices_get(async_req=True)
         >>> result = thread.get()
+
         :param async_req bool
         :param str name: Search for Slices with the name
+        :param bool as_self: GET object as Self
         :param list[str] states: Search for Slices in the specified states
         :param int limit: maximum number of results to return per page (1 or more)
         :param int offset: number of items to skip before starting to collect the result set
@@ -348,13 +350,16 @@ class SlicesApi(object):
 
     def slices_get_with_http_info(self, **kwargs):  # noqa: E501
         """Retrieve a listing of user slices  # noqa: E501
-        Retrieve a listing of user slices  # noqa: E501
+
+        Retrieve a listing of user slices. It returns list of all slices belonging to all members in a project when 'as_self' is False otherwise returns only the all user's slices in a project.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.slices_get_with_http_info(async_req=True)
         >>> result = thread.get()
+
         :param async_req bool
         :param str name: Search for Slices with the name
+        :param bool as_self: GET object as Self
         :param list[str] states: Search for Slices in the specified states
         :param int limit: maximum number of results to return per page (1 or more)
         :param int offset: number of items to skip before starting to collect the result set
@@ -363,7 +368,7 @@ class SlicesApi(object):
                  returns the request thread.
         """
 
-        all_params = ['name', 'states', 'limit', 'offset']  # noqa: E501
+        all_params = ['name', 'as_self', 'states', 'limit', 'offset']  # noqa: E501
         all_params.append('async_req')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
@@ -386,6 +391,8 @@ class SlicesApi(object):
         query_params = []
         if 'name' in params:
             query_params.append(('name', params['name']))  # noqa: E501
+        if 'as_self' in params:
+            query_params.append(('as_self', params['as_self']))  # noqa: E501
         if 'states' in params:
             query_params.append(('states', params['states']))  # noqa: E501
             collection_formats['states'] = 'multi'  # noqa: E501
@@ -425,11 +432,13 @@ class SlicesApi(object):
 
     def slices_modify_slice_id_accept_post(self, slice_id, **kwargs):  # noqa: E501
         """Accept the last modify an existing slice  # noqa: E501
+
         Accept the last modify and prune any failed resources from the Slice. Also return the accepted slice model back to the user.    # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.slices_modify_slice_id_accept_post(slice_id, async_req=True)
         >>> result = thread.get()
+
         :param async_req bool
         :param str slice_id: Slice identified by universally unique identifier (required)
         :return: SliceDetails
@@ -445,11 +454,13 @@ class SlicesApi(object):
 
     def slices_modify_slice_id_accept_post_with_http_info(self, slice_id, **kwargs):  # noqa: E501
         """Accept the last modify an existing slice  # noqa: E501
+
         Accept the last modify and prune any failed resources from the Slice. Also return the accepted slice model back to the user.    # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.slices_modify_slice_id_accept_post_with_http_info(slice_id, async_req=True)
         >>> result = thread.get()
+
         :param async_req bool
         :param str slice_id: Slice identified by universally unique identifier (required)
         :return: SliceDetails
@@ -516,13 +527,15 @@ class SlicesApi(object):
 
     def slices_modify_slice_id_put(self, body, slice_id, **kwargs):  # noqa: E501
         """Modify an existing slice  # noqa: E501
+
         Request to modify an existing slice as described in the request. Request would be a graph ML describing the experiment topolgy expected after a modify. The supported modify actions include adding or removing nodes, components, network services or interfaces of the slice. On success, one or more slivers are allocated, containing resources satisfying the request, and assigned to the given slice. This API returns list and description of the resources reserved for the slice in the form of Graph ML. Orchestrator would also trigger provisioning of these resources asynchronously on the appropriate sites either now or in the future as requested. Experimenter can invoke get slice API to get the latest state of the requested resources.    # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.slices_modify_slice_id_put(body, slice_id, async_req=True)
         >>> result = thread.get()
+
         :param async_req bool
-        :param str body: (required)
+        :param str body: Modify a Slice (required)
         :param str slice_id: Slice identified by universally unique identifier (required)
         :return: Slivers
                  If the method is called asynchronously,
@@ -537,13 +550,15 @@ class SlicesApi(object):
 
     def slices_modify_slice_id_put_with_http_info(self, body, slice_id, **kwargs):  # noqa: E501
         """Modify an existing slice  # noqa: E501
+
         Request to modify an existing slice as described in the request. Request would be a graph ML describing the experiment topolgy expected after a modify. The supported modify actions include adding or removing nodes, components, network services or interfaces of the slice. On success, one or more slivers are allocated, containing resources satisfying the request, and assigned to the given slice. This API returns list and description of the resources reserved for the slice in the form of Graph ML. Orchestrator would also trigger provisioning of these resources asynchronously on the appropriate sites either now or in the future as requested. Experimenter can invoke get slice API to get the latest state of the requested resources.    # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.slices_modify_slice_id_put_with_http_info(body, slice_id, async_req=True)
         >>> result = thread.get()
+
         :param async_req bool
-        :param str body: (required)
+        :param str body: Modify a Slice (required)
         :param str slice_id: Slice identified by universally unique identifier (required)
         :return: Slivers
                  If the method is called asynchronously,
@@ -619,11 +634,13 @@ class SlicesApi(object):
 
     def slices_renew_slice_id_post(self, slice_id, lease_end_time, **kwargs):  # noqa: E501
         """Renew slice  # noqa: E501
+
         Request to extend slice be renewed with their expiration extended. If possible, the orchestrator should extend the slivers to the requested expiration time, or to a sooner time if policy limits apply.   # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.slices_renew_slice_id_post(slice_id, lease_end_time, async_req=True)
         >>> result = thread.get()
+
         :param async_req bool
         :param str slice_id: Slice identified by universally unique identifier (required)
         :param str lease_end_time: New Lease End Time for the Slice (required)
@@ -640,11 +657,13 @@ class SlicesApi(object):
 
     def slices_renew_slice_id_post_with_http_info(self, slice_id, lease_end_time, **kwargs):  # noqa: E501
         """Renew slice  # noqa: E501
+
         Request to extend slice be renewed with their expiration extended. If possible, the orchestrator should extend the slivers to the requested expiration time, or to a sooner time if policy limits apply.   # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.slices_renew_slice_id_post_with_http_info(slice_id, lease_end_time, async_req=True)
         >>> result = thread.get()
+
         :param async_req bool
         :param str slice_id: Slice identified by universally unique identifier (required)
         :param str lease_end_time: New Lease End Time for the Slice (required)
@@ -718,14 +737,17 @@ class SlicesApi(object):
 
     def slices_slice_id_get(self, slice_id, graph_format, **kwargs):  # noqa: E501
         """slice properties  # noqa: E501
+
         Retrieve Slice properties  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.slices_slice_id_get(slice_id, graph_format, async_req=True)
         >>> result = thread.get()
+
         :param async_req bool
         :param str slice_id: Slice identified by universally unique identifier (required)
         :param str graph_format: graph format (required)
+        :param bool as_self: GET object as Self
         :return: SliceDetails
                  If the method is called asynchronously,
                  returns the request thread.
@@ -739,20 +761,23 @@ class SlicesApi(object):
 
     def slices_slice_id_get_with_http_info(self, slice_id, graph_format, **kwargs):  # noqa: E501
         """slice properties  # noqa: E501
+
         Retrieve Slice properties  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.slices_slice_id_get_with_http_info(slice_id, graph_format, async_req=True)
         >>> result = thread.get()
+
         :param async_req bool
         :param str slice_id: Slice identified by universally unique identifier (required)
         :param str graph_format: graph format (required)
+        :param bool as_self: GET object as Self
         :return: SliceDetails
                  If the method is called asynchronously,
                  returns the request thread.
         """
 
-        all_params = ['slice_id', 'graph_format']  # noqa: E501
+        all_params = ['slice_id', 'graph_format', 'as_self']  # noqa: E501
         all_params.append('async_req')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
@@ -783,6 +808,8 @@ class SlicesApi(object):
             path_params['slice_id'] = params['slice_id']  # noqa: E501
 
         query_params = []
+        if 'as_self' in params:
+            query_params.append(('as_self', params['as_self']))  # noqa: E501
         if 'graph_format' in params:
             query_params.append(('graph_format', params['graph_format']))  # noqa: E501
 
