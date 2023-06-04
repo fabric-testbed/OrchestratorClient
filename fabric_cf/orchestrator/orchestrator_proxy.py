@@ -26,7 +26,7 @@
 import enum
 import traceback
 from datetime import datetime
-from typing import Tuple, Union, List
+from typing import Tuple, Union, List, Dict
 
 from fim.user import GraphFormat
 
@@ -34,6 +34,7 @@ from fabric_cf.orchestrator import swagger_client
 from fim.user.topology import ExperimentTopology, AdvertizedTopology
 
 from fabric_cf.orchestrator.swagger_client import Sliver, Slice, SlicesPost
+from fabric_cf.orchestrator.swagger_client.models import PoaPost, PoaData, PoaPostData, Poa
 
 
 class OrchestratorProxyException(Exception):
@@ -461,5 +462,65 @@ class OrchestratorProxy:
             self.slices_api.slices_renew_slice_id_post(slice_id=slice_id, lease_end_time=new_lease_end_time)
 
             return Status.OK, None
+        except Exception as e:
+            return Status.FAILURE, e
+
+    def poa(self, *, token: str, sliver_id: str, operation: str, vcpu_cpu_map: List[Dict[str, str]] = None,
+            node_set: List[str] = None) -> Tuple[Status, Union[Exception, List[PoaData]]]:
+        """
+        Modify a slice
+        @param token fabric token
+        @param sliver_id Sliver Id
+        @param operation POA operation
+        @param vcpu_cpu_map vCPU to physical CPU Map
+        @param node_set List of Numa nodes
+        @return Tuple containing Status and Exception/Json containing poa info created
+        """
+        if token is None:
+            return Status.INVALID_ARGUMENTS, OrchestratorProxyException(f"Token {token} must be specified")
+
+        if sliver_id is None:
+            return Status.INVALID_ARGUMENTS, \
+                   OrchestratorProxyException(f"Sliver Id {sliver_id} must be specified")
+
+        try:
+            # Set the tokens
+            self.__set_tokens(token=token)
+
+            body = PoaPost(operation=operation)
+            if vcpu_cpu_map is not None or node_set is not None:
+                post_data = PoaPostData()
+                post_data.vcpu_cpu_map = vcpu_cpu_map
+                post_data.node_set = node_set
+                body.data = post_data
+
+            poa_data = self.slivers_api.slivers_poa_sliver_id_post(sliver_id=sliver_id, body=body)
+
+            return Status.OK, poa_data.data if poa_data.data is not None else None
+        except Exception as e:
+            return Status.FAILURE, e
+
+    def poa_status(self, *, token: str, sliver_id: str, request_id: str) -> Tuple[Status, Union[Exception, List[PoaData]]]:
+        """
+        Modify a slice
+        @param token fabric token
+        @param sliver_id Sliver Id
+        @param request_id POA request id
+        @return Tuple containing Status and Exception/Json containing poa info created
+        """
+        if token is None:
+            return Status.INVALID_ARGUMENTS, OrchestratorProxyException(f"Token {token} must be specified")
+
+        if sliver_id is None:
+            return Status.INVALID_ARGUMENTS, \
+                   OrchestratorProxyException(f"Sliver Id {sliver_id} must be specified")
+
+        try:
+            # Set the tokens
+            self.__set_tokens(token=token)
+
+            poa_data = self.slivers_api.slivers_poa_sliver_id_request_id_get(sliver_id=sliver_id, request_id=request_id)
+
+            return Status.OK, poa_data.data if poa_data.data is not None else None
         except Exception as e:
             return Status.FAILURE, e

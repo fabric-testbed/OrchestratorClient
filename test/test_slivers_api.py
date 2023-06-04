@@ -34,6 +34,20 @@ class TestSliversApi(unittest.TestCase):
         """
         pass
 
+    def test_slivers_poa_sliver_id_post(self):
+        """Test case for slivers_poa_sliver_id_post
+
+        Perform an operational action on a sliver.  # noqa: E501
+        """
+        pass
+
+    def test_slivers_poa_sliver_id_request_id_get(self):
+        """Test case for slivers_poa_sliver_id_request_id_get
+
+        Perform an operational action on a sliver.  # noqa: E501
+        """
+        pass
+
     def test_slivers_sliver_id_get(self):
         """Test case for slivers_sliver_id_get
 

@@ -5,6 +5,8 @@ All URIs are relative to *http://127.0.0.1:8700/*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**slivers_get**](SliversApi.md#slivers_get) | **GET** /slivers | Retrieve a listing of user slivers
+[**slivers_poa_sliver_id_post**](SliversApi.md#slivers_poa_sliver_id_post) | **POST** /slivers/poa/{sliver_id} | Perform an operational action on a sliver.
+[**slivers_poa_sliver_id_request_id_get**](SliversApi.md#slivers_poa_sliver_id_request_id_get) | **GET** /slivers/poa/{sliver_id}/{request_id} | Perform an operational action on a sliver.
 [**slivers_sliver_id_get**](SliversApi.md#slivers_sliver_id_get) | **GET** /slivers/{sliver_id} | slivers properties
 
 # **slivers_get**
@@ -51,6 +53,116 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**Slivers**](Slivers.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **slivers_poa_sliver_id_post**
+> Poa slivers_poa_sliver_id_post(body, sliver_id)
+
+Perform an operational action on a sliver.
+
+Request to perform an operation action on a sliver. Supported actions include - reboot a VM sliver, get cpu info, get numa info, pin vCPUs, pin memory to a numa node etc.   
+
+### Example
+```python
+from __future__ import print_function
+import time
+from fabric_cf.orchestrator.swagger_client import SliversApi, Configuration, ApiClient
+from fabric_cf.orchestrator.swagger_client.rest import ApiException
+from fabric_cf.orchestrator.swagger_client.models.poa_post import PoaPost
+from pprint import pprint
+
+# Configure API key authorization: bearerAuth
+configuration = Configuration()
+configuration.api_key['Authorization'] = 'YOUR_API_KEY'
+
+# create an instance of the API class
+api_instance = SliversApi(ApiClient(configuration))
+body = PoaPost() # PoaPost | Perform Operation Action
+sliver_id = 'sliver_id_example' # str | Sliver identified by universally unique identifier
+
+try:
+    # Perform an operational action on a sliver.
+    api_response = api_instance.slivers_poa_sliver_id_post(body, sliver_id)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling SliversApi->slivers_poa_sliver_id_post: %s\n" % e)
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **body** | [**PoaPost**](PoaPost.md)| Perform Operation Action | 
+ **sliver_id** | **str**| Sliver identified by universally unique identifier | 
+
+### Return type
+
+[**Poa**](Poa.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **slivers_poa_sliver_id_request_id_get**
+> Poa slivers_poa_sliver_id_request_id_get(sliver_id, request_id)
+
+Perform an operational action on a sliver.
+
+Request get the status of the POA identified by request_id.   
+
+### Example
+```python
+from __future__ import print_function
+import time
+from fabric_cf.orchestrator.swagger_client import SliversApi, Configuration, ApiClient
+from fabric_cf.orchestrator.swagger_client.rest import ApiException
+from fabric_cf.orchestrator.swagger_client.models.poa_post import PoaPost
+from pprint import pprint
+
+# Configure API key authorization: bearerAuth
+configuration = Configuration()
+configuration.api_key['Authorization'] = 'YOUR_API_KEY'
+
+# create an instance of the API class
+api_instance = SliversApi(ApiClient(configuration))
+sliver_id = 'sliver_id_example' # str | Sliver identified by universally unique identifier
+request_id = 'request_id_example' # str | Request Id for the POA triggered
+
+try:
+    # Perform an operational action on a sliver.
+    api_response = api_instance.slivers_poa_sliver_id_request_id_get(sliver_id, request_id)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling SliversApi->slivers_poa_sliver_id_request_id_get: %s\n" % e)
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **sliver_id** | **str**| Sliver identified by universally unique identifier | 
+ **request_id** | **str**| Request Id for the POA triggered | 
+
+### Return type
+
+[**Poa**](Poa.md)
 
 ### Authorization
 
