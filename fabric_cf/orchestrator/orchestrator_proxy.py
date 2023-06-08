@@ -277,7 +277,7 @@ class OrchestratorProxy:
 
     def slices(self, *, token: str, includes: List[SliceState] = None, excludes: List[SliceState] = None,
                name: str = None, limit: int = 20, offset: int = 0, slice_id: str = None,
-               as_self:bool = True) -> Tuple[Status, Union[Exception, List[Slice]]]:
+               as_self: bool = True) -> Tuple[Status, Union[Exception, List[Slice]]]:
         """
         Get slices
         @param token fabric token
@@ -500,26 +500,35 @@ class OrchestratorProxy:
         except Exception as e:
             return Status.FAILURE, e
 
-    def poa_status(self, *, token: str, sliver_id: str, request_id: str) -> Tuple[Status, Union[Exception, List[PoaData]]]:
+    def get_poas(self, *, token: str, sliver_id: str = None,
+                 poa_id: str = None, limit: int = 20, offset: int = 0) -> Tuple[Status, Union[Exception, List[PoaData]]]:
         """
         Modify a slice
         @param token fabric token
         @param sliver_id Sliver Id
-        @param request_id POA request id
+        @param poa_id POA request id
+        @param limit maximum number of poas to return
+        @param offset offset of the first poas to return
         @return Tuple containing Status and Exception/Json containing poa info created
         """
         if token is None:
             return Status.INVALID_ARGUMENTS, OrchestratorProxyException(f"Token {token} must be specified")
 
-        if sliver_id is None:
+        if sliver_id is None and poa_id is None:
             return Status.INVALID_ARGUMENTS, \
-                   OrchestratorProxyException(f"Sliver Id {sliver_id} must be specified")
+                   OrchestratorProxyException(f"Sliver Id {sliver_id} or Poa ID {poa_id} must be specified")
 
         try:
             # Set the tokens
             self.__set_tokens(token=token)
 
-            poa_data = self.slivers_api.slivers_poa_sliver_id_request_id_get(sliver_id=sliver_id, request_id=request_id)
+            if poa_id is not None:
+                poa_data = self.slivers_api.slivers_poa_get_poa_id_get(poa_id=poa_id)
+            elif sliver_id is not None:
+                poa_data = self.slivers_api.slivers_poa_get_sliver_id_get(sliver_id=sliver_id, limit=limit,
+                                                                          offset=offset)
+            else:
+                raise Exception("Invalid Arguments")
 
             return Status.OK, poa_data.data if poa_data.data is not None else None
         except Exception as e:

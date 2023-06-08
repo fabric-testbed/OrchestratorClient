@@ -29,26 +29,36 @@ class PoaData(object):
     """
     swagger_types = {
         'operation': 'str',
-        'request_id': 'str',
-        'info': 'PoaDataInfo'
+        'poa_id': 'str',
+        'sliver_id': 'str',
+        'slice_id': 'str',
+        'info': 'object'
     }
 
     attribute_map = {
         'operation': 'operation',
-        'request_id': 'request_id',
+        'poa_id': 'poa_id',
+        'sliver_id': 'sliver_id',
+        'slice_id': 'slice_id',
         'info': 'info'
     }
 
-    def __init__(self, operation=None, request_id=None, info=None):  # noqa: E501
+    def __init__(self, operation=None, poa_id=None, sliver_id=None, slice_id=None, info=None):  # noqa: E501
         """PoaData - a model defined in Swagger"""  # noqa: E501
         self._operation = None
-        self._request_id = None
+        self._poa_id = None
+        self._sliver_id = None
+        self._slice_id = None
         self._info = None
         self.discriminator = None
         if operation is not None:
             self.operation = operation
-        if request_id is not None:
-            self.request_id = request_id
+        if poa_id is not None:
+            self.poa_id = poa_id
+        if sliver_id is not None:
+            self.sliver_id = sliver_id
+        if slice_id is not None:
+            self.slice_id = slice_id
         if info is not None:
             self.info = info
 
@@ -74,25 +84,67 @@ class PoaData(object):
         self._operation = operation
 
     @property
-    def request_id(self):
-        """Gets the request_id of this PoaData.  # noqa: E501
+    def poa_id(self):
+        """Gets the poa_id of this PoaData.  # noqa: E501
 
 
-        :return: The request_id of this PoaData.  # noqa: E501
+        :return: The poa_id of this PoaData.  # noqa: E501
         :rtype: str
         """
-        return self._request_id
+        return self._poa_id
 
-    @request_id.setter
-    def request_id(self, request_id):
-        """Sets the request_id of this PoaData.
+    @poa_id.setter
+    def poa_id(self, poa_id):
+        """Sets the poa_id of this PoaData.
 
 
-        :param request_id: The request_id of this PoaData.  # noqa: E501
+        :param poa_id: The poa_id of this PoaData.  # noqa: E501
         :type: str
         """
 
-        self._request_id = request_id
+        self._poa_id = poa_id
+
+    @property
+    def sliver_id(self):
+        """Gets the sliver_id of this PoaData.  # noqa: E501
+
+
+        :return: The sliver_id of this PoaData.  # noqa: E501
+        :rtype: str
+        """
+        return self._sliver_id
+
+    @sliver_id.setter
+    def sliver_id(self, sliver_id):
+        """Sets the sliver_id of this PoaData.
+
+
+        :param sliver_id: The sliver_id of this PoaData.  # noqa: E501
+        :type: str
+        """
+
+        self._sliver_id = sliver_id
+
+    @property
+    def slice_id(self):
+        """Gets the slice_id of this PoaData.  # noqa: E501
+
+
+        :return: The slice_id of this PoaData.  # noqa: E501
+        :rtype: str
+        """
+        return self._slice_id
+
+    @slice_id.setter
+    def slice_id(self, slice_id):
+        """Sets the slice_id of this PoaData.
+
+
+        :param slice_id: The slice_id of this PoaData.  # noqa: E501
+        :type: str
+        """
+
+        self._slice_id = slice_id
 
     @property
     def info(self):
@@ -100,7 +152,7 @@ class PoaData(object):
 
 
         :return: The info of this PoaData.  # noqa: E501
-        :rtype: PoaDataInfo
+        :rtype: object
         """
         return self._info
 
@@ -110,7 +162,7 @@ class PoaData(object):
 
 
         :param info: The info of this PoaData.  # noqa: E501
-        :type: PoaDataInfo
+        :type: object
         """
 
         self._info = info

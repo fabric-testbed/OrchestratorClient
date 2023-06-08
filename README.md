@@ -116,8 +116,9 @@ Class | Method | HTTP request | Description
 *SlicesApi* | [**slices_renew_slice_id_post**](docs/SlicesApi.md#slices_renew_slice_id_post) | **POST** /slices/renew/{slice_id} | Renew slice
 *SlicesApi* | [**slices_slice_id_get**](docs/SlicesApi.md#slices_slice_id_get) | **GET** /slices/{slice_id} | slice properties
 *SliversApi* | [**slivers_get**](docs/SliversApi.md#slivers_get) | **GET** /slivers | Retrieve a listing of user slivers
+*SliversApi* | [**slivers_poa_get_poa_id_get**](docs/SliversApi.md#slivers_poa_get_poa_id_get) | **GET** /slivers/poa_get/{poa_id} | Perform an operational action on a sliver.
+*SliversApi* | [**slivers_poa_get_sliver_id_get**](docs/SliversApi.md#slivers_poa_get_sliver_id_get) | **GET** /slivers/poa_get/{sliver_id} | Perform an operational action on a sliver.
 *SliversApi* | [**slivers_poa_sliver_id_post**](docs/SliversApi.md#slivers_poa_sliver_id_post) | **POST** /slivers/poa/{sliver_id} | Perform an operational action on a sliver.
-*SliversApi* | [**slivers_poa_sliver_id_request_id_get**](docs/SliversApi.md#slivers_poa_sliver_id_request_id_get) | **GET** /slivers/poa/{sliver_id}/{request_id} | Perform an operational action on a sliver.
 *SliversApi* | [**slivers_sliver_id_get**](docs/SliversApi.md#slivers_sliver_id_get) | **GET** /slivers/{sliver_id} | slivers properties
 *VersionApi* | [**version_get**](docs/VersionApi.md#version_get) | **GET** /version | Version
 
@@ -125,7 +126,6 @@ Class | Method | HTTP request | Description
 
  - [Poa](docs/Poa.md)
  - [PoaData](docs/PoaData.md)
- - [PoaDataInfo](docs/PoaDataInfo.md)
  - [PoaPost](docs/PoaPost.md)
  - [PoaPostData](docs/PoaPostData.md)
  - [PoaPostDataVcpuCpuMap](docs/PoaPostDataVcpuCpuMap.md)

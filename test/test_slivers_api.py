@@ -14,8 +14,9 @@ from __future__ import absolute_import
 
 import unittest
 
-from fabric_cf.orchestrator.swagger_client.api.slivers_api import SliversApi  # noqa: E501
-from fabric_cf.orchestrator.swagger_client.rest import ApiException
+import swagger_client
+from swagger_client.api.slivers_api import SliversApi  # noqa: E501
+from swagger_client.rest import ApiException
 
 
 class TestSliversApi(unittest.TestCase):
@@ -34,15 +35,22 @@ class TestSliversApi(unittest.TestCase):
         """
         pass
 
-    def test_slivers_poa_sliver_id_post(self):
-        """Test case for slivers_poa_sliver_id_post
+    def test_slivers_poa_get_poa_id_get(self):
+        """Test case for slivers_poa_get_poa_id_get
 
         Perform an operational action on a sliver.  # noqa: E501
         """
         pass
 
-    def test_slivers_poa_sliver_id_request_id_get(self):
-        """Test case for slivers_poa_sliver_id_request_id_get
+    def test_slivers_poa_get_sliver_id_get(self):
+        """Test case for slivers_poa_get_sliver_id_get
+
+        Perform an operational action on a sliver.  # noqa: E501
+        """
+        pass
+
+    def test_slivers_poa_sliver_id_post(self):
+        """Test case for slivers_poa_sliver_id_post
 
         Perform an operational action on a sliver.  # noqa: E501
         """
