@@ -26,7 +26,7 @@
 import enum
 import traceback
 from datetime import datetime
-from typing import Tuple, Union, List
+from typing import Tuple, Union, List, Dict
 
 from fim.user import GraphFormat
 
@@ -34,6 +34,7 @@ from fabric_cf.orchestrator import swagger_client
 from fim.user.topology import ExperimentTopology, AdvertizedTopology
 
 from fabric_cf.orchestrator.swagger_client import Sliver, Slice, SlicesPost
+from fabric_cf.orchestrator.swagger_client.models import PoaPost, PoaData, PoaPostData, Poa
 
 
 class OrchestratorProxyException(Exception):
@@ -276,7 +277,7 @@ class OrchestratorProxy:
 
     def slices(self, *, token: str, includes: List[SliceState] = None, excludes: List[SliceState] = None,
                name: str = None, limit: int = 20, offset: int = 0, slice_id: str = None,
-               as_self:bool = True) -> Tuple[Status, Union[Exception, List[Slice]]]:
+               as_self: bool = True) -> Tuple[Status, Union[Exception, List[Slice]]]:
         """
         Get slices
         @param token fabric token
@@ -461,5 +462,74 @@ class OrchestratorProxy:
             self.slices_api.slices_renew_slice_id_post(slice_id=slice_id, lease_end_time=new_lease_end_time)
 
             return Status.OK, None
+        except Exception as e:
+            return Status.FAILURE, e
+
+    def poa(self, *, token: str, sliver_id: str, operation: str, vcpu_cpu_map: List[Dict[str, str]] = None,
+            node_set: List[str] = None) -> Tuple[Status, Union[Exception, List[PoaData]]]:
+        """
+        Modify a slice
+        @param token fabric token
+        @param sliver_id Sliver Id
+        @param operation POA operation
+        @param vcpu_cpu_map vCPU to physical CPU Map
+        @param node_set List of Numa nodes
+        @return Tuple containing Status and Exception/Json containing poa info created
+        """
+        if token is None:
+            return Status.INVALID_ARGUMENTS, OrchestratorProxyException(f"Token {token} must be specified")
+
+        if sliver_id is None:
+            return Status.INVALID_ARGUMENTS, \
+                   OrchestratorProxyException(f"Sliver Id {sliver_id} must be specified")
+
+        try:
+            # Set the tokens
+            self.__set_tokens(token=token)
+
+            body = PoaPost(operation=operation)
+            if vcpu_cpu_map is not None or node_set is not None:
+                post_data = PoaPostData()
+                post_data.vcpu_cpu_map = vcpu_cpu_map
+                post_data.node_set = node_set
+                body.data = post_data
+
+            poa_data = self.slivers_api.slivers_poa_sliver_id_post(sliver_id=sliver_id, body=body)
+
+            return Status.OK, poa_data.data if poa_data.data is not None else None
+        except Exception as e:
+            return Status.FAILURE, e
+
+    def get_poas(self, *, token: str, sliver_id: str = None,
+                 poa_id: str = None, limit: int = 20, offset: int = 0) -> Tuple[Status, Union[Exception, List[PoaData]]]:
+        """
+        Modify a slice
+        @param token fabric token
+        @param sliver_id Sliver Id
+        @param poa_id POA request id
+        @param limit maximum number of poas to return
+        @param offset offset of the first poas to return
+        @return Tuple containing Status and Exception/Json containing poa info created
+        """
+        if token is None:
+            return Status.INVALID_ARGUMENTS, OrchestratorProxyException(f"Token {token} must be specified")
+
+        if sliver_id is None and poa_id is None:
+            return Status.INVALID_ARGUMENTS, \
+                   OrchestratorProxyException(f"Sliver Id {sliver_id} or Poa ID {poa_id} must be specified")
+
+        try:
+            # Set the tokens
+            self.__set_tokens(token=token)
+
+            if poa_id is not None:
+                poa_data = self.slivers_api.slivers_poa_get_poa_id_get(poa_id=poa_id)
+            elif sliver_id is not None:
+                poa_data = self.slivers_api.slivers_poa_get_sliver_id_get(sliver_id=sliver_id, limit=limit,
+                                                                          offset=offset)
+            else:
+                raise Exception("Invalid Arguments")
+
+            return Status.OK, poa_data.data if poa_data.data is not None else None
         except Exception as e:
             return Status.FAILURE, e
