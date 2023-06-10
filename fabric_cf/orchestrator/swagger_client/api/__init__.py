@@ -7,3 +7,4 @@ from fabric_cf.orchestrator.swagger_client.api.resources_api import ResourcesApi
 from fabric_cf.orchestrator.swagger_client.api.slices_api import SlicesApi
 from fabric_cf.orchestrator.swagger_client.api.slivers_api import SliversApi
 from fabric_cf.orchestrator.swagger_client.api.version_api import VersionApi
+from fabric_cf.orchestrator.swagger_client.api.poas_api import PoasApi

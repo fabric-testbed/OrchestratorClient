@@ -122,6 +122,7 @@ class OrchestratorProxy:
             self.slices_api = swagger_client.SlicesApi(api_client=api_instance)
             self.slivers_api = swagger_client.SliversApi(api_client=api_instance)
             self.resources_api = swagger_client.ResourcesApi(api_client=api_instance)
+            self.poas_api = swagger_client.PoasApi(api_client=api_instance)
 
     def __set_tokens(self, *, token: str):
         """
@@ -494,7 +495,7 @@ class OrchestratorProxy:
                 post_data.node_set = node_set
                 body.data = post_data
 
-            poa_data = self.slivers_api.slivers_poa_sliver_id_post(sliver_id=sliver_id, body=body)
+            poa_data = self.poas_api.poas_create_sliver_id_post(sliver_id=sliver_id, body=body)
 
             return Status.OK, poa_data.data if poa_data.data is not None else None
         except Exception as e:
@@ -523,10 +524,9 @@ class OrchestratorProxy:
             self.__set_tokens(token=token)
 
             if poa_id is not None:
-                poa_data = self.slivers_api.slivers_poa_get_poa_id_get(poa_id=poa_id)
+                poa_data = self.poas_api.poas_poa_id_get(poa_id=poa_id)
             elif sliver_id is not None:
-                poa_data = self.slivers_api.slivers_poa_get_sliver_id_get(sliver_id=sliver_id, limit=limit,
-                                                                          offset=offset)
+                poa_data = self.poas_api.poas_get(sliver_id=sliver_id, limit=limit, offset=offset)
             else:
                 raise Exception("Invalid Arguments")
 
