@@ -42,11 +42,11 @@ class SliceDetails(Status200OkSingle):
 
     def __init__(self, data=None, *args, **kwargs):  # noqa: E501
         """SliceDetails - a model defined in Swagger"""  # noqa: E501
-	Status200OkSingle.__init__(self, *args, **kwargs)
         self._data = None
         self.discriminator = None
         if data is not None:
             self.data = data
+        Status200OkSingle.__init__(self, *args, **kwargs)
         
 
     @property
