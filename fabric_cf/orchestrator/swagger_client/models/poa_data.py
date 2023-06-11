@@ -30,6 +30,7 @@ class PoaData(object):
     swagger_types = {
         'operation': 'str',
         'poa_id': 'str',
+        'state': 'str',
         'sliver_id': 'str',
         'slice_id': 'str',
         'info': 'object'
@@ -38,15 +39,17 @@ class PoaData(object):
     attribute_map = {
         'operation': 'operation',
         'poa_id': 'poa_id',
+        'state': 'state',
         'sliver_id': 'sliver_id',
         'slice_id': 'slice_id',
         'info': 'info'
     }
 
-    def __init__(self, operation=None, poa_id=None, sliver_id=None, slice_id=None, info=None):  # noqa: E501
+    def __init__(self, operation=None, poa_id=None, state=None, sliver_id=None, slice_id=None, info=None):  # noqa: E501
         """PoaData - a model defined in Swagger"""  # noqa: E501
         self._operation = None
         self._poa_id = None
+        self._state = None
         self._sliver_id = None
         self._slice_id = None
         self._info = None
@@ -55,6 +58,8 @@ class PoaData(object):
             self.operation = operation
         if poa_id is not None:
             self.poa_id = poa_id
+        if state is not None:
+            self.state = state
         if sliver_id is not None:
             self.sliver_id = sliver_id
         if slice_id is not None:
@@ -103,6 +108,27 @@ class PoaData(object):
         """
 
         self._poa_id = poa_id
+
+    @property
+    def state(self):
+        """Gets the state of this PoaData.  # noqa: E501
+
+
+        :return: The state of this PoaData.  # noqa: E501
+        :rtype: str
+        """
+        return self._state
+
+    @state.setter
+    def state(self, state):
+        """Sets the state of this PoaData.
+
+
+        :param state: The state of this PoaData.  # noqa: E501
+        :type: str
+        """
+
+        self._state = state
 
     @property
     def sliver_id(self):

@@ -5,6 +5,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **operation** | **str** |  | [optional] 
 **poa_id** | **str** |  | [optional] 
+**state** | **str** |  | [optional] 
 **sliver_id** | **str** |  | [optional] 
 **slice_id** | **str** |  | [optional] 
 **info** | **object** |  | [optional] 
