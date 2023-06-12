@@ -109,7 +109,7 @@ class SlicesApi(object):
         if 'name' in params:
             query_params.append(('name', params['name']))  # noqa: E501
         if 'ssh_key' in params:
-            query_params.append(('sshKey', params['ssh_key']))  # noqa: E501
+            query_params.append(('ssh_key', params['ssh_key']))  # noqa: E501
         if 'lease_end_time' in params:
             query_params.append(('lease_end_time', params['lease_end_time']))  # noqa: E501
 
