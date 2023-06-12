@@ -163,7 +163,7 @@ class OrchestratorProxy:
                 datetime.strptime(lease_end_time, self.TIME_FORMAT)
             except Exception as e:
                 return Status.INVALID_ARGUMENTS, OrchestratorProxyException(
-                    f"Lease End Time {lease_end_time} should be in format: {self.TIME_FORMAT}")
+                    f"Lease End Time {lease_end_time} should be in format: {self.TIME_FORMAT} e: {e}")
 
         try:
             # Set the tokens
@@ -178,9 +178,9 @@ class OrchestratorProxy:
                 ssh_keys = ssh_key
             body = SlicesPost(graph_model=slice_graph, ssh_keys=ssh_keys)
             if lease_end_time is not None:
-                slivers = self.slices_api.slices_create_post(name=slice_name, body=body, lease_end_time=lease_end_time)
+                slivers = self.slices_api.slices_creates_post(name=slice_name, body=body, lease_end_time=lease_end_time)
             else:
-                slivers = self.slices_api.slices_create_post(name=slice_name, body=body)
+                slivers = self.slices_api.slices_creates_post(name=slice_name, body=body)
 
             return Status.OK, slivers.data if slivers.data is not None else []
         except Exception as e:
