@@ -122,6 +122,7 @@ class OrchestratorProxy:
             self.slices_api = swagger_client.SlicesApi(api_client=api_instance)
             self.slivers_api = swagger_client.SliversApi(api_client=api_instance)
             self.resources_api = swagger_client.ResourcesApi(api_client=api_instance)
+            self.poas_api = swagger_client.PoasApi(api_client=api_instance)
 
     def __set_tokens(self, *, token: str):
         """
@@ -162,7 +163,7 @@ class OrchestratorProxy:
                 datetime.strptime(lease_end_time, self.TIME_FORMAT)
             except Exception as e:
                 return Status.INVALID_ARGUMENTS, OrchestratorProxyException(
-                    f"Lease End Time {lease_end_time} should be in format: {self.TIME_FORMAT}")
+                    f"Lease End Time {lease_end_time} should be in format: {self.TIME_FORMAT} e: {e}")
 
         try:
             # Set the tokens
@@ -177,9 +178,9 @@ class OrchestratorProxy:
                 ssh_keys = ssh_key
             body = SlicesPost(graph_model=slice_graph, ssh_keys=ssh_keys)
             if lease_end_time is not None:
-                slivers = self.slices_api.slices_create_post(name=slice_name, body=body, lease_end_time=lease_end_time)
+                slivers = self.slices_api.slices_creates_post(name=slice_name, body=body, lease_end_time=lease_end_time)
             else:
-                slivers = self.slices_api.slices_create_post(name=slice_name, body=body)
+                slivers = self.slices_api.slices_creates_post(name=slice_name, body=body)
 
             return Status.OK, slivers.data if slivers.data is not None else []
         except Exception as e:
@@ -494,7 +495,7 @@ class OrchestratorProxy:
                 post_data.node_set = node_set
                 body.data = post_data
 
-            poa_data = self.slivers_api.slivers_poa_sliver_id_post(sliver_id=sliver_id, body=body)
+            poa_data = self.poas_api.poas_create_sliver_id_post(sliver_id=sliver_id, body=body)
 
             return Status.OK, poa_data.data if poa_data.data is not None else None
         except Exception as e:
@@ -523,10 +524,9 @@ class OrchestratorProxy:
             self.__set_tokens(token=token)
 
             if poa_id is not None:
-                poa_data = self.slivers_api.slivers_poa_get_poa_id_get(poa_id=poa_id)
+                poa_data = self.poas_api.poas_poa_id_get(poa_id=poa_id)
             elif sliver_id is not None:
-                poa_data = self.slivers_api.slivers_poa_get_sliver_id_get(sliver_id=sliver_id, limit=limit,
-                                                                          offset=offset)
+                poa_data = self.poas_api.poas_get(sliver_id=sliver_id, limit=limit, offset=offset)
             else:
                 raise Exception("Invalid Arguments")
 

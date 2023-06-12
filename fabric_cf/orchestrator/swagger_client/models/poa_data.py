@@ -30,35 +30,45 @@ class PoaData(object):
     swagger_types = {
         'operation': 'str',
         'poa_id': 'str',
+        'state': 'str',
         'sliver_id': 'str',
         'slice_id': 'str',
+        'error': 'str',
         'info': 'object'
     }
 
     attribute_map = {
         'operation': 'operation',
         'poa_id': 'poa_id',
+        'state': 'state',
         'sliver_id': 'sliver_id',
         'slice_id': 'slice_id',
+        'error': 'error',
         'info': 'info'
     }
 
-    def __init__(self, operation=None, poa_id=None, sliver_id=None, slice_id=None, info=None):  # noqa: E501
+    def __init__(self, operation=None, poa_id=None, state=None, sliver_id=None, slice_id=None, error=None, info=None):  # noqa: E501
         """PoaData - a model defined in Swagger"""  # noqa: E501
         self._operation = None
         self._poa_id = None
+        self._state = None
         self._sliver_id = None
         self._slice_id = None
+        self._error = None
         self._info = None
         self.discriminator = None
         if operation is not None:
             self.operation = operation
         if poa_id is not None:
             self.poa_id = poa_id
+        if state is not None:
+            self.state = state
         if sliver_id is not None:
             self.sliver_id = sliver_id
         if slice_id is not None:
             self.slice_id = slice_id
+        if error is not None:
+            self.error = error
         if info is not None:
             self.info = info
 
@@ -105,6 +115,27 @@ class PoaData(object):
         self._poa_id = poa_id
 
     @property
+    def state(self):
+        """Gets the state of this PoaData.  # noqa: E501
+
+
+        :return: The state of this PoaData.  # noqa: E501
+        :rtype: str
+        """
+        return self._state
+
+    @state.setter
+    def state(self, state):
+        """Sets the state of this PoaData.
+
+
+        :param state: The state of this PoaData.  # noqa: E501
+        :type: str
+        """
+
+        self._state = state
+
+    @property
     def sliver_id(self):
         """Gets the sliver_id of this PoaData.  # noqa: E501
 
@@ -145,6 +176,27 @@ class PoaData(object):
         """
 
         self._slice_id = slice_id
+
+    @property
+    def error(self):
+        """Gets the error of this PoaData.  # noqa: E501
+
+
+        :return: The error of this PoaData.  # noqa: E501
+        :rtype: str
+        """
+        return self._error
+
+    @error.setter
+    def error(self, error):
+        """Sets the error of this PoaData.
+
+
+        :param error: The error of this PoaData.  # noqa: E501
+        :type: str
+        """
+
+        self._error = error
 
     @property
     def info(self):
