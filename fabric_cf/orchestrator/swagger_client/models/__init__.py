@@ -14,6 +14,11 @@
 from __future__ import absolute_import
 
 # import models into model package
+from fabric_cf.orchestrator.swagger_client.models.poa import Poa
+from fabric_cf.orchestrator.swagger_client.models.poa_data import PoaData
+from fabric_cf.orchestrator.swagger_client.models.poa_post import PoaPost
+from fabric_cf.orchestrator.swagger_client.models.poa_post_data import PoaPostData
+from fabric_cf.orchestrator.swagger_client.models.poa_post_data_vcpu_cpu_map import PoaPostDataVcpuCpuMap
 from fabric_cf.orchestrator.swagger_client.models.resource import Resource
 from fabric_cf.orchestrator.swagger_client.models.resources import Resources
 from fabric_cf.orchestrator.swagger_client.models.slice import Slice

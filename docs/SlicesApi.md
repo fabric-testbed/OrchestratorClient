@@ -5,6 +5,7 @@ All URIs are relative to *http://127.0.0.1:8700/*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**slices_create_post**](SlicesApi.md#slices_create_post) | **POST** /slices/create | Create slice
+[**slices_creates_post**](SlicesApi.md#slices_creates_post) | **POST** /slices/creates | Create slice
 [**slices_delete_delete**](SlicesApi.md#slices_delete_delete) | **DELETE** /slices/delete | Delete all slices for a User within a project.
 [**slices_delete_slice_id_delete**](SlicesApi.md#slices_delete_slice_id_delete) | **DELETE** /slices/delete/{slice_id} | Delete slice.
 [**slices_get**](SlicesApi.md#slices_get) | **GET** /slices | Retrieve a listing of user slices
@@ -26,6 +27,7 @@ from __future__ import print_function
 import time
 from fabric_cf.orchestrator.swagger_client import SlicesApi, Configuration, ApiClient
 from fabric_cf.orchestrator.swagger_client.rest import ApiException
+from fabric_cf.orchestrator.swagger_client.models import SlicesPost
 from pprint import pprint
 
 # Configure API key authorization: bearerAuth
@@ -39,7 +41,7 @@ api_instance = SlicesApi(ApiClient(configuration))
 body = 'body_example' # str | 
 name = 'name_example' # str | Slice Name
 ssh_key = 'ssh_key_example' # str | User SSH Key
-lease_end_time = 'lease_end_time_example' # str | New Lease End Time for the Slice (optional)
+lease_end_time = 'lease_end_time_example' # str | Lease End Time for the Slice (optional)
 
 try:
     # Create slice
@@ -56,7 +58,7 @@ Name | Type | Description  | Notes
  **body** | [**str**](str.md)|  | 
  **name** | **str**| Slice Name | 
  **ssh_key** | **str**| User SSH Key | 
- **lease_end_time** | **str**| New Lease End Time for the Slice | [optional] 
+ **lease_end_time** | **str**| Lease End Time for the Slice | [optional] 
 
 ### Return type
 
@@ -69,6 +71,65 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
  - **Content-Type**: text/plain
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **slices_creates_post**
+> Slivers slices_creates_post(body, name, lease_end_time=lease_end_time)
+
+Create slice
+
+Request to create slice as described in the request. Request would be a graph ML describing the requested resources. Resources may be requested to be created now or in future. On success, one or more slivers are allocated, containing resources satisfying the request, and assigned to the given slice. This API returns list and description of the resources reserved for the slice in the form of Graph ML. Orchestrator would also trigger provisioning of these resources asynchronously on the appropriate sites either now or in the future as requested. Experimenter can invoke get slice API to get the latest state of the requested resources.  
+
+### Example
+```python
+from __future__ import print_function
+from fabric_cf.orchestrator.swagger_client import SlicesApi, Configuration, ApiClient
+from fabric_cf.orchestrator.swagger_client.rest import ApiException
+from fabric_cf.orchestrator.swagger_client.models import SlicesPost
+from pprint import pprint
+
+# Configure API key authorization: bearerAuth
+configuration = Configuration()
+configuration.api_key['Authorization'] = 'YOUR_API_KEY'
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# configuration.api_key_prefix['Authorization'] = 'Bearer'
+
+
+# create an instance of the API class
+api_instance = SlicesApi(ApiClient(configuration))
+body = SlicesPost() # SlicesPost | Create new Slice
+name = 'name_example' # str | Slice Name
+lease_end_time = 'lease_end_time_example' # str | Lease End Time for the Slice (optional)
+
+try:
+    # Create slice
+    api_response = api_instance.slices_creates_post(body, name, lease_end_time=lease_end_time)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling SlicesApi->slices_creates_post: %s\n" % e)
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **body** | [**SlicesPost**](SlicesPost.md)| Create new Slice | 
+ **name** | **str**| Slice Name | 
+ **lease_end_time** | **str**| Lease End Time for the Slice | [optional] 
+
+### Return type
+
+[**Slivers**](Slivers.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
  - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -179,11 +240,11 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **slices_get**
-> Slices slices_get(name=name, states=states, limit=limit, offset=offset)
+> Slices slices_get(name=name, as_self=as_self, states=states, limit=limit, offset=offset)
 
 Retrieve a listing of user slices
 
-Retrieve a listing of user slices
+Retrieve a listing of user slices. It returns list of all slices belonging to all members in a project when 'as_self' is False otherwise returns only the all user's slices in a project.
 
 ### Example
 ```python
@@ -202,13 +263,14 @@ configuration.api_key['Authorization'] = 'YOUR_API_KEY'
 # create an instance of the API class
 api_instance = SlicesApi(ApiClient(configuration))
 name = 'name_example' # str | Search for Slices with the name (optional)
+as_self = true # bool | GET object as Self (optional) (default to true)
 states = ['states_example'] # list[str] | Search for Slices in the specified states (optional)
 limit = 5 # int | maximum number of results to return per page (1 or more) (optional) (default to 5)
 offset = 0 # int | number of items to skip before starting to collect the result set (optional) (default to 0)
 
 try:
     # Retrieve a listing of user slices
-    api_response = api_instance.slices_get(name=name, states=states, limit=limit, offset=offset)
+    api_response = api_instance.slices_get(name=name, as_self=as_self, states=states, limit=limit, offset=offset)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling SlicesApi->slices_get: %s\n" % e)
@@ -219,6 +281,7 @@ except ApiException as e:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **name** | **str**| Search for Slices with the name | [optional] 
+ **as_self** | **bool**| GET object as Self | [optional] [default to true]
  **states** | [**list[str]**](str.md)| Search for Slices in the specified states | [optional] 
  **limit** | **int**| maximum number of results to return per page (1 or more) | [optional] [default to 5]
  **offset** | **int**| number of items to skip before starting to collect the result set | [optional] [default to 0]
@@ -316,7 +379,7 @@ configuration.api_key['Authorization'] = 'YOUR_API_KEY'
 
 # create an instance of the API class
 api_instance = SlicesApi(ApiClient(configuration))
-body = 'body_example' # str | 
+body = 'body_example' # str | Modify a Slice
 slice_id = 'slice_id_example' # str | Slice identified by universally unique identifier
 
 try:
@@ -331,7 +394,7 @@ except ApiException as e:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **body** | [**str**](str.md)|  | 
+ **body** | [**str**](str.md)|  | Modify a Slice
  **slice_id** | **str**| Slice identified by universally unique identifier | 
 
 ### Return type
@@ -406,7 +469,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **slices_slice_id_get**
-> SliceDetails slices_slice_id_get(slice_id, graph_format)
+> SliceDetails slices_slice_id_get(slice_id, graph_format, as_self=as_self)
 
 slice properties
 
@@ -430,10 +493,11 @@ configuration.api_key['Authorization'] = 'YOUR_API_KEY'
 api_instance = SlicesApi(ApiClient(configuration))
 slice_id = 'slice_id_example' # str | Slice identified by universally unique identifier
 graph_format = 'GRAPHML' # str | graph format (default to GRAPHML)
+as_self = true # bool | GET object as Self (optional) (default to true)
 
 try:
     # slice properties
-    api_response = api_instance.slices_slice_id_get(slice_id, graph_format)
+    api_response = api_instance.slices_slice_id_get(slice_id, graph_format, as_self=as_self)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling SlicesApi->slices_slice_id_get: %s\n" % e)
@@ -445,6 +509,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **slice_id** | **str**| Slice identified by universally unique identifier | 
  **graph_format** | **str**| graph format | [default to GRAPHML]
+ **as_self** | **bool**| GET object as Self | [optional] [default to true]
 
 ### Return type
 

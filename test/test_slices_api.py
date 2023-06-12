@@ -34,6 +34,13 @@ class TestSlicesApi(unittest.TestCase):
         """
         pass
 
+    def test_slices_creates_post(self):
+        """Test case for slices_creates_post
+
+        Create slice  # noqa: E501
+        """
+        pass
+
     def test_slices_delete_delete(self):
         """Test case for slices_delete_delete
 

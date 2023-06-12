@@ -43,6 +43,7 @@ class SliversApi(object):
 
         :param async_req bool
         :param str slice_id: Slice identifier as UUID (required)
+        :param bool as_self: GET object as Self
         :return: Slivers
                  If the method is called asynchronously,
                  returns the request thread.
@@ -65,12 +66,13 @@ class SliversApi(object):
 
         :param async_req bool
         :param str slice_id: Slice identifier as UUID (required)
+        :param bool as_self: GET object as Self
         :return: Slivers
                  If the method is called asynchronously,
                  returns the request thread.
         """
 
-        all_params = ['slice_id']  # noqa: E501
+        all_params = ['slice_id', 'as_self']  # noqa: E501
         all_params.append('async_req')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
@@ -97,6 +99,8 @@ class SliversApi(object):
         query_params = []
         if 'slice_id' in params:
             query_params.append(('slice_id', params['slice_id']))  # noqa: E501
+        if 'as_self' in params:
+            query_params.append(('as_self', params['as_self']))  # noqa: E501
 
         header_params = {}
 
@@ -139,6 +143,7 @@ class SliversApi(object):
         :param async_req bool
         :param str slice_id: Slice identified by universally unique identifier (required)
         :param str sliver_id: Sliver identified by universally unique identifier (required)
+        :param bool as_self: GET object as Self
         :return: Slivers
                  If the method is called asynchronously,
                  returns the request thread.
@@ -162,12 +167,13 @@ class SliversApi(object):
         :param async_req bool
         :param str slice_id: Slice identified by universally unique identifier (required)
         :param str sliver_id: Sliver identified by universally unique identifier (required)
+        :param bool as_self: GET object as Self
         :return: Slivers
                  If the method is called asynchronously,
                  returns the request thread.
         """
 
-        all_params = ['slice_id', 'sliver_id']  # noqa: E501
+        all_params = ['slice_id', 'sliver_id', 'as_self']  # noqa: E501
         all_params.append('async_req')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
@@ -200,6 +206,8 @@ class SliversApi(object):
         query_params = []
         if 'slice_id' in params:
             query_params.append(('slice_id', params['slice_id']))  # noqa: E501
+        if 'as_self' in params:
+            query_params.append(('as_self', params['as_self']))  # noqa: E501
 
         header_params = {}
 
