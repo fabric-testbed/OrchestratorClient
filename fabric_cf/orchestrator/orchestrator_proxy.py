@@ -34,7 +34,7 @@ from fabric_cf.orchestrator import swagger_client
 from fim.user.topology import ExperimentTopology, AdvertizedTopology
 
 from fabric_cf.orchestrator.swagger_client import Sliver, Slice
-from temp.swagger_client.models.slices_post import SlicesPost
+from fabric_cf.orchestrator.swagger_client.models.slices_post import SlicesPost
 
 
 class OrchestratorProxyException(Exception):
