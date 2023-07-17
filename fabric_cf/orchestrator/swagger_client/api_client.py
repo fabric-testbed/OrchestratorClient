@@ -12,6 +12,7 @@ from __future__ import absolute_import
 
 import datetime
 import json
+import logging
 import mimetypes
 from multiprocessing.pool import ThreadPool
 import os
@@ -75,8 +76,11 @@ class ApiClient(object):
         self.user_agent = 'Swagger-Codegen/1.0.0/python'
 
     def __del__(self):
-        self.pool.close()
-        self.pool.join()
+        try:
+            self.pool.close()
+            self.pool.join()
+        except Exception as e:
+            logging.getLogger().error(f"Ignoring connexion pool error: {e}")
 
     @property
     def user_agent(self):
