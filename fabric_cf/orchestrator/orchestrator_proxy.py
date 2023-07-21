@@ -467,7 +467,7 @@ class OrchestratorProxy:
             return Status.FAILURE, e
 
     def poa(self, *, token: str, sliver_id: str, operation: str, vcpu_cpu_map: List[Dict[str, str]] = None,
-            node_set: List[str] = None) -> Tuple[Status, Union[Exception, List[PoaData]]]:
+            node_set: List[str] = None, keys: List[Dict[str, str]]) -> Tuple[Status, Union[Exception, List[PoaData]]]:
         """
         Modify a slice
         @param token fabric token
@@ -475,6 +475,7 @@ class OrchestratorProxy:
         @param operation POA operation
         @param vcpu_cpu_map vCPU to physical CPU Map
         @param node_set List of Numa nodes
+        @param keys list of keys to add/remove
         @return Tuple containing Status and Exception/Json containing poa info created
         """
         if token is None:
@@ -489,10 +490,11 @@ class OrchestratorProxy:
             self.__set_tokens(token=token)
 
             body = PoaPost(operation=operation)
-            if vcpu_cpu_map is not None or node_set is not None:
+            if vcpu_cpu_map is not None or node_set is not None or keys is not None:
                 post_data = PoaPostData()
                 post_data.vcpu_cpu_map = vcpu_cpu_map
                 post_data.node_set = node_set
+                post_data.keys = keys
                 body.data = post_data
 
             poa_data = self.poas_api.poas_create_sliver_id_post(sliver_id=sliver_id, body=body)

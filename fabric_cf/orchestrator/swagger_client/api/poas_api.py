@@ -35,7 +35,7 @@ class PoasApi(object):
     def poas_create_sliver_id_post(self, body, sliver_id, **kwargs):  # noqa: E501
         """Perform an operational action on a sliver.  # noqa: E501
 
-        Request to perform an operation action on a sliver. Supported actions include - reboot a VM sliver, get cpu info, get numa info, pin vCPUs, pin memory to a numa node etc.     # noqa: E501
+        Request to perform an operation action on a sliver. Supported actions include - reboot a VM sliver, get cpu info, get numa info, pin vCPUs, pin memory to a numa node etc, add/remove ssh keys.     # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.poas_create_sliver_id_post(body, sliver_id, async_req=True)
@@ -58,7 +58,7 @@ class PoasApi(object):
     def poas_create_sliver_id_post_with_http_info(self, body, sliver_id, **kwargs):  # noqa: E501
         """Perform an operational action on a sliver.  # noqa: E501
 
-        Request to perform an operation action on a sliver. Supported actions include - reboot a VM sliver, get cpu info, get numa info, pin vCPUs, pin memory to a numa node etc.     # noqa: E501
+        Request to perform an operation action on a sliver. Supported actions include - reboot a VM sliver, get cpu info, get numa info, pin vCPUs, pin memory to a numa node etc, add/remove ssh keys.     # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.poas_create_sliver_id_post_with_http_info(body, sliver_id, async_req=True)
