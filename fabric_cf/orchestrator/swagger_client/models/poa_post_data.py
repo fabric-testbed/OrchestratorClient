@@ -29,23 +29,28 @@ class PoaPostData(object):
     """
     swagger_types = {
         'vcpu_cpu_map': 'list[PoaPostDataVcpuCpuMap]',
-        'node_set': 'list[str]'
+        'node_set': 'list[str]',
+        'keys': 'list[PoaPostDataKeys]'
     }
 
     attribute_map = {
         'vcpu_cpu_map': 'vcpu_cpu_map',
-        'node_set': 'node_set'
+        'node_set': 'node_set',
+        'keys': 'keys'
     }
 
-    def __init__(self, vcpu_cpu_map=None, node_set=None):  # noqa: E501
+    def __init__(self, vcpu_cpu_map=None, node_set=None, keys=None):  # noqa: E501
         """PoaPostData - a model defined in Swagger"""  # noqa: E501
         self._vcpu_cpu_map = None
         self._node_set = None
+        self._keys = None
         self.discriminator = None
         if vcpu_cpu_map is not None:
             self.vcpu_cpu_map = vcpu_cpu_map
         if node_set is not None:
             self.node_set = node_set
+        if keys is not None:
+            self.keys = keys
 
     @property
     def vcpu_cpu_map(self):
@@ -88,6 +93,27 @@ class PoaPostData(object):
         """
 
         self._node_set = node_set
+
+    @property
+    def keys(self):
+        """Gets the keys of this PoaPostData.  # noqa: E501
+
+
+        :return: The keys of this PoaPostData.  # noqa: E501
+        :rtype: list[PoaPostDataKeys]
+        """
+        return self._keys
+
+    @keys.setter
+    def keys(self, keys):
+        """Sets the keys of this PoaPostData.
+
+
+        :param keys: The keys of this PoaPostData.  # noqa: E501
+        :type: list[PoaPostDataKeys]
+        """
+
+        self._keys = keys
 
     def to_dict(self):
         """Returns the model properties as a dict"""

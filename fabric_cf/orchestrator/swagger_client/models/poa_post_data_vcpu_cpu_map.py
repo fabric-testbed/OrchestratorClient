@@ -42,10 +42,8 @@ class PoaPostDataVcpuCpuMap(object):
         self._vcpu = None
         self._cpu = None
         self.discriminator = None
-        if vcpu is not None:
-            self.vcpu = vcpu
-        if cpu is not None:
-            self.cpu = cpu
+        self.vcpu = vcpu
+        self.cpu = cpu
 
     @property
     def vcpu(self):
@@ -65,6 +63,8 @@ class PoaPostDataVcpuCpuMap(object):
         :param vcpu: The vcpu of this PoaPostDataVcpuCpuMap.  # noqa: E501
         :type: str
         """
+        if vcpu is None:
+            raise ValueError("Invalid value for `vcpu`, must not be `None`")  # noqa: E501
 
         self._vcpu = vcpu
 
@@ -86,6 +86,8 @@ class PoaPostDataVcpuCpuMap(object):
         :param cpu: The cpu of this PoaPostDataVcpuCpuMap.  # noqa: E501
         :type: str
         """
+        if cpu is None:
+            raise ValueError("Invalid value for `cpu`, must not be `None`")  # noqa: E501
 
         self._cpu = cpu
 
