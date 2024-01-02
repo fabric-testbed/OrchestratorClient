@@ -21,7 +21,7 @@ dependencies = [
     "six >= 1.10",
     "python_dateutil >= 2.5.3",
     "requests>=2.28.1",
-    "fabric-fim==1.5.5",
+    "fabric-fim==1.6.0",
     ]
 
 [project.optional-dependencies]
