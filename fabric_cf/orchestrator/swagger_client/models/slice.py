@@ -36,7 +36,9 @@ class Slice(object):
         'project_name': 'str',
         'graph_id': 'str',
         'name': 'str',
-        'slice_id': 'str'
+        'slice_id': 'str',
+        'owner_user_id': 'str',
+        'owner_email': 'str'
     }
 
     attribute_map = {
@@ -48,10 +50,12 @@ class Slice(object):
         'project_name': 'project_name',
         'graph_id': 'graph_id',
         'name': 'name',
-        'slice_id': 'slice_id'
+        'slice_id': 'slice_id',
+        'owner_user_id': 'owner_user_id',
+        'owner_email': 'owner_email'
     }
 
-    def __init__(self, model=None, lease_start_time=None, lease_end_time=None, state=None, project_id=None, project_name=None, graph_id=None, name=None, slice_id=None):  # noqa: E501
+    def __init__(self, model=None, lease_start_time=None, lease_end_time=None, state=None, project_id=None, project_name=None, graph_id=None, name=None, slice_id=None, owner_user_id=None, owner_email=None):  # noqa: E501
         """Slice - a model defined in Swagger"""  # noqa: E501
         self._model = None
         self._lease_start_time = None
@@ -62,6 +66,8 @@ class Slice(object):
         self._graph_id = None
         self._name = None
         self._slice_id = None
+        self._owner_user_id = None
+        self._owner_email = None
         self.discriminator = None
         if model is not None:
             self.model = model
@@ -78,6 +84,10 @@ class Slice(object):
         self.graph_id = graph_id
         self.name = name
         self.slice_id = slice_id
+        if owner_user_id is not None:
+            self.owner_user_id = owner_user_id
+        if owner_email is not None:
+            self.owner_email = owner_email
 
     @property
     def model(self):
@@ -273,6 +283,48 @@ class Slice(object):
             raise ValueError("Invalid value for `slice_id`, must not be `None`")  # noqa: E501
 
         self._slice_id = slice_id
+
+    @property
+    def owner_user_id(self):
+        """Gets the owner_user_id of this Slice.  # noqa: E501
+
+
+        :return: The owner_user_id of this Slice.  # noqa: E501
+        :rtype: str
+        """
+        return self._owner_user_id
+
+    @owner_user_id.setter
+    def owner_user_id(self, owner_user_id):
+        """Sets the owner_user_id of this Slice.
+
+
+        :param owner_user_id: The owner_user_id of this Slice.  # noqa: E501
+        :type: str
+        """
+
+        self._owner_user_id = owner_user_id
+
+    @property
+    def owner_email(self):
+        """Gets the owner_email of this Slice.  # noqa: E501
+
+
+        :return: The owner_email of this Slice.  # noqa: E501
+        :rtype: str
+        """
+        return self._owner_email
+
+    @owner_email.setter
+    def owner_email(self, owner_email):
+        """Sets the owner_email of this Slice.
+
+
+        :param owner_email: The owner_email of this Slice.  # noqa: E501
+        :type: str
+        """
+
+        self._owner_email = owner_email
 
     def to_dict(self):
         """Returns the model properties as a dict"""

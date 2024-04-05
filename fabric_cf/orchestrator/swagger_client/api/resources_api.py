@@ -130,6 +130,8 @@ class ResourcesApi(object):
         :param async_req bool
         :param int level: Level of details (required)
         :param bool force_refresh: Force to retrieve current available resource information. (required)
+        :param str start_date: starting date to check availability from
+        :param str end_date: end date to check availability until
         :return: Resources
                  If the method is called asynchronously,
                  returns the request thread.
@@ -151,12 +153,14 @@ class ResourcesApi(object):
         :param async_req bool
         :param int level: Level of details (required)
         :param bool force_refresh: Force to retrieve current available resource information. (required)
+        :param str start_date: starting date to check availability from
+        :param str end_date: end date to check availability until
         :return: Resources
                  If the method is called asynchronously,
                  returns the request thread.
         """
 
-        all_params = ['level', 'force_refresh']  # noqa: E501
+        all_params = ['level', 'force_refresh', 'start_date', 'end_date']  # noqa: E501
         all_params.append('async_req')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
@@ -189,6 +193,10 @@ class ResourcesApi(object):
             query_params.append(('level', params['level']))  # noqa: E501
         if 'force_refresh' in params:
             query_params.append(('force_refresh', params['force_refresh']))  # noqa: E501
+        if 'start_date' in params:
+            query_params.append(('start_date', params['start_date']))  # noqa: E501
+        if 'end_date' in params:
+            query_params.append(('end_date', params['end_date']))  # noqa: E501
 
         header_params = {}
 

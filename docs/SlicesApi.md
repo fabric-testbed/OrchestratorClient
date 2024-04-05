@@ -263,6 +263,8 @@ configuration.api_key['Authorization'] = 'YOUR_API_KEY'
 # create an instance of the API class
 api_instance = SlicesApi(ApiClient(configuration))
 name = 'name_example' # str | Search for Slices with the name (optional)
+search = 'search_example' # str | search term applied (optional)
+exact_match = false # bool | Exact Match for Search term (optional) (default to false)
 as_self = true # bool | GET object as Self (optional) (default to true)
 states = ['states_example'] # list[str] | Search for Slices in the specified states (optional)
 limit = 5 # int | maximum number of results to return per page (1 or more) (optional) (default to 5)
@@ -270,7 +272,7 @@ offset = 0 # int | number of items to skip before starting to collect the result
 
 try:
     # Retrieve a listing of user slices
-    api_response = api_instance.slices_get(name=name, as_self=as_self, states=states, limit=limit, offset=offset)
+    api_response = api_instance.slices_get(name=name, search=search, exact_match=exact_match, as_self=as_self, states=states, limit=limit, offset=offset)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling SlicesApi->slices_get: %s\n" % e)
@@ -281,6 +283,8 @@ except ApiException as e:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **name** | **str**| Search for Slices with the name | [optional] 
+ **search** | **str**| search term applied | [optional] 
+ **exact_match** | **bool**| Exact Match for Search term | [optional] [default to false]
  **as_self** | **bool**| GET object as Self | [optional] [default to true]
  **states** | [**list[str]**](str.md)| Search for Slices in the specified states | [optional] 
  **limit** | **int**| maximum number of results to return per page (1 or more) | [optional] [default to 5]
