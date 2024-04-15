@@ -132,10 +132,14 @@ class ResourcesApi(object):
         :param bool force_refresh: Force to retrieve current available resource information. (required)
         :param str start_date: starting date to check availability from
         :param str end_date: end date to check availability until
+        :param str includes: comma separated lists of sites to include
+        :param str excludes: comma separated lists of sites to exclude
         :return: Resources
                  If the method is called asynchronously,
                  returns the request thread.
         """
+        # Remove all arguments with None value from kwargs
+        kwargs = {key: value for key, value in kwargs.items() if value is not None}
         kwargs['_return_http_data_only'] = True
         if kwargs.get('async_req'):
             return self.resources_get_with_http_info(level, force_refresh, **kwargs)  # noqa: E501
@@ -155,12 +159,14 @@ class ResourcesApi(object):
         :param bool force_refresh: Force to retrieve current available resource information. (required)
         :param str start_date: starting date to check availability from
         :param str end_date: end date to check availability until
+        :param str includes: comma separated lists of sites to include
+        :param str excludes: comma separated lists of sites to exclude
         :return: Resources
                  If the method is called asynchronously,
                  returns the request thread.
         """
 
-        all_params = ['level', 'force_refresh', 'start_date', 'end_date']  # noqa: E501
+        all_params = ['level', 'force_refresh', 'start_date', 'end_date', 'includes', 'excludes']  # noqa: E501
         all_params.append('async_req')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
@@ -197,6 +203,10 @@ class ResourcesApi(object):
             query_params.append(('start_date', params['start_date']))  # noqa: E501
         if 'end_date' in params:
             query_params.append(('end_date', params['end_date']))  # noqa: E501
+        if 'includes' in params:
+            query_params.append(('includes', params['includes']))  # noqa: E501
+        if 'excludes' in params:
+            query_params.append(('excludes', params['excludes']))  # noqa: E501
 
         header_params = {}
 

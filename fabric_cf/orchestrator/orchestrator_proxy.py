@@ -278,7 +278,7 @@ class OrchestratorProxy:
 
     def slices(self, *, token: str, includes: List[SliceState] = None, excludes: List[SliceState] = None,
                name: str = None, limit: int = 20, offset: int = 0, slice_id: str = None,
-               as_self: bool = True) -> Tuple[Status, Union[Exception, List[Slice]]]:
+               as_self: bool = True, search: str = None, exact_match: bool = False) -> Tuple[Status, Union[Exception, List[Slice]]]:
         """
         Get slices
         @param token fabric token
@@ -288,7 +288,9 @@ class OrchestratorProxy:
         @param limit maximum number of slices to return
         @param offset offset of the first slice to return
         @param slice_id Slice Id
-        @param as_self
+        @param as_self query as self
+        @param search search term
+        @param exact_match true if exact match
         @return Tuple containing Status and Exception/Json containing slices
         """
         if token is None:
@@ -314,10 +316,12 @@ class OrchestratorProxy:
                                                              as_self=as_self)
             elif name is not None:
                 slices = self.slices_api.slices_get(states=SliceState.state_list_to_str_list(states), name=name,
-                                                    limit=limit, offset=offset, as_self=as_self)
+                                                    limit=limit, offset=offset, as_self=as_self,
+                                                    search=search, exact_match=exact_match)
             else:
                 slices = self.slices_api.slices_get(states=SliceState.state_list_to_str_list(states), limit=limit,
-                                                    offset=offset, as_self=as_self)
+                                                    offset=offset, as_self=as_self, search=search,
+                                                    exact_match=exact_match)
 
             return Status.OK, slices.data if slices.data is not None else []
         except Exception as e:
@@ -388,16 +392,20 @@ class OrchestratorProxy:
         except Exception as e:
             return Status.FAILURE, e
 
-    def resources(self, *, token: str, level: int = 1,
-                  force_refresh: bool = False) -> Tuple[Status, Union[Exception, AdvertizedTopology]]:
+    def resources(self, *, token: str, level: int = 1, force_refresh: bool = False,
+                  start: datetime = None, end: datetime = None,
+                  includes: List[str] = None, excludes: List[str] = None) -> Tuple[Status, Union[Exception, AdvertizedTopology]]:
         """
         Get resources; by default cached resource information is returned. Cache is refreshed every 5 minutes.
         @param token fabric token
         @param level level
         @param force_refresh force current available resources
+        @param start start time
+        @param end end time
+        @param includes list of sites to include
+        @param excludes list of sites to exclude
         @return Tuple containing Status and Exception/Json containing Resources
         """
-
         if token is None:
             return Status.INVALID_ARGUMENTS, OrchestratorProxyException(f"Token {token} must be specified")
 
@@ -405,7 +413,12 @@ class OrchestratorProxy:
             # Set the tokens
             self.__set_tokens(token=token)
 
-            resources = self.resources_api.resources_get(level=level, force_refresh=force_refresh)
+            start_date = start.strftime('%Y-%m-%d %H:%M:%S %z') if start else None
+            end_date = end.strftime('%Y-%m-%d %H:%M:%S %z') if end else None
+            resources = self.resources_api.resources_get(level=level, force_refresh=force_refresh,
+                                                         start_date=start_date, end_date=end_date,
+                                                         includes=', '.join(includes) if includes else None,
+                                                         excludes=', '.join(excludes) if excludes else None)
             graph_string = resources.data[0].model
             substrate = None
             if graph_string is not None:

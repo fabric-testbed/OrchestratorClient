@@ -56,7 +56,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **resources_get**
-> Resources resources_get(level, force_refresh, start_date=start_date, end_date=end_date)
+> Resources resources_get(level, force_refresh, start_date=start_date, end_date=end_date, includes=includes, excludes=excludes)
 
 Retrieve a listing and description of available resources. By default, a cached available resource information is returned. User can force to request the current available resources.
 
@@ -82,6 +82,8 @@ level = 1 # int | Level of details (default to 1)
 force_refresh = False # bool | Force to retrieve current available resource information. (default to false)
 start_date = 'start_date_example' # str | starting date to check availability from (optional)
 end_date = 'end_date_example' # str | end date to check availability until (optional)
+includes = 'includes_example' # str | comma separated lists of sites to include (optional)
+excludes = 'excludes_example' # str | comma separated lists of sites to exclude (optional)
 
 try:
     # Retrieve a listing and description of available resources. By default, a cached available resource information is returned. User can force to request the current available resources.
@@ -99,6 +101,8 @@ Name | Type | Description  | Notes
  **force_refresh** | **bool**| Force to retrieve current available resource information. | [default to false]
  **start_date** | **str**| starting date to check availability from | [optional] 
  **end_date** | **str**| end date to check availability until | [optional] 
+ **includes** | **str**| comma separated lists of sites to include | [optional] 
+ **excludes** | **str**| comma separated lists of sites to exclude | [optional] 
 
 ### Return type
 
