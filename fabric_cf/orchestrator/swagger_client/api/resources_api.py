@@ -31,17 +31,27 @@ class ResourcesApi(object):
 
     def portalresources_get(self, graph_format, **kwargs):  # noqa: E501
         """Retrieve a listing and description of available resources for portal  # noqa: E501
+
         Retrieve a listing and description of available resources for portal  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.portalresources_get(graph_format, async_req=True)
         >>> result = thread.get()
+
         :param async_req bool
         :param str graph_format: graph format (required)
+        :param int level: Level of details
+        :param bool force_refresh: Force to retrieve current available resource information.
+        :param str start_date: starting date to check availability from
+        :param str end_date: end date to check availability until
+        :param str includes: comma separated lists of sites to include
+        :param str excludes: comma separated lists of sites to exclude
         :return: Resources
                  If the method is called asynchronously,
                  returns the request thread.
         """
+        # Remove all arguments with None value from kwargs
+        kwargs = {key: value for key, value in kwargs.items() if value is not None}
         kwargs['_return_http_data_only'] = True
         if kwargs.get('async_req'):
             return self.portalresources_get_with_http_info(graph_format, **kwargs)  # noqa: E501
@@ -51,19 +61,27 @@ class ResourcesApi(object):
 
     def portalresources_get_with_http_info(self, graph_format, **kwargs):  # noqa: E501
         """Retrieve a listing and description of available resources for portal  # noqa: E501
+
         Retrieve a listing and description of available resources for portal  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.portalresources_get_with_http_info(graph_format, async_req=True)
         >>> result = thread.get()
+
         :param async_req bool
         :param str graph_format: graph format (required)
+        :param int level: Level of details
+        :param bool force_refresh: Force to retrieve current available resource information.
+        :param str start_date: starting date to check availability from
+        :param str end_date: end date to check availability until
+        :param str includes: comma separated lists of sites to include
+        :param str excludes: comma separated lists of sites to exclude
         :return: Resources
                  If the method is called asynchronously,
                  returns the request thread.
         """
 
-        all_params = ['graph_format']  # noqa: E501
+        all_params = ['graph_format', 'level', 'force_refresh', 'start_date', 'end_date', 'includes', 'excludes']  # noqa: E501
         all_params.append('async_req')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
@@ -90,6 +108,18 @@ class ResourcesApi(object):
         query_params = []
         if 'graph_format' in params:
             query_params.append(('graph_format', params['graph_format']))  # noqa: E501
+        if 'level' in params:
+            query_params.append(('level', params['level']))  # noqa: E501
+        if 'force_refresh' in params:
+            query_params.append(('force_refresh', params['force_refresh']))  # noqa: E501
+        if 'start_date' in params:
+            query_params.append(('start_date', params['start_date']))  # noqa: E501
+        if 'end_date' in params:
+            query_params.append(('end_date', params['end_date']))  # noqa: E501
+        if 'includes' in params:
+            query_params.append(('includes', params['includes']))  # noqa: E501
+        if 'excludes' in params:
+            query_params.append(('excludes', params['excludes']))  # noqa: E501
 
         header_params = {}
 
@@ -122,11 +152,13 @@ class ResourcesApi(object):
 
     def resources_get(self, level, force_refresh, **kwargs):  # noqa: E501
         """Retrieve a listing and description of available resources. By default, a cached available resource information is returned. User can force to request the current available resources.  # noqa: E501
+
         Retrieve a listing and description of available resources. By default, a cached available resource information is returned. User can force to request the current available resources.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.resources_get(level, force_refresh, async_req=True)
         >>> result = thread.get()
+
         :param async_req bool
         :param int level: Level of details (required)
         :param bool force_refresh: Force to retrieve current available resource information. (required)

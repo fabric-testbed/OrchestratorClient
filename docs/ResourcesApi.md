@@ -8,7 +8,7 @@ Method | HTTP request | Description
 [**resources_get**](ResourcesApi.md#resources_get) | **GET** /resources | Retrieve a listing and description of available resources. By default, a cached available resource information is returned. User can force to request the current available resources.
 
 # **portalresources_get**
-> Resources portalresources_get(graph_format)
+> Resources portalresources_get(graph_format, level=level, force_refresh=force_refresh, start_date=start_date, end_date=end_date, includes=includes, excludes=excludes)
 
 Retrieve a listing and description of available resources for portal
 
@@ -25,10 +25,16 @@ from pprint import pprint
 # create an instance of the API class
 api_instance = ResourcesApi()
 graph_format = 'GRAPHML' # str | graph format (default to GRAPHML)
+level = 1 # int | Level of details (optional) (default to 1)
+force_refresh = false # bool | Force to retrieve current available resource information. (optional) (default to false)
+start_date = 'start_date_example' # str | starting date to check availability from (optional)
+end_date = 'end_date_example' # str | end date to check availability until (optional)
+includes = 'includes_example' # str | comma separated lists of sites to include (optional)
+excludes = 'excludes_example' # str | comma separated lists of sites to exclude (optional)
 
 try:
     # Retrieve a listing and description of available resources for portal
-    api_response = api_instance.portalresources_get(graph_format)
+    api_response = api_instance.portalresources_get(graph_format, level=level, force_refresh=force_refresh, start_date=start_date, end_date=end_date, includes=includes, excludes=excludes)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling ResourcesApi->portalresources_get: %s\n" % e)
@@ -39,6 +45,12 @@ except ApiException as e:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **graph_format** | **str**| graph format | [default to GRAPHML]
+ **level** | **int**| Level of details | [optional] [default to 1]
+ **force_refresh** | **bool**| Force to retrieve current available resource information. | [optional] [default to false]
+ **start_date** | **str**| starting date to check availability from | [optional] 
+ **end_date** | **str**| end date to check availability until | [optional] 
+ **includes** | **str**| comma separated lists of sites to include | [optional] 
+ **excludes** | **str**| comma separated lists of sites to exclude | [optional] 
 
 ### Return type
 
@@ -87,7 +99,7 @@ excludes = 'excludes_example' # str | comma separated lists of sites to exclude 
 
 try:
     # Retrieve a listing and description of available resources. By default, a cached available resource information is returned. User can force to request the current available resources.
-    api_response = api_instance.resources_get(level, force_refresh, start_date=start_date, end_date=end_date)
+    api_response = api_instance.resources_get(level, force_refresh, start_date=start_date, end_date=end_date, includes=includes, excludes=excludes)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling ResourcesApi->resources_get: %s\n" % e)
