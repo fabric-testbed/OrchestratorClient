@@ -160,11 +160,13 @@ class SlicesApi(object):
         :param async_req bool
         :param SlicesPost body: Create new Slice (required)
         :param str name: Slice Name (required)
+        :param str lease_start_time: Lease End Time for the Slice
         :param str lease_end_time: Lease End Time for the Slice
         :return: Slivers
                  If the method is called asynchronously,
                  returns the request thread.
         """
+        kwargs = {key: value for key, value in kwargs.items() if value is not None}
         kwargs['_return_http_data_only'] = True
         if kwargs.get('async_req'):
             return self.slices_creates_post_with_http_info(body, name, **kwargs)  # noqa: E501
@@ -184,13 +186,14 @@ class SlicesApi(object):
         :param async_req bool
         :param SlicesPost body: Create new Slice (required)
         :param str name: Slice Name (required)
+        :param str lease_start_time: Lease End Time for the Slice
         :param str lease_end_time: Lease End Time for the Slice
         :return: Slivers
                  If the method is called asynchronously,
                  returns the request thread.
         """
 
-        all_params = ['body', 'name', 'lease_end_time']  # noqa: E501
+        all_params = ['body', 'name', 'lease_start_time', 'lease_end_time']  # noqa: E501
         all_params.append('async_req')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
@@ -221,6 +224,8 @@ class SlicesApi(object):
         query_params = []
         if 'name' in params:
             query_params.append(('name', params['name']))  # noqa: E501
+        if 'lease_start_time' in params:
+            query_params.append(('lease_start_time', params['lease_start_time']))  # noqa: E501
         if 'lease_end_time' in params:
             query_params.append(('lease_end_time', params['lease_end_time']))  # noqa: E501
 
