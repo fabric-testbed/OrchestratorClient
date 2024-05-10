@@ -125,6 +125,7 @@ class OrchestratorProxy:
             self.slivers_api = swagger_client.SliversApi(api_client=api_instance)
             self.resources_api = swagger_client.ResourcesApi(api_client=api_instance)
             self.poas_api = swagger_client.PoasApi(api_client=api_instance)
+            self.metrics_api = swagger_client.MetricsApi(api_client=api_instance)
 
     def __set_tokens(self, *, token: str):
         """
@@ -555,5 +556,20 @@ class OrchestratorProxy:
                 raise Exception("Invalid Arguments")
 
             return Status.OK, poa_data.data if poa_data.data is not None else None
+        except Exception as e:
+            return Status.FAILURE, e
+
+    def get_metrics(self, *, token: str = None, excluded_projects: List[str]) -> Tuple[Status, Union[Exception, List[dict]]]:
+        """
+        Modify a slice
+        @param token fabric token
+        @param excluded_projects list of project ids to exclude
+        @return Tuple containing Status and Exception/Json containing poa info created
+        """
+        try:
+            # Set the tokens
+            self.__set_tokens(token=token)
+            result = self.metrics_api.metrics_overview_get(excluded_projects=excluded_projects)
+            return Status.OK, result.data if result.data is not None else None
         except Exception as e:
             return Status.FAILURE, e

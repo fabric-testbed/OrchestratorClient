@@ -47,7 +47,6 @@ class Poa(Status200OkSingle):
         self.discriminator = None
         if data is not None:
             self.data = data
-        Status200OkSingle.__init__(self, *args, **kwargs)
 
     @property
     def data(self):
