@@ -559,7 +559,8 @@ class OrchestratorProxy:
         except Exception as e:
             return Status.FAILURE, e
 
-    def get_metrics(self, *, token: str = None, excluded_projects: List[str] = None) -> Tuple[Status, Union[Exception, List[dict]]]:
+    def get_metrics_overview(self, *, token: str = None,
+                             excluded_projects: List[str] = None) -> Tuple[Status, Union[Exception, list]]:
         """
         Modify a slice
         @param token fabric token
@@ -570,6 +571,6 @@ class OrchestratorProxy:
             # Set the tokens
             self.__set_tokens(token=token)
             result = self.metrics_api.metrics_overview_get(excluded_projects=excluded_projects)
-            return Status.OK, result.data if result.data is not None else None
+            return Status.OK, result.results
         except Exception as e:
             return Status.FAILURE, e
