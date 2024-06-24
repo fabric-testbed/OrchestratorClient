@@ -14,6 +14,7 @@
 from __future__ import absolute_import
 
 # import models into model package
+from fabric_cf.orchestrator.swagger_client.models.metrics import Metrics
 from fabric_cf.orchestrator.swagger_client.models.poa import Poa
 from fabric_cf.orchestrator.swagger_client.models.poa_data import PoaData
 from fabric_cf.orchestrator.swagger_client.models.poa_post import PoaPost

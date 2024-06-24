@@ -54,6 +54,8 @@ class SliceState(enum.Enum):
     Modifying = enum.auto()
     ModifyError = enum.auto()
     ModifyOK = enum.auto()
+    AllocatedError = enum.auto()
+    AllocatedOK = enum.auto()
 
     def __str__(self):
         return self.name
@@ -123,6 +125,7 @@ class OrchestratorProxy:
             self.slivers_api = swagger_client.SliversApi(api_client=api_instance)
             self.resources_api = swagger_client.ResourcesApi(api_client=api_instance)
             self.poas_api = swagger_client.PoasApi(api_client=api_instance)
+            self.metrics_api = swagger_client.MetricsApi(api_client=api_instance)
 
     def __set_tokens(self, *, token: str):
         """
@@ -134,7 +137,7 @@ class OrchestratorProxy:
         self.slices_api.api_client.configuration.api_key_prefix[self.PROP_AUTHORIZATION] = self.PROP_BEARER
 
     def create(self, *, token: str, slice_name: str, ssh_key: Union[str, List[str]],
-               topology: ExperimentTopology = None, slice_graph: str = None,
+               topology: ExperimentTopology = None, slice_graph: str = None, lease_start_time: str = None,
                lease_end_time: str = None) -> Tuple[Status, Union[Exception, List[Sliver]]]:
         """
         Create a slice
@@ -143,6 +146,7 @@ class OrchestratorProxy:
         @param ssh_key SSH Key(s)
         @param topology Experiment topology
         @param slice_graph Slice Graph string
+        @param lease_start_time Lease Start Time
         @param lease_end_time Lease End Time
         @return Tuple containing Status and Exception/Json containing slivers created
         """
@@ -157,6 +161,13 @@ class OrchestratorProxy:
             return Status.INVALID_ARGUMENTS, OrchestratorProxyException(f"Either topology {topology} or "
                                                                         f"slice graph {slice_graph} must "
                                                                         f"be specified")
+
+        if lease_start_time is not None:
+            try:
+                datetime.strptime(lease_start_time, self.TIME_FORMAT)
+            except Exception as e:
+                return Status.INVALID_ARGUMENTS, OrchestratorProxyException(
+                    f"Lease Stat Time {lease_start_time} should be in format: {self.TIME_FORMAT} e: {e}")
 
         if lease_end_time is not None:
             try:
@@ -177,11 +188,9 @@ class OrchestratorProxy:
             else:
                 ssh_keys = ssh_key
             body = SlicesPost(graph_model=slice_graph, ssh_keys=ssh_keys)
-            if lease_end_time is not None:
-                slivers = self.slices_api.slices_creates_post(name=slice_name, body=body, lease_end_time=lease_end_time)
-            else:
-                slivers = self.slices_api.slices_creates_post(name=slice_name, body=body)
-
+            slivers = self.slices_api.slices_creates_post(name=slice_name, body=body,
+                                                          lease_end_time=lease_end_time,
+                                                          lease_start_time=lease_start_time)
             return Status.OK, slivers.data if slivers.data is not None else []
         except Exception as e:
             return Status.FAILURE, e
@@ -302,7 +311,8 @@ class OrchestratorProxy:
 
             states = [SliceState.StableError, SliceState.StableOK, SliceState.Nascent,
                       SliceState.Configuring, SliceState.Closing, SliceState.Dead,
-                      SliceState.ModifyError, SliceState.ModifyOK, SliceState.Modifying]
+                      SliceState.ModifyError, SliceState.ModifyOK, SliceState.Modifying,
+                      SliceState.AllocatedOK, SliceState.AllocatedError]
             if includes is not None:
                 states = includes
 
@@ -413,8 +423,8 @@ class OrchestratorProxy:
             # Set the tokens
             self.__set_tokens(token=token)
 
-            start_date = start.strftime('%Y-%m-%d %H:%M:%S %z') if start else None
-            end_date = end.strftime('%Y-%m-%d %H:%M:%S %z') if end else None
+            start_date = start.strftime(self.TIME_FORMAT) if start else None
+            end_date = end.strftime(self.TIME_FORMAT) if end else None
             resources = self.resources_api.resources_get(level=level, force_refresh=force_refresh,
                                                          start_date=start_date, end_date=end_date,
                                                          includes=', '.join(includes) if includes else None,
@@ -546,5 +556,21 @@ class OrchestratorProxy:
                 raise Exception("Invalid Arguments")
 
             return Status.OK, poa_data.data if poa_data.data is not None else None
+        except Exception as e:
+            return Status.FAILURE, e
+
+    def get_metrics_overview(self, *, token: str = None,
+                             excluded_projects: List[str] = None) -> Tuple[Status, Union[Exception, list]]:
+        """
+        Modify a slice
+        @param token fabric token
+        @param excluded_projects list of project ids to exclude
+        @return Tuple containing Status and Exception/Json containing poa info created
+        """
+        try:
+            # Set the tokens
+            self.__set_tokens(token=token)
+            result = self.metrics_api.metrics_overview_get(excluded_projects=excluded_projects)
+            return Status.OK, result.results
         except Exception as e:
             return Status.FAILURE, e
