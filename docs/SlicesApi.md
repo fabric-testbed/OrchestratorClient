@@ -70,13 +70,13 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: text/plain
+ - **Content-Type**: application/json
  - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **slices_creates_post**
-> Slivers slices_creates_post(body, name, lease_end_time=lease_end_time)
+> Slivers slices_creates_post(body, name, lease_start_time=lease_start_time, lease_end_time=lease_end_time)
 
 Create slice
 
@@ -101,11 +101,12 @@ configuration.api_key['Authorization'] = 'YOUR_API_KEY'
 api_instance = SlicesApi(ApiClient(configuration))
 body = SlicesPost() # SlicesPost | Create new Slice
 name = 'name_example' # str | Slice Name
+lease_start_time = 'lease_start_time_example' # str | Lease End Time for the Slice (optional)
 lease_end_time = 'lease_end_time_example' # str | Lease End Time for the Slice (optional)
 
 try:
     # Create slice
-    api_response = api_instance.slices_creates_post(body, name, lease_end_time=lease_end_time)
+    api_response = api_instance.slices_creates_post(body, name, lease_start_time=lease_start_time, lease_end_time=lease_end_time)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling SlicesApi->slices_creates_post: %s\n" % e)
@@ -117,6 +118,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **body** | [**SlicesPost**](SlicesPost.md)| Create new Slice | 
  **name** | **str**| Slice Name | 
+ **lease_start_time** | **str**| Lease End Time for the Slice | [optional] 
  **lease_end_time** | **str**| Lease End Time for the Slice | [optional] 
 
 ### Return type
@@ -240,7 +242,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **slices_get**
-> Slices slices_get(name=name, as_self=as_self, states=states, limit=limit, offset=offset)
+> Slices slices_get(name=name, search=search, exact_match=exact_match, as_self=as_self, states=states, limit=limit, offset=offset)
 
 Retrieve a listing of user slices
 
@@ -263,6 +265,8 @@ configuration.api_key['Authorization'] = 'YOUR_API_KEY'
 # create an instance of the API class
 api_instance = SlicesApi(ApiClient(configuration))
 name = 'name_example' # str | Search for Slices with the name (optional)
+search = 'search_example' # str | search term applied (optional)
+exact_match = false # bool | Exact Match for Search term (optional) (default to false)
 as_self = true # bool | GET object as Self (optional) (default to true)
 states = ['states_example'] # list[str] | Search for Slices in the specified states (optional)
 limit = 5 # int | maximum number of results to return per page (1 or more) (optional) (default to 5)
@@ -270,7 +274,7 @@ offset = 0 # int | number of items to skip before starting to collect the result
 
 try:
     # Retrieve a listing of user slices
-    api_response = api_instance.slices_get(name=name, as_self=as_self, states=states, limit=limit, offset=offset)
+    api_response = api_instance.slices_get(name=name, search=search, exact_match=exact_match, as_self=as_self, states=states, limit=limit, offset=offset)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling SlicesApi->slices_get: %s\n" % e)
@@ -281,6 +285,8 @@ except ApiException as e:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **name** | **str**| Search for Slices with the name | [optional] 
+ **search** | **str**| search term applied | [optional] 
+ **exact_match** | **bool**| Exact Match for Search term | [optional] [default to false]
  **as_self** | **bool**| GET object as Self | [optional] [default to true]
  **states** | [**list[str]**](str.md)| Search for Slices in the specified states | [optional] 
  **limit** | **int**| maximum number of results to return per page (1 or more) | [optional] [default to 5]
@@ -394,7 +400,7 @@ except ApiException as e:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **body** | [**str**](str.md)|  | Modify a Slice
+ **body** | [**str**](str.md)| Modify a Slice | 
  **slice_id** | **str**| Slice identified by universally unique identifier | 
 
 ### Return type

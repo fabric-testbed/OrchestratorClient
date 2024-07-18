@@ -15,6 +15,7 @@
 from __future__ import absolute_import
 
 # import apis into sdk package
+from fabric_cf.orchestrator.swagger_client.api.metrics_api import MetricsApi
 from fabric_cf.orchestrator.swagger_client.api.poas_api import PoasApi
 from fabric_cf.orchestrator.swagger_client.api.resources_api import ResourcesApi
 from fabric_cf.orchestrator.swagger_client.api.slices_api import SlicesApi
@@ -24,6 +25,7 @@ from fabric_cf.orchestrator.swagger_client.api.version_api import VersionApi
 from fabric_cf.orchestrator.swagger_client.api_client import ApiClient
 from fabric_cf.orchestrator.swagger_client.configuration import Configuration
 # import models into sdk package
+from fabric_cf.orchestrator.swagger_client.models.metrics import Metrics
 from fabric_cf.orchestrator.swagger_client.models.poa import Poa
 from fabric_cf.orchestrator.swagger_client.models.poa_data import PoaData
 from fabric_cf.orchestrator.swagger_client.models.poa_post import PoaPost
