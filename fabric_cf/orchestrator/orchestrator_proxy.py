@@ -287,7 +287,8 @@ class OrchestratorProxy:
 
     def slices(self, *, token: str, includes: List[SliceState] = None, excludes: List[SliceState] = None,
                name: str = None, limit: int = 20, offset: int = 0, slice_id: str = None,
-               as_self: bool = True, search: str = None, exact_match: bool = False) -> Tuple[Status, Union[Exception, List[Slice]]]:
+               as_self: bool = True, search: str = None, exact_match: bool = False,
+               graph_format: str = GraphFormat.GRAPHML.name) -> Tuple[Status, Union[Exception, List[Slice]]]:
         """
         Get slices
         @param token fabric token
@@ -300,6 +301,7 @@ class OrchestratorProxy:
         @param as_self query as self
         @param search search term
         @param exact_match true if exact match
+        @param graph_format graph_format
         @return Tuple containing Status and Exception/Json containing slices
         """
         if token is None:
@@ -322,7 +324,7 @@ class OrchestratorProxy:
                         states.remove(x)
 
             if slice_id is not None:
-                slices = self.slices_api.slices_slice_id_get(slice_id=slice_id, graph_format=GraphFormat.GRAPHML.name,
+                slices = self.slices_api.slices_slice_id_get(slice_id=slice_id, graph_format=graph_format,
                                                              as_self=as_self)
             elif name is not None:
                 slices = self.slices_api.slices_get(states=SliceState.state_list_to_str_list(states), name=name,
