@@ -138,7 +138,7 @@ class OrchestratorProxy:
 
     def create(self, *, token: str, slice_name: str, ssh_key: Union[str, List[str]],
                topology: ExperimentTopology = None, slice_graph: str = None, lease_start_time: str = None,
-               lease_end_time: str = None) -> Tuple[Status, Union[Exception, List[Sliver]]]:
+               lease_end_time: str = None, lifetime: int = 24) -> Tuple[Status, Union[Exception, List[Sliver]]]:
         """
         Create a slice
         @param token fabric token
@@ -148,6 +148,7 @@ class OrchestratorProxy:
         @param slice_graph Slice Graph string
         @param lease_start_time Lease Start Time
         @param lease_end_time Lease End Time
+        @param slice lifetime in hours
         @return Tuple containing Status and Exception/Json containing slivers created
         """
         if token is None:
@@ -190,7 +191,8 @@ class OrchestratorProxy:
             body = SlicesPost(graph_model=slice_graph, ssh_keys=ssh_keys)
             slivers = self.slices_api.slices_creates_post(name=slice_name, body=body,
                                                           lease_end_time=lease_end_time,
-                                                          lease_start_time=lease_start_time)
+                                                          lease_start_time=lease_start_time,
+                                                          lifetime=lifetime)
             return Status.OK, slivers.data if slivers.data is not None else []
         except Exception as e:
             return Status.FAILURE, e
