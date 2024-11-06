@@ -76,7 +76,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **slices_creates_post**
-> Slivers slices_creates_post(body, name, lease_start_time=lease_start_time, lease_end_time=lease_end_time)
+> Slivers slices_creates_post(body, name, lifetime=lifetime, lease_start_time=lease_start_time, lease_end_time=lease_end_time)
 
 Create slice
 
@@ -101,12 +101,13 @@ configuration.api_key['Authorization'] = 'YOUR_API_KEY'
 api_instance = SlicesApi(ApiClient(configuration))
 body = SlicesPost() # SlicesPost | Create new Slice
 name = 'name_example' # str | Slice Name
+lifetime = 24 # int | Lifetime of the slice requested in hours. (optional) (default to 24)
 lease_start_time = 'lease_start_time_example' # str | Lease End Time for the Slice (optional)
 lease_end_time = 'lease_end_time_example' # str | Lease End Time for the Slice (optional)
 
 try:
     # Create slice
-    api_response = api_instance.slices_creates_post(body, name, lease_start_time=lease_start_time, lease_end_time=lease_end_time)
+    api_response = api_instance.slices_creates_post(body, name, lifetime=lifetime, lease_start_time=lease_start_time, lease_end_time=lease_end_time)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling SlicesApi->slices_creates_post: %s\n" % e)
@@ -118,6 +119,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **body** | [**SlicesPost**](SlicesPost.md)| Create new Slice | 
  **name** | **str**| Slice Name | 
+ **lifetime** | **int**| Lifetime of the slice requested in hours. | [optional] [default to 24]
  **lease_start_time** | **str**| Lease End Time for the Slice | [optional] 
  **lease_end_time** | **str**| Lease End Time for the Slice | [optional] 
 
