@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 Control Framework metrics overview
 
-Control Framework  metrics overview
+Control Framework metrics overview
 
 ### Example
 ```python
