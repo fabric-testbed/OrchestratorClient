@@ -30,25 +30,30 @@ class PoaPostData(object):
     swagger_types = {
         'vcpu_cpu_map': 'list[PoaPostDataVcpuCpuMap]',
         'node_set': 'list[str]',
+        'bdf': 'list[str]',
         'keys': 'list[PoaPostDataKeys]'
     }
 
     attribute_map = {
         'vcpu_cpu_map': 'vcpu_cpu_map',
         'node_set': 'node_set',
+        'bdf': 'bdf',
         'keys': 'keys'
     }
 
-    def __init__(self, vcpu_cpu_map=None, node_set=None, keys=None):  # noqa: E501
+    def __init__(self, vcpu_cpu_map=None, node_set=None, bdf=None, keys=None):  # noqa: E501
         """PoaPostData - a model defined in Swagger"""  # noqa: E501
         self._vcpu_cpu_map = None
         self._node_set = None
+        self._bdf = None
         self._keys = None
         self.discriminator = None
         if vcpu_cpu_map is not None:
             self.vcpu_cpu_map = vcpu_cpu_map
         if node_set is not None:
             self.node_set = node_set
+        if bdf is not None:
+            self.bdf = bdf
         if keys is not None:
             self.keys = keys
 
@@ -93,6 +98,27 @@ class PoaPostData(object):
         """
 
         self._node_set = node_set
+
+    @property
+    def bdf(self):
+        """Gets the bdf of this PoaPostData.  # noqa: E501
+
+
+        :return: The bdf of this PoaPostData.  # noqa: E501
+        :rtype: list[str]
+        """
+        return self._bdf
+
+    @bdf.setter
+    def bdf(self, bdf):
+        """Sets the bdf of this PoaPostData.
+
+
+        :param bdf: The bdf of this PoaPostData.  # noqa: E501
+        :type: list[str]
+        """
+
+        self._bdf = bdf
 
     @property
     def keys(self):
