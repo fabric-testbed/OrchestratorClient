@@ -66,7 +66,7 @@ class PoaPost(object):
         """
         if operation is None:
             raise ValueError("Invalid value for `operation`, must not be `None`")  # noqa: E501
-        allowed_values = ["cpuinfo", "numainfo", "cpupin", "numatune", "reboot", "addkey", "removekey"]  # noqa: E501
+        allowed_values = ["cpuinfo", "numainfo", "cpupin", "numatune", "reboot", "addkey", "removekey", "rescan"]  # noqa: E501
         if operation not in allowed_values:
             raise ValueError(
                 "Invalid value for `operation` ({0}), must be one of {1}"  # noqa: E501
